@@ -1,6 +1,6 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "newApp",
+  "appId": "newApp.org",
+  "appName": "New App",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "build",

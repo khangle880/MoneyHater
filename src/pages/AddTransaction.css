@@ -1,0 +1,41 @@
+.toolbar-medium ion-title {
+  font-weight: bold;
+  font-size: larger;
+}
+
+.toolbar-medium ion-button {
+  font-weight: 700;
+  font-size: medium;
+}
+
+.block ion-item {
+  --padding-start: 0px;
+}
+
+.block ion-item ion-icon {
+  width: 24px;
+  height: 24px;
+  padding: 3px;
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+  /* padding: 3px; */
+}
+
+.icon-circle-outline {
+  width: 24px;
+  height: 24px;
+  padding: 3px;
+  background-color: rgb(204, 204, 204);
+  border-radius: 50%;
+}
+
+/* input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+} */
