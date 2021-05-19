@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { auth as firebaseAuth } from "./firebase";
+import { initCategoryList } from "./LoadedData/CategoryList";
 import { initCurrencyList } from "./LoadedData/CurrencyList";
 
 interface Auth {
@@ -23,7 +24,8 @@ export function useAuthInit(): AuthInit {
   });
 
   useEffect(() => {
-    initCurrencyList().then(() => {
+    const promise = Promise.all([initCurrencyList(), initCategoryList()]);
+    promise.then(() => {
       return firebaseAuth.onAuthStateChanged((firebaseUser) => {
         const auth = firebaseUser
           ? { loggedIn: true, userId: firebaseUser.uid }

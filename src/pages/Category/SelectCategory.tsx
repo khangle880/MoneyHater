@@ -4,15 +4,14 @@ import {
   IonButtons,
   IonContent,
   IonHeader,
-  IonLoading,
   IonPage,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useHistory } from "react-router";
-import { firestore } from "../firebase";
-import { Category, toCategory } from "../models";
+import { categoryList } from "../../LoadedData/CategoryList";
+import { Category } from "../../models";
 import CategoryItem from "./CategoryItem";
 
 interface props {
@@ -20,28 +19,13 @@ interface props {
 }
 
 const SelectCategory: React.FC<props> = ({ handleSelect }) => {
-  const [needLoading, setNeedLoading] = useState(true);
-  const [categories, setCategories] = useState<Category[]>([]);
   const history = useHistory();
-
-  useEffect(() => {
-    firestore
-      .collection("categories")
-      .get()
-      .then(({ docs }) => {
-        setCategories(docs.map(toCategory));
-        setNeedLoading(false);
-      });
-  }, []);
 
   const handleSelectItem = (data: Category) => {
     handleSelect(data);
     history.goBack();
   };
 
-  if (needLoading) {
-    return <IonLoading isOpen={needLoading} />;
-  }
   return (
     <IonPage>
       <IonHeader>
@@ -57,7 +41,7 @@ const SelectCategory: React.FC<props> = ({ handleSelect }) => {
       </IonHeader>
       <IonContent className="ion-padding">
         <ul>
-          {categories?.map((category) => (
+          {categoryList?.map((category) => (
             <CategoryItem
               key={category.id}
               handleClick={handleSelectItem}

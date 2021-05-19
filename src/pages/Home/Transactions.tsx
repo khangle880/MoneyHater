@@ -11,7 +11,7 @@ import {
 import { add as addIcon } from "ionicons/icons";
 import React from "react";
 import { Redirect } from "react-router";
-import { useAuth } from "../auth";
+import { useAuth } from "../../auth";
 // import "./Transactions.css";
 
 const Transactions: React.FC = () => {

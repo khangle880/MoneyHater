@@ -31,14 +31,14 @@ import questionIcon from "../icons/icons8-question-mark.svg";
 import dollarIcon from "../icons/icons8-us-dollar.svg";
 import calendarIcon from "../icons/icons8-calendar.svg";
 import walletIcon from "../icons/icons8-wallet.svg";
-import SelectCategory from "./SelectCategory";
+import SelectCategory from "../Category/SelectCategory";
 import { Redirect, Route } from "react-router-dom";
 import { IonReactRouter } from "@ionic/react-router";
 import { Router } from "workbox-routing";
-import { database } from "../firebase";
-import SelectCurrencyUnit from "./SelectCurrencyUnit";
-import { useLocalStorage } from "../customHook/LocalTransactionHook";
-import { loadLocalData } from "../customHook/LoadLocalData";
+import { database } from "../../firebase";
+import SelectCurrencyUnit from "../Currency/SelectCurrencyUnit";
+import { useLocalStorage } from "../../customHook/LocalTransactionHook";
+import { loadLocalData } from "../../customHook/LoadLocalData";
 
 const AddTransactionHome: React.FC = () => {
   const [amount, setAmount] = useState(0);

@@ -8,9 +8,9 @@ import {
 } from "@ionic/react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { home as homeIcon, settings as settingsIcon } from "ionicons/icons";
-import Transactions from "./pages/Transactions";
+import Transactions from "./pages/Home/Transactions";
 import React, { useEffect } from "react";
-import AddTransaction from "./pages/AddTransaction";
+import AddTransaction from "./pages/AddTransaction/AddTransaction";
 import SettingsPage from "./pages/SettingsPage";
 import { useAuth } from "./auth";
 

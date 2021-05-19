@@ -21,15 +21,15 @@ import "./AddTransaction.css";
 import { closeOutline as closeIcon } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
 import { Route } from "react-router-dom";
-import { Category, CurrencyUnit } from "../models";
-import SelectCurrencyUnit from "./SelectCurrencyUnit";
-import SelectCategory from "./SelectCategory";
-import questionSvg from "../icons/icons8-question.svg";
-import noteIcon from "../icons/icons8-note.svg";
-import dollarIcon from "../icons/icons8-us-dollar.svg";
-import calendarIcon from "../icons/icons8-calendar.svg";
-import walletIcon from "../icons/icons8-wallet.svg";
-import { currencyList } from "../LoadedData/CurrencyList";
+import { Category, CurrencyUnit } from "../../models";
+import SelectCurrencyUnit from "../Currency/SelectCurrencyUnit";
+import SelectCategory from "../Category/SelectCategory";
+import questionSvg from "../../icons/icons8-question.svg";
+import noteIcon from "../../icons/icons8-note.svg";
+import dollarIcon from "../../icons/icons8-us-dollar.svg";
+import calendarIcon from "../../icons/icons8-calendar.svg";
+import walletIcon from "../../icons/icons8-wallet.svg";
+import { currencyList } from "../../LoadedData/CurrencyList";
 
 const AddTransaction: React.FC = () => {
   const [amount, setAmount] = useState(0);
@@ -66,7 +66,7 @@ const AddTransaction: React.FC = () => {
                 <IonButtons slot="start">
                   <IonBackButton
                     icon={closeIcon}
-                    defaultHref="/home/tab1"
+                    defaultHref="/my"
                     text=""
                   />
                 </IonButtons>
