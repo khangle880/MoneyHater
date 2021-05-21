@@ -22,7 +22,7 @@ export function toCurrency(doc: any): Currency {
 export var currencies: Currency[] = [];
 
 export function clearCurrencies() {
-    currencies = [];
+  currencies = [];
 }
 
 export function initCurrencies() {
@@ -32,6 +32,5 @@ export function initCurrencies() {
       data.push(toCurrency(child));
     });
     currencies = data;
-    console.log(data);
   });
 }

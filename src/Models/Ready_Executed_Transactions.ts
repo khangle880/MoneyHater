@@ -1,4 +1,4 @@
-import { firestore } from "../firebase";
+// import { firestore } from "../firebase";
 
 export interface ReadyExecutedTransaction {
   id: string;
@@ -22,24 +22,24 @@ export function toReadyExecutedTransaction(doc: any): ReadyExecutedTransaction {
   return readyExecutedTransaction as ReadyExecutedTransaction;
 }
 
-export var readyExecutedTransactions: ReadyExecutedTransaction[] = [];
+// export var readyExecutedTransactions: ReadyExecutedTransaction[] = [];
 
-export function clearReadyExecutedTransactions() {
-  readyExecutedTransactions = [];
-}
+// export function clearReadyExecutedTransactions() {
+//   readyExecutedTransactions = [];
+// }
 
-export function initReadyExecutedTransactions(
-  user_id: string,
-  wallet_id: string
-) {
-  const readyExecutedTransactionsRef = firestore
-    .collection("users")
-    .doc(user_id)
-    .collection("wallets")
-    .doc(wallet_id)
-    .collection("ready_executed_transactions");
+// export function initReadyExecutedTransactions(
+//   user_id: string,
+//   wallet_id: string
+// ) {
+//   const readyExecutedTransactionsRef = firestore
+//     .collection("users")
+//     .doc(user_id)
+//     .collection("wallets")
+//     .doc(wallet_id)
+//     .collection("ready_executed_transactions");
 
-  return readyExecutedTransactionsRef.get().then(({ docs }) => {
-    readyExecutedTransactions = docs.map(toReadyExecutedTransaction);
-  });
-}
+//   return readyExecutedTransactionsRef.get().then(({ docs }) => {
+//     readyExecutedTransactions = docs.map(toReadyExecutedTransaction);
+//   });
+// }

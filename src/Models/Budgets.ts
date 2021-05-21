@@ -1,4 +1,4 @@
-import { firestore } from "../firebase";
+// import { firestore } from "../firebase";
 
 export interface Budget {
   id: string;
@@ -19,22 +19,22 @@ export function toBudget(doc: any): Budget {
   return budget as Budget;
 }
 
-export var budgets: Budget[] = [];
+// export var budgets: Budget[] = [];
 
-export function clearBudgets() {
-  budgets = [];
-}
+// export function clearBudgets() {
+//   budgets = [];
+// }
 
-export function initBudgets(user_id: string, wallet_id: string) {
-  const budgetsRef = firestore
-    .collection("users")
-    .doc(user_id)
-    .collection("wallets")
-    .doc(wallet_id)
-    .collection("budgets");
+// export function initBudgets(user_id: string, wallet_id: string) {
+//   const budgetsRef = firestore
+//     .collection("users")
+//     .doc(user_id)
+//     .collection("wallets")
+//     .doc(wallet_id)
+//     .collection("budgets");
 
-  return budgetsRef.get().then(({ docs }) => {
-    budgets = docs.map(toBudget);
-  });
-}
+//   return budgetsRef.get().then(({ docs }) => {
+//     budgets = docs.map(toBudget);
+//   });
+// }
 

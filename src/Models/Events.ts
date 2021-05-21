@@ -1,4 +1,4 @@
-import { firestore } from "../firebase";
+// import { firestore } from "../firebase";
 
 export interface Event {
   id: string;
@@ -19,21 +19,21 @@ export function toEvent(doc: any): Event {
   return event as Event;
 }
 
-export var events: Event[] = [];
+// export var events: Event[] = [];
 
-export function clearEvents() {
-  events = [];
-}
+// export function clearEvents() {
+//   events = [];
+// }
 
-export function initEvents(user_id: string, wallet_id: string) {
-  const eventsRef = firestore
-    .collection("users")
-    .doc(user_id)
-    .collection("wallets")
-    .doc(wallet_id)
-    .collection("events");
+// export function initEvents(user_id: string, wallet_id: string) {
+//   const eventsRef = firestore
+//     .collection("users")
+//     .doc(user_id)
+//     .collection("wallets")
+//     .doc(wallet_id)
+//     .collection("events");
 
-  return eventsRef.get().then(({ docs }) => {
-    events = docs.map(toEvent);
-  });
-}
+//   return eventsRef.get().then(({ docs }) => {
+//     events = docs.map(toEvent);
+//   });
+// }

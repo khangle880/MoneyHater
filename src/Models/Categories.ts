@@ -44,7 +44,6 @@ export function initCategories() {
         });
       })
     ).then(() => {
-      console.log(data);
       categories = data;
     });
   });

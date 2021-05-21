@@ -1,35 +1,42 @@
-import { firestore } from "../firebase";
+// import { firestore } from "../firebase";
 
-export interface Budget {
+export interface Transaction {
   id: string;
-  goal_value: number;
-  consume: number;
+  amount: number;
+  currency: string;
+  amount_by_wallet: number;
   category: string;
-  from: string;
-  to: string;
-  repeatable: boolean;
-  state: boolean;
+  note: string;
+  with: string;
+  event: string;
+  remind: Date;
+  excluded_from_report: boolean;
+  executed_time: Date;
 }
 
-export function toBudget(doc: any): Budget {
-  const budget: any = {
+export function toTransaction(doc: any): Transaction {
+  const transaction: any = {
     id: doc.id,
     ...doc.data(),
   };
-  return budget as Budget;
+  return transaction as Transaction;
 }
 
-export var budgets: Budget[] = [];
+// export var transactions: Transaction[] = [];
 
-export function initBudgets(user_id: string, wallet_id: string) {
-  const debtsRef = firestore
-    .collection("users")
-    .doc(user_id)
-    .collection("wallets")
-    .doc(wallet_id)
-    .collection("budgets");
+// export function clearTransactions() {
+//   transactions = [];
+// }
 
-  return debtsRef.onSnapshot(({ docs }) => {
-    budgets = docs.map(toBudget);
-  });
-}
+// export function initTransactions(user_id: string, wallet_id: string) {
+//   const transactionsRef = firestore
+//     .collection("users")
+//     .doc(user_id)
+//     .collection("wallets")
+//     .doc(wallet_id)
+//     .collection("transactions");
+
+//   return transactionsRef.get().then(({ docs }) => {
+//     transactions = docs.map(toTransaction);
+//   });
+// }

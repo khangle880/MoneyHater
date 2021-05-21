@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { auth as firebaseAuth } from "./firebase";
-import { initCategories } from "./Models/Categories";
-import { initCurrencies } from "./Models/Currencies";
+import { clearData, loadData } from "./Models/LoadData";
 
 interface Auth {
   loggedIn: boolean;
@@ -40,14 +39,13 @@ export function useAuthInit(): AuthInit {
 
   useEffect(() => {
     if (authInit.auth && authInit.auth.userId) {
-      Promise.all([
-        initCurrencies(),
-        initCategories(),
-      ]).then(() => {
+      loadData(authInit.auth.userId).then(() => {
         const auth = authInit.auth;
         setAuthInit({ loading: false, auth, loadedData: true });
       });
     }
+
+    if (!authInit.auth?.loggedIn) clearData();
   }, [authInit.auth]);
 
   return authInit;

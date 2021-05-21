@@ -1,35 +1,44 @@
-import { firestore } from "../firebase";
+// import { firestore } from "../firebase";
 
-export interface Budget {
+export interface RecurringTransaction {
   id: string;
-  goal_value: number;
-  consume: number;
+  amount: number;
+  currency: string;
+  amount_by_wallet: number;
   category: string;
-  from: string;
-  to: string;
-  repeatable: boolean;
+  note: string;
+  with: string;
+  event: string;
+  remind: Date;
+  excluded_from_report: boolean;
+  from: Date;
+  to: Date;
   state: boolean;
 }
 
-export function toBudget(doc: any): Budget {
-  const budget: any = {
+export function toRecurringTransaction(doc: any): RecurringTransaction {
+  const recurringTransaction: any = {
     id: doc.id,
     ...doc.data(),
   };
-  return budget as Budget;
+  return recurringTransaction as RecurringTransaction;
 }
 
-export var budgets: Budget[] = [];
+// export var recurringTransactions: RecurringTransaction[] = [];
 
-export function initBudgets(user_id: string, wallet_id: string) {
-  const debtsRef = firestore
-    .collection("users")
-    .doc(user_id)
-    .collection("wallets")
-    .doc(wallet_id)
-    .collection("budgets");
+// export function clearRecurringTransactions() {
+//   recurringTransactions = [];
+// }
 
-  return debtsRef.onSnapshot(({ docs }) => {
-    budgets = docs.map(toBudget);
-  });
-}
+// export function initRecurringTransactions(user_id: string, wallet_id: string) {
+//   const recurringTransactionsRef = firestore
+//     .collection("users")
+//     .doc(user_id)
+//     .collection("wallets")
+//     .doc(wallet_id)
+//     .collection("recurring_transactions");
+
+//   return recurringTransactionsRef.get().then(({ docs }) => {
+//     recurringTransactions = docs.map(toRecurringTransaction);
+//   });
+// }
