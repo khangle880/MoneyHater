@@ -21,6 +21,9 @@ const SettingsPage: React.FC = () => {
         <IonButton expand="block" onClick={() => auth.signOut()}>
           Logout
         </IonButton>
+        <IonButton expand="block" fill="clear" href="./login">
+          Login
+        </IonButton>
       </IonContent>
     </IonPage>
   );

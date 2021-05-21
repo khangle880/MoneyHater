@@ -13,21 +13,21 @@ import {
   IonThumbnail,
   IonImg,
 } from "@ionic/react";
-import React from "react";
-import { useHistory } from "react-router";
-import { currencies, Currency } from "../../Models/Currencies";
+import { Wallet } from "../../Models/Wallets";
+// import React from "react";
+// import { useHistory } from "react-router";
 
 interface props {
-  handleSelect: (data: Currency) => void;
+  handleSelect: (data: Wallet) => void;
 }
 
 const SelectCurrencyUnit: React.FC<props> = ({ handleSelect }) => {
-  const history = useHistory();
+  //   const history = useHistory();
 
-  const handleSelectItem = (data: Currency) => {
-    handleSelect(data);
-    history.goBack();
-  };
+  //   const handleSelectItem = (data: Wallet) => {
+  //     handleSelect(data);
+  //     history.goBack();
+  //   };
 
   return (
     <IonPage>
@@ -43,11 +43,11 @@ const SelectCurrencyUnit: React.FC<props> = ({ handleSelect }) => {
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
-        <IonList>
+        {/* <IonList>
           {currencies.map((child) => (
             <IonItem
               button
-              key={child.id}
+              key={child.key}
               onClick={() => handleSelectItem(child)}
             >
               <IonThumbnail slot="start">
@@ -60,7 +60,7 @@ const SelectCurrencyUnit: React.FC<props> = ({ handleSelect }) => {
               </IonLabel>
             </IonItem>
           ))}
-        </IonList>
+        </IonList> */}
       </IonContent>
     </IonPage>
   );

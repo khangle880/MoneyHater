@@ -1,6 +1,7 @@
 import {
   IonIcon,
   IonLabel,
+  IonLoading,
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
@@ -12,13 +13,16 @@ import Transactions from "./pages/Home/Transactions";
 import React, { useEffect } from "react";
 import AddTransaction from "./pages/AddTransaction/AddTransaction";
 import SettingsPage from "./pages/SettingsPage";
-import { useAuth } from "./auth";
+import { useAuth, useLoadedData } from "./auth";
 
 const AppTabs: React.FC = () => {
   useEffect(() => {}, []);
 
   const { loggedIn } = useAuth();
+  const loadedData = useLoadedData();
+
   if (!loggedIn) return <Redirect to="/login" />;
+  if (!loadedData) return <IonLoading isOpen />;
 
   return (
     <IonTabs>

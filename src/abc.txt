@@ -1,9 +1,49 @@
-a
-b
-c
-d
+function loadData() {
+  const categoriesRef = firestore.collection("categories");
+  return categoriesRef.get().then(({ docs }) => {
+    var data: Category[] = [];
+    var promise1 = Promise.all(
+      docs.map((doc) => {
+        var newCategory = toCategory(doc);
+        const childrenRef = doc.ref.collection("children");
 
-a
-b
-c
-d
+        return childrenRef.get().then(({ docs: subDocs }) => {
+          let subCatagories: any[] = [];
+
+          subDocs.forEach((child: any) => {
+            subCatagories.push(toCategory(child));
+          });
+
+          data.push({ ...newCategory, children: subCatagories });
+        });
+      })
+    )
+      // const customCategoriesRef = firestore
+      //   .collection("users")
+      //   .doc("LCKmLMUG7tZSOgEs4Bp3jbo3EG02")
+      //   .collection("wallets")
+      //   .doc("huGCquznO6ogpptVub2D")
+      //   .collection("custom_categories");
+      // console.log(user_id);
+
+      // return promise1
+      //   .then(() => {
+      //     customCategoriesRef.get().then(({ docs: subDocs }) => {
+      //       subDocs.forEach((subDoc) => {
+      //         return Promise.resolve(subDoc).then(() => {
+      //           return data
+      //             .find((element) => subDoc.data().parent === element.id)
+      //             ?.children?.push(toCategory(subDoc));
+      //         });
+      //       });
+      //     });
+      //   })
+      .then(() => {
+        categories = data;
+      });
+  });
+}
+
+
+fix initCategories
+add remove data and set loadedData

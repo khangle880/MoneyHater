@@ -5,12 +5,12 @@ import { Redirect, Route, Switch } from "react-router-dom";
 
 import AppTabs from "./AppTabs";
 import LoginPage from "./pages/LoginPage";
-import { AuthContext } from "./auth";
+import { AuthContext, LoadDataContext } from "./auth";
 import NotFoundPage from "./pages/NotFoundPage";
 import { useAuthInit } from "./auth";
 import RegisterPage from "./pages/RegisterPage";
 const App: React.FC = () => {
-  const { loading, auth } = useAuthInit();
+  const { loading, auth, loadedData } = useAuthInit();
 
   if (loading) return <IonLoading isOpen />;
   console.log(auth);
@@ -27,7 +27,9 @@ const App: React.FC = () => {
               <RegisterPage />
             </Route>
             <Route path="/my">
-              <AppTabs />
+              <LoadDataContext.Provider value={loadedData!}>
+                <AppTabs />
+              </LoadDataContext.Provider>
             </Route>
             <Redirect exact path="/" to="/my/Transactions" />
             <Route>

@@ -33,7 +33,7 @@ const LoginPage: React.FC = () => {
     }
   };
 
-  if (loggedIn) return <Redirect to="/my/entries" />;
+  if (loggedIn) return <Redirect to="/my/transactions" />;
   return (
     <IonPage>
       <IonHeader>

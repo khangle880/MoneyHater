@@ -10,8 +10,7 @@ import {
 } from "@ionic/react";
 import React from "react";
 import { useHistory } from "react-router";
-import { categoryList } from "../../LoadedData/CategoryList";
-import { Category } from "../../models";
+import { categories, Category } from "../../Models/Categories";
 import CategoryItem from "./CategoryItem";
 
 interface props {
@@ -41,7 +40,7 @@ const SelectCategory: React.FC<props> = ({ handleSelect }) => {
       </IonHeader>
       <IonContent className="ion-padding">
         <ul>
-          {categoryList?.map((category) => (
+          {categories?.map((category) => (
             <CategoryItem
               key={category.id}
               handleClick={handleSelectItem}
