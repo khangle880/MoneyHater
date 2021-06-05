@@ -1,6 +1,6 @@
 // import { firestore } from "../firebase";
 
-export interface Event {
+export interface WalletEvent {
   id: string;
   name: string;
   from: string;
@@ -11,12 +11,12 @@ export interface Event {
   state: boolean;
 }
 
-export function toEvent(doc: any): Event {
+export function toWalletEvent(doc: any): WalletEvent {
   const event: any = {
     id: doc.id,
     ...doc.data(),
   };
-  return event as Event;
+  return event as WalletEvent;
 }
 
 // export var events: Event[] = [];

@@ -21,7 +21,6 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import "./AddTransaction.css";
 import { closeOutline as closeIcon } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
 import { Route, useHistory } from "react-router-dom";
@@ -30,7 +29,6 @@ import SelectCategory from "../Category/SelectCategory";
 import questionSvg from "../../icons/icons8-question.svg";
 import noteIcon from "../../icons/icons8-note.svg";
 import dollarIcon from "../../icons/icons8-us-dollar.svg";
-import calendarIcon from "../../icons/icons8-calendar.svg";
 import walletIcon from "../../icons/icons8-coin-wallet.svg";
 import partnerIcon from "../../icons/icons8-user-account.svg";
 import eventIcon from "../../icons/icons8-event.svg";
@@ -45,17 +43,16 @@ import { Partner } from "../../Models/Recent_Partners";
 import { WalletEvent } from "../../Models/Events";
 import SelectWalletEvent from "../SelectWalletEvent/SelectWalletEvent";
 import { useAuth } from "../../auth";
-import { addTransaction } from "../../Models/Transactions";
 import { currentWallet, walletCurrency } from "../../Models/LoadData";
+import { addTransactionModel } from "../../Models/Ready_Executed_Transactions";
 
-const AddTransaction: React.FC = () => {
+const AddTransactionModels: React.FC = () => {
   const [isMore, setIsMore] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [amount, setAmount] = useState(0);
   const [currencyUnit, setCurrencyUnit] = useState<Currency>(walletCurrency);
   const [category, setCategory] = useState<Category>();
   const [note, setNote] = useState("");
-  const [date, setDate] = useState(new Date().toISOString());
   const [wallet, setWallet] = useState<Wallet>(currentWallet);
   const [partner, setPartner] = useState<Partner>();
   const [walletEvent, setWalletEvent] = useState<WalletEvent>();
@@ -70,7 +67,7 @@ const AddTransaction: React.FC = () => {
 
   const handleSave = () => {
     if (amount && category) {
-      const newRawTransaction = {
+      const newRawTransactionModel = {
         amount: amount,
         currency: currencyUnit.id,
         amount_by_wallet: parseFloat(
@@ -82,9 +79,9 @@ const AddTransaction: React.FC = () => {
         event: walletEvent ? walletEvent.name : "",
         remind: remind,
         exclude_from_report: excludeFromReport,
-        executed_time: date,
+        state: true,
       };
-      addTransaction(newRawTransaction, userId!, wallet);
+      addTransactionModel(newRawTransactionModel, userId!, wallet);
       history.goBack();
     } else setShowAlert(true);
   };
@@ -92,53 +89,53 @@ const AddTransaction: React.FC = () => {
   return (
     <IonModal isOpen={true}>
       <IonRouterOutlet>
-        <Route exact path="/my/transactions/add/categories">
+        <Route exact path="/my/transaction-models/add/categories">
           <SelectCategory
             handleSelect={(data: Category) => setCategory(data)}
           />
         </Route>
-        <Route exact path="/my/transactions/add/currencies">
+        <Route exact path="/my/transaction-models/add/currencies">
           <SelectCurrencyUnit
             handleSelect={(data: Currency) => setCurrencyUnit(data)}
           />
         </Route>
-        <Route exact path="/my/transactions/add/note">
+        <Route exact path="/my/transaction-models/add/note">
           <TakeNote
             currentValue={note}
             handleNote={(data: string) => setNote(data)}
           />
         </Route>
-        <Route exact path="/my/transactions/add/wallets">
+        <Route exact path="/my/transaction-models/add/wallets">
           <SelectWallet
             currentWallet={wallet}
             handleSelect={(data: Wallet) => setWallet(data)}
           />
         </Route>
-        <Route exact path="/my/transactions/add/partner">
+        <Route exact path="/my/transaction-models/add/partner">
           <SelectPartner
             currentValue={partner!}
             handlePartner={(data: Partner) => setPartner(data)}
           />
         </Route>
-        <Route exact path="/my/transactions/add/event">
+        <Route exact path="/my/transaction-models/add/event">
           <SelectWalletEvent
             listEvent={wallet.events}
             handleSelect={(data: WalletEvent) => setWalletEvent(data)}
           />
         </Route>
         {/* ----Home Route---- */}
-        <Route exact path="/my/transactions/add">
+        <Route exact path="/my/transaction-models/add">
           <IonPage>
             <IonHeader>
               <IonToolbar className="toolbar-medium">
                 <IonButtons slot="start">
                   <IonBackButton
                     icon={closeIcon}
-                    defaultHref="/my/transactions"
+                    defaultHref="/my/transaction-models"
                     text=""
                   />
                 </IonButtons>
-                <IonTitle>Add Transaction</IonTitle>
+                <IonTitle>Add Transaction Model</IonTitle>
                 <IonButtons slot="end">
                   <IonButton size="large" onClick={() => handleSave()}>
                     SAVE
@@ -159,13 +156,13 @@ const AddTransaction: React.FC = () => {
                     }
                   />
                   {/* CURRENCY UNIT */}
-                  <IonRouterLink routerLink="/my/transactions/add/currencies">
+                  <IonRouterLink routerLink="/my/transaction-models/add/currencies">
                     {currencyUnit.iso}
                   </IonRouterLink>
                 </IonItem>
                 {/* CATEGORY ITEM */}
                 <IonItem
-                  routerLink="/my/transactions/add/categories"
+                  routerLink="/my/transaction-models/add/categories"
                   lines="inset"
                 >
                   <IonRippleEffect />
@@ -181,7 +178,10 @@ const AddTransaction: React.FC = () => {
                   />
                 </IonItem>
                 {/* NOTE ITEM */}
-                <IonItem routerLink="/my/transactions/add/note" lines="inset">
+                <IonItem
+                  routerLink="/my/transaction-models/add/note"
+                  lines="inset"
+                >
                   <IonRippleEffect />
                   <IonIcon slot="start" icon={noteIcon} />
                   <IonInput
@@ -190,18 +190,9 @@ const AddTransaction: React.FC = () => {
                     value={note}
                   />
                 </IonItem>
-                {/* Date Execute */}
-                <IonItem lines="inset">
-                  <IonIcon slot="start" icon={calendarIcon} />
-                  <IonDatetime
-                    value={date}
-                    displayFormat="DDD, DD/MM/YYYY"
-                    onIonChange={(event) => setDate(event.detail.value!)}
-                  />
-                </IonItem>
                 {/* WALLET ITEM */}
                 <IonItem
-                  routerLink="/my/transactions/add/wallets"
+                  routerLink="/my/transaction-models/add/wallets"
                   lines="inset"
                 >
                   <IonRippleEffect />
@@ -223,7 +214,7 @@ const AddTransaction: React.FC = () => {
                     <IonList>
                       {/* PARTNER ITEM */}
                       <IonItem
-                        routerLink="/my/transactions/add/partner"
+                        routerLink="/my/transaction-models/add/partner"
                         lines="inset"
                       >
                         <IonRippleEffect />
@@ -238,7 +229,7 @@ const AddTransaction: React.FC = () => {
                     <IonList>
                       {/* EVENT ITEM */}
                       <IonItem
-                        routerLink="/my/transactions/add/event"
+                        routerLink="/my/transaction-models/add/event"
                         lines="inset"
                       >
                         <IonRippleEffect />
@@ -287,7 +278,7 @@ const AddTransaction: React.FC = () => {
           </IonPage>
         </Route>
         {/* ----Home Route---- */}
-      </IonRouterOutlet>{" "}
+      </IonRouterOutlet>
       <IonAlert
         isOpen={showAlert}
         onDidDismiss={() => setShowAlert(false)}
@@ -299,4 +290,4 @@ const AddTransaction: React.FC = () => {
   );
 };
 
-export default AddTransaction;
+export default AddTransactionModels;

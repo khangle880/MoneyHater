@@ -9,9 +9,10 @@ import {
   RecurringTransaction,
   toRecurringTransaction,
 } from "./Recurring_Transactions";
-import { Event, toEvent } from "./Events";
 import { toTransaction, Transaction } from "./Transactions";
 import { firestore } from "../firebase";
+import { Partner } from "./Recent_Partners";
+import { toWalletEvent, WalletEvent } from "./Events";
 
 export interface Wallet {
   id: string;
@@ -22,13 +23,14 @@ export interface Wallet {
   excluded_from_total: boolean;
   state: boolean;
   members: string[];
+  recent_partner: Partner[];
   debts: Debt[];
   custom_categories: Category[];
   transactions: Transaction[];
   budgets: Budget[];
   ready_executed_transaction: ReadyExecutedTransaction[];
   recurring_transactions: RecurringTransaction[];
-  events: Event[];
+  events: WalletEvent[];
 }
 
 export function toWallet(doc: any): Wallet {
@@ -59,6 +61,7 @@ export function initWallets(user_id: string) {
         var newWallet = toWallet(doc);
 
         var promiseList = [];
+
         const debtsRef = doc.ref.collection("debts");
         promiseList.push(
           debtsRef.get().then(({ docs: subDocs }) => {
@@ -112,7 +115,7 @@ export function initWallets(user_id: string) {
         const eventsRef = doc.ref.collection("events");
         promiseList.push(
           eventsRef.get().then(({ docs: subDocs }) => {
-            newWallet.events = subDocs.map(toEvent);
+            newWallet.events = subDocs.map(toWalletEvent);
           })
         );
 
@@ -124,6 +127,7 @@ export function initWallets(user_id: string) {
 
     return promise.then(() => {
       wallets = data;
+      return wallets;
     });
   });
 }

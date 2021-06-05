@@ -1,5 +1,8 @@
 // import { firestore } from "../firebase";
 
+import { firestore } from "../firebase";
+import { Wallet } from "./Wallets";
+
 export interface Budget {
   id: string;
   goal_value: number;
@@ -9,6 +12,7 @@ export interface Budget {
   to: string;
   repeatable: boolean;
   state: boolean;
+  event: string;
 }
 
 export function toBudget(doc: any): Budget {
@@ -17,6 +21,20 @@ export function toBudget(doc: any): Budget {
     ...doc.data(),
   };
   return budget as Budget;
+}
+
+export function addBudget(data: any, userId: string, wallet: Wallet) {
+  firestore
+    .collection("users")
+    .doc(userId)
+    .collection("wallets")
+    .doc(wallet.id)
+    .collection("budgets")
+    .add(data)
+    .then((docRef) => {
+      const id = docRef.id;
+      wallet.budgets.push({ id, ...data } as Budget);
+    });
 }
 
 // export var budgets: Budget[] = [];
@@ -37,4 +55,3 @@ export function toBudget(doc: any): Budget {
 //     budgets = docs.map(toBudget);
 //   });
 // }
-

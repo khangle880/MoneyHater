@@ -11,17 +11,17 @@ import {
 import { add as addIcon } from "ionicons/icons";
 import React from "react";
 
-const Transactions: React.FC = () => {
+const TransactionModels: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Transactions</IonTitle>
+          <IonTitle>Transaction Models</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
         <IonFab vertical="bottom" horizontal="end">
-          <IonFabButton routerLink="/my/transactions/add">
+          <IonFabButton routerLink="/my/transaction-models/add">
             <IonIcon icon={addIcon} />
           </IonFabButton>
         </IonFab>
@@ -30,4 +30,4 @@ const Transactions: React.FC = () => {
   );
 };
 
-export default Transactions;
+export default TransactionModels;

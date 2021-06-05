@@ -33,7 +33,7 @@ export function useAuthInit(): AuthInit {
       const auth = firebaseUser
         ? { loggedIn: true, userId: firebaseUser.uid }
         : { loggedIn: false };
-      setAuthInit({ loading: false, auth });
+      setAuthInit({ loading: false, auth, loadedData: false });
     });
   }, []);
 
@@ -45,7 +45,9 @@ export function useAuthInit(): AuthInit {
       });
     }
 
-    if (!authInit.auth?.loggedIn) clearData();
+    if (!authInit.auth?.loggedIn) {
+      clearData();
+    }
   }, [authInit.auth]);
 
   return authInit;

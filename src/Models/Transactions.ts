@@ -1,5 +1,8 @@
 // import { firestore } from "../firebase";
 
+import { firestore } from "../firebase";
+import { Wallet } from "./Wallets";
+
 export interface Transaction {
   id: string;
   amount: number;
@@ -9,9 +12,9 @@ export interface Transaction {
   note: string;
   with: string;
   event: string;
-  remind: Date;
-  excluded_from_report: boolean;
-  executed_time: Date;
+  remind: string;
+  exclude_from_report: boolean;
+  executed_time: string;
 }
 
 export function toTransaction(doc: any): Transaction {
@@ -20,6 +23,20 @@ export function toTransaction(doc: any): Transaction {
     ...doc.data(),
   };
   return transaction as Transaction;
+}
+
+export function addTransaction(data: any, userId: string, wallet: Wallet) {
+  firestore
+    .collection("users")
+    .doc(userId)
+    .collection("wallets")
+    .doc(wallet.id)
+    .collection("transactions")
+    .add(data)
+    .then((docRef) => {
+      const id = docRef.id;
+      wallet.transactions.push({ id, ...data } as Transaction);
+    });
 }
 
 // export var transactions: Transaction[] = [];

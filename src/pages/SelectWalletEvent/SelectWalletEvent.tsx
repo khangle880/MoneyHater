@@ -13,20 +13,18 @@ import {
   IonThumbnail,
   IonImg,
 } from "@ionic/react";
-import { Wallet, wallets } from "../../Models/Wallets";
-import walletIcon from "../../icons/icons8-coin-wallet.svg";
-import React from "react";
 import { useHistory } from "react-router";
+import { WalletEvent } from "../../Models/Events";
 
 interface props {
-  currentWallet: Wallet;
-  handleSelect: (data: Wallet) => void;
+  listEvent: WalletEvent[];
+  handleSelect: (data: WalletEvent) => void;
 }
 
-const SelectCurrencyUnit: React.FC<props> = ({ handleSelect }) => {
+const SelectWalletEvent: React.FC<props> = ({ listEvent, handleSelect }) => {
   const history = useHistory();
 
-  const handleSelectItem = (data: Wallet) => {
+  const handleSelectItem = (data: WalletEvent) => {
     handleSelect(data);
     history.goBack();
   };
@@ -38,7 +36,7 @@ const SelectCurrencyUnit: React.FC<props> = ({ handleSelect }) => {
           <IonButtons slot="start">
             <IonBackButton className="icon-padding"></IonBackButton>
           </IonButtons>
-          <IonTitle>Select Currency Unit</IonTitle>
+          <IonTitle>Select Event</IonTitle>
           <IonButtons slot="end">
             <IonButton size="large" />
           </IonButtons>
@@ -46,19 +44,17 @@ const SelectCurrencyUnit: React.FC<props> = ({ handleSelect }) => {
       </IonHeader>
       <IonContent className="ion-padding">
         <IonList>
-          {wallets.map((child) => (
+          {listEvent.map((child) => (
             <IonItem
               button
               key={child.id}
               onClick={() => handleSelectItem(child)}
             >
               <IonThumbnail slot="start">
-                <IonImg src={walletIcon} />
+                <IonImg src={child.icon} />
               </IonThumbnail>
               <IonLabel>
                 <h2>{child.name}</h2>
-                <h3>{child.balance}</h3>
-                <h3>{child.currency}</h3>
               </IonLabel>
             </IonItem>
           ))}
@@ -68,4 +64,4 @@ const SelectCurrencyUnit: React.FC<props> = ({ handleSelect }) => {
   );
 };
 
-export default SelectCurrencyUnit;
+export default SelectWalletEvent;

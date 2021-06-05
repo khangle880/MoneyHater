@@ -1,5 +1,8 @@
 // import { firestore } from "../firebase";
 
+import { firestore } from "../firebase";
+import { Wallet } from "./Wallets";
+
 export interface ReadyExecutedTransaction {
   id: string;
   amount: number;
@@ -9,8 +12,8 @@ export interface ReadyExecutedTransaction {
   note: string;
   with: string;
   event: string;
-  remind: Date;
-  excluded_from_report: boolean;
+  remind: string;
+  exclude_from_report: boolean;
   state: boolean;
 }
 
@@ -20,6 +23,23 @@ export function toReadyExecutedTransaction(doc: any): ReadyExecutedTransaction {
     ...doc.data(),
   };
   return readyExecutedTransaction as ReadyExecutedTransaction;
+}
+
+export function addTransactionModel(data: any, userId: string, wallet: Wallet) {
+  firestore
+    .collection("users")
+    .doc(userId)
+    .collection("wallets")
+    .doc(wallet.id)
+    .collection("ready_executed_transactions")
+    .add(data)
+    .then((docRef) => {
+      const id = docRef.id;
+      wallet.ready_executed_transaction.push({
+        id,
+        ...data,
+      } as ReadyExecutedTransaction);
+    });
 }
 
 // export var readyExecutedTransactions: ReadyExecutedTransaction[] = [];

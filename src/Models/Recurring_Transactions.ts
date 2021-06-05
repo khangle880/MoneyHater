@@ -9,10 +9,10 @@ export interface RecurringTransaction {
   note: string;
   with: string;
   event: string;
-  remind: Date;
-  excluded_from_report: boolean;
-  from: Date;
-  to: Date;
+  remind: string;
+  exclude_from_report: boolean;
+  from: string;
+  to: string;
   state: boolean;
 }
 
