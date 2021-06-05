@@ -44,7 +44,6 @@ import { Partner } from "../../Models/Recent_Partners";
 import { WalletEvent } from "../../Models/Events";
 import SelectWalletEvent from "../SelectWalletEvent/SelectWalletEvent";
 import { useAuth } from "../../auth";
-import { addTransaction } from "../../Models/Transactions";
 import { currentWallet, walletCurrency } from "../../Models/LoadData";
 import {
   availableTimeRange,
@@ -52,6 +51,7 @@ import {
 } from "../../Models/LocalModels/TimeRange";
 import dayjs from "dayjs";
 import SelectTimeRange from "../TimeRange/SelectTimeRange";
+import { addRecurringTransaction } from "../../Models/Recurring_Transactions";
 
 const AddRecurringTransaction: React.FC = () => {
   const [isMore, setIsMore] = useState(false);
@@ -105,7 +105,7 @@ const AddRecurringTransaction: React.FC = () => {
         to: timeRange.to,
         state: true,
       };
-      addTransaction(newRawTransaction, userId!, wallet);
+      addRecurringTransaction(newRawTransaction, userId!, wallet);
       history.goBack();
     } else setShowAlert(true);
   };

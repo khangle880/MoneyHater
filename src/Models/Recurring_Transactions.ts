@@ -1,5 +1,8 @@
 // import { firestore } from "../firebase";
 
+import { firestore } from "../firebase";
+import { Wallet } from "./Wallets";
+
 export interface RecurringTransaction {
   id: string;
   amount: number;
@@ -22,6 +25,27 @@ export function toRecurringTransaction(doc: any): RecurringTransaction {
     ...doc.data(),
   };
   return recurringTransaction as RecurringTransaction;
+}
+
+export function addRecurringTransaction(
+  data: any,
+  userId: string,
+  wallet: Wallet
+) {
+  firestore
+    .collection("users")
+    .doc(userId)
+    .collection("wallets")
+    .doc(wallet.id)
+    .collection("recurring_transactions")
+    .add(data)
+    .then((docRef) => {
+      const id = docRef.id;
+      wallet.recurring_transactions.push({
+        id,
+        ...data,
+      } as RecurringTransaction);
+    });
 }
 
 // export var recurringTransactions: RecurringTransaction[] = [];
