@@ -1,5 +1,5 @@
 import { Budget, toBudget } from "./Budgets";
-import { Category, toCategory } from "./Categories";
+import { categories, Category, toCategory } from "./Categories";
 import { Debt, toDebt } from "./Debts";
 import {
   ReadyExecutedTransaction,
@@ -13,6 +13,7 @@ import { toTransaction, Transaction } from "./Transactions";
 import { firestore } from "../firebase";
 import { Partner } from "./Recent_Partners";
 import { toWalletEvent, WalletEvent } from "./Events";
+import { Currency, findCurrency } from "./Currencies";
 
 export interface Wallet {
   id: string;
@@ -22,10 +23,11 @@ export interface Wallet {
   enable_notification: boolean;
   excluded_from_total: boolean;
   state: boolean;
+  currency_object: Currency;
   members: string[];
   recent_partner: Partner[];
   debts: Debt[];
-  custom_categories: Category[];
+  categories: Category[];
   transactions: Transaction[];
   budgets: Budget[];
   ready_executed_transaction: ReadyExecutedTransaction[];
@@ -53,12 +55,15 @@ export function initWallets(user_id: string) {
   const walletsRef = firestore
     .collection("users")
     .doc(user_id)
-    .collection("wallets");
+    .collection("wallets")
+    .orderBy("state", "desc");
 
   return walletsRef.get().then(({ docs }) => {
     var promise = Promise.all(
       docs.map((doc) => {
         var newWallet = toWallet(doc);
+        newWallet.categories = categories;
+        newWallet.currency_object = findCurrency(newWallet.currency);
 
         var promiseList = [];
 
@@ -72,7 +77,12 @@ export function initWallets(user_id: string) {
         const customCategoriesRef = doc.ref.collection("custom_categories");
         promiseList.push(
           customCategoriesRef.get().then(({ docs: subDocs }) => {
-            newWallet.custom_categories = subDocs.map(toCategory);
+            subDocs.forEach((doc) => {
+              const custom_category = toCategory(doc);
+              newWallet.categories
+                .find((category) => category.id === custom_category.parent)
+                ?.children?.push(custom_category);
+            });
           })
         );
 

@@ -30,13 +30,11 @@ import questionSvg from "../../icons/icons8-question.svg";
 import noteIcon from "../../icons/icons8-note.svg";
 import dollarIcon from "../../icons/icons8-us-dollar.svg";
 import calendarIcon from "../../icons/icons8-calendar.svg";
-import walletIcon from "../../icons/icons8-coin-wallet.svg";
 import partnerIcon from "../../icons/icons8-user-account.svg";
 import eventIcon from "../../icons/icons8-event.svg";
 import remindIcon from "../../icons/icons8-alarm-clock.svg";
 import { Currency } from "../../Models/Currencies";
 import TakeNote from "../Note/TakeNote";
-import SelectWallet from "../SelectWallet/SelectWallet";
 import { Category } from "../../Models/Categories";
 import { Wallet } from "../../Models/Wallets";
 import SelectPartner from "../Partner/SelectPartner";
@@ -52,6 +50,7 @@ import {
 import dayjs from "dayjs";
 import SelectTimeRange from "../TimeRange/SelectTimeRange";
 import { addRecurringTransaction } from "../../Models/Recurring_Transactions";
+import SelectWalletPopover from "../SelectWallet/SelectWalletPopover";
 
 const AddRecurringTransaction: React.FC = () => {
   const [isMore, setIsMore] = useState(false);
@@ -127,12 +126,6 @@ const AddRecurringTransaction: React.FC = () => {
           <TakeNote
             currentValue={note}
             handleNote={(data: string) => setNote(data)}
-          />
-        </Route>
-        <Route exact path="/my/recurring-transactions/add/wallets">
-          <SelectWallet
-            currentWallet={wallet}
-            handleSelect={(data: Wallet) => setWallet(data)}
           />
         </Route>
         <Route exact path="/my/recurring-transactions/add/partner">
@@ -233,18 +226,10 @@ const AddRecurringTransaction: React.FC = () => {
                   />
                 </IonItem>
                 {/* WALLET ITEM */}
-                <IonItem
-                  routerLink="/my/recurring-transactions/add/wallets"
-                  lines="inset"
-                >
-                  <IonRippleEffect />
-                  <IonIcon slot="start" icon={walletIcon} />
-                  <IonInput
-                    placeholder="Wallet"
-                    value={wallet?.name}
-                    readonly={true}
-                  />
-                </IonItem>
+                <SelectWalletPopover
+                  wallet={wallet}
+                  setWallet={(data: Wallet) => setWallet(data)}
+                />
                 {/* ADD MORE DETAILS */}
                 {!isMore && (
                   <IonButton onClick={() => setIsMore(true)}>

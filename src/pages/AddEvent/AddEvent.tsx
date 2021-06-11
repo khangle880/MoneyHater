@@ -29,6 +29,7 @@ import SelectCategory from "../Category/SelectCategory";
 import questionSvg from "../../icons/icons8-question.svg";
 import noteIcon from "../../icons/icons8-note.svg";
 import dollarIcon from "../../icons/icons8-us-dollar.svg";
+import calendarIcon from "../../icons/icons8-calendar.svg";
 import partnerIcon from "../../icons/icons8-user-account.svg";
 import eventIcon from "../../icons/icons8-event.svg";
 import remindIcon from "../../icons/icons8-alarm-clock.svg";
@@ -42,10 +43,16 @@ import { WalletEvent } from "../../Models/Events";
 import SelectWalletEvent from "../SelectWalletEvent/SelectWalletEvent";
 import { useAuth } from "../../auth";
 import { currentWallet, walletCurrency } from "../../Models/LoadData";
-import { addTransactionModel } from "../../Models/Ready_Executed_Transactions";
+import {
+  availableTimeRange,
+  TimeRange,
+} from "../../Models/LocalModels/TimeRange";
+import dayjs from "dayjs";
+import SelectTimeRange from "../TimeRange/SelectTimeRange";
+import { addRecurringTransaction } from "../../Models/Recurring_Transactions";
 import SelectWalletPopover from "../SelectWallet/SelectWalletPopover";
 
-const AddTransactionModels: React.FC = () => {
+const AddEvent: React.FC = () => {
   const [isMore, setIsMore] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [amount, setAmount] = useState(0);
@@ -57,16 +64,31 @@ const AddTransactionModels: React.FC = () => {
   const [walletEvent, setWalletEvent] = useState<WalletEvent>();
   const [remind, setRemind] = useState("");
   const [excludeFromReport, setExcludeFromReport] = useState(false);
+  const [timeRange, setTimeRange] = useState<TimeRange>(availableTimeRange[0]);
 
   const history = useHistory();
   const { userId } = useAuth();
-  const alertMessage = "You must fill amount and category field";
+  const alertMessage = "You must fill amount, category and time range field";
 
   useEffect(() => () => {}, []);
 
+  const formatTimeRange = (timeRange: TimeRange) => {
+    const today = dayjs();
+    const fromDate = dayjs(timeRange.from);
+    const toDate = dayjs(timeRange.to);
+    const fromDateFormat =
+      fromDate.year() !== today.year() ? "DD/MM/YYYY" : "DD/MM";
+    const toDateFormat =
+      toDate.year() !== today.year() ? "DD/MM/YYYY" : "DD/MM";
+
+    return timeRange.label !== "Custom"
+      ? timeRange.label
+      : `${fromDate.format(fromDateFormat)} - ${toDate.format(toDateFormat)}`;
+  };
+
   const handleSave = () => {
-    if (amount && category) {
-      const newRawTransactionModel = {
+    if (amount && category && timeRange) {
+      const newRawTransaction = {
         amount: amount,
         currency: currencyUnit.id,
         amount_by_wallet: parseFloat(
@@ -78,9 +100,11 @@ const AddTransactionModels: React.FC = () => {
         event: walletEvent ? walletEvent.name : "",
         remind: remind,
         exclude_from_report: excludeFromReport,
+        from: timeRange.from,
+        to: timeRange.to,
         state: true,
       };
-      addTransactionModel(newRawTransactionModel, userId!, wallet);
+      addRecurringTransaction(newRawTransaction, userId!, wallet);
       history.goBack();
     } else setShowAlert(true);
   };
@@ -88,47 +112,52 @@ const AddTransactionModels: React.FC = () => {
   return (
     <IonModal isOpen={true}>
       <IonRouterOutlet>
-        <Route exact path="/my/transaction-models/add/categories">
+        <Route exact path="/my/recurring-transactions/add/categories">
           <SelectCategory
             handleSelect={(data: Category) => setCategory(data)}
           />
         </Route>
-        <Route exact path="/my/transaction-models/add/currencies">
+        <Route exact path="/my/recurring-transactions/add/currencies">
           <SelectCurrencyUnit
             handleSelect={(data: Currency) => setCurrencyUnit(data)}
           />
         </Route>
-        <Route exact path="/my/transaction-models/add/note">
+        <Route exact path="/my/recurring-transactions/add/note">
           <TakeNote
             currentValue={note}
             handleNote={(data: string) => setNote(data)}
           />
         </Route>
-        <Route exact path="/my/transaction-models/add/partner">
+        <Route exact path="/my/recurring-transactions/add/partner">
           <SelectPartner
             currentValue={partner!}
             handlePartner={(data: Partner) => setPartner(data)}
           />
         </Route>
-        <Route exact path="/my/transaction-models/add/event">
+        <Route exact path="/my/recurring-transactions/add/time-range">
+          <SelectTimeRange
+            handleSelect={(data: TimeRange) => setTimeRange(data)}
+          />
+        </Route>
+        <Route exact path="/my/recurring-transactions/add/event">
           <SelectWalletEvent
             listEvent={wallet.events}
             handleSelect={(data: WalletEvent) => setWalletEvent(data)}
           />
         </Route>
         {/* ----Home Route---- */}
-        <Route exact path="/my/transaction-models/add">
+        <Route exact path="/my/recurring-transactions/add">
           <IonPage>
             <IonHeader>
               <IonToolbar className="toolbar-medium">
                 <IonButtons slot="start">
                   <IonBackButton
                     icon={closeIcon}
-                    defaultHref="/my/transaction-models"
+                    defaultHref="/my/recurring-transactions"
                     text=""
                   />
                 </IonButtons>
-                <IonTitle>Add Transaction Model</IonTitle>
+                <IonTitle>Add Recurring Transaction</IonTitle>
                 <IonButtons slot="end">
                   <IonButton size="large" onClick={() => handleSave()}>
                     SAVE
@@ -149,13 +178,13 @@ const AddTransactionModels: React.FC = () => {
                     }
                   />
                   {/* CURRENCY UNIT */}
-                  <IonRouterLink routerLink="/my/transaction-models/add/currencies">
+                  <IonRouterLink routerLink="/my/recurring-transactions/add/currencies">
                     {currencyUnit.iso}
                   </IonRouterLink>
                 </IonItem>
                 {/* CATEGORY ITEM */}
                 <IonItem
-                  routerLink="/my/transaction-models/add/categories"
+                  routerLink="/my/recurring-transactions/add/categories"
                   lines="inset"
                 >
                   <IonRippleEffect />
@@ -172,7 +201,7 @@ const AddTransactionModels: React.FC = () => {
                 </IonItem>
                 {/* NOTE ITEM */}
                 <IonItem
-                  routerLink="/my/transaction-models/add/note"
+                  routerLink="/my/recurring-transactions/add/note"
                   lines="inset"
                 >
                   <IonRippleEffect />
@@ -181,6 +210,19 @@ const AddTransactionModels: React.FC = () => {
                     placeholder="Write note"
                     readonly={true}
                     value={note}
+                  />
+                </IonItem>
+                {/* TIME RANGE */}
+                <IonItem
+                  routerLink="/my/recurring-transactions/add/time-range"
+                  lines="inset"
+                >
+                  <IonRippleEffect />
+                  <IonIcon slot="start" icon={calendarIcon} />
+                  <IonInput
+                    placeholder="Select Event"
+                    readonly={true}
+                    value={formatTimeRange(timeRange)}
                   />
                 </IonItem>
                 {/* WALLET ITEM */}
@@ -199,7 +241,7 @@ const AddTransactionModels: React.FC = () => {
                     <IonList>
                       {/* PARTNER ITEM */}
                       <IonItem
-                        routerLink="/my/transaction-models/add/partner"
+                        routerLink="/my/recurring-transactions/add/partner"
                         lines="inset"
                       >
                         <IonRippleEffect />
@@ -214,7 +256,7 @@ const AddTransactionModels: React.FC = () => {
                     <IonList>
                       {/* EVENT ITEM */}
                       <IonItem
-                        routerLink="/my/transaction-models/add/event"
+                        routerLink="/my/recurring-transactions/add/event"
                         lines="inset"
                       >
                         <IonRippleEffect />
@@ -275,4 +317,4 @@ const AddTransactionModels: React.FC = () => {
   );
 };
 
-export default AddTransactionModels;
+export default AddEvent;

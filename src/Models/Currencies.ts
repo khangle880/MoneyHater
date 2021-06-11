@@ -19,6 +19,10 @@ export function toCurrency(doc: any): Currency {
   return currency as Currency;
 }
 
+export function findCurrency(id: string): Currency {
+  return currencies.find((currency) => currency.id === id) as Currency;
+}
+
 export var currencies: Currency[] = [];
 
 export function clearCurrencies() {

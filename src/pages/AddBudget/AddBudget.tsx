@@ -26,9 +26,7 @@ import SelectCategory from "../Category/SelectCategory";
 import questionSvg from "../../icons/icons8-question.svg";
 import dollarIcon from "../../icons/icons8-us-dollar.svg";
 import calendarIcon from "../../icons/icons8-calendar.svg";
-import walletIcon from "../../icons/icons8-coin-wallet.svg";
 import eventIcon from "../../icons/icons8-event.svg";
-import SelectWallet from "../SelectWallet/SelectWallet";
 import { Category } from "../../Models/Categories";
 import { Wallet } from "../../Models/Wallets";
 import { WalletEvent } from "../../Models/Events";
@@ -40,6 +38,7 @@ import dayjs from "dayjs";
 import { TimeRange } from "../../Models/LocalModels/TimeRange";
 import SelectTimeRange from "../TimeRange/SelectTimeRange";
 import { addBudget } from "../../Models/Budgets";
+import SelectWalletPopover from "../SelectWallet/SelectWalletPopover";
 
 const AddBudget: React.FC = () => {
   var currentDate = new Date();
@@ -105,12 +104,6 @@ const AddBudget: React.FC = () => {
         <Route exact path="/my/budgets/add/time-range">
           <SelectTimeRange
             handleSelect={(data: TimeRange) => setTimeRange(data)}
-          />
-        </Route>
-        <Route exact path="/my/budgets/add/wallets">
-          <SelectWallet
-            currentWallet={wallet}
-            handleSelect={(data: Wallet) => setWallet(data)}
           />
         </Route>
         <Route exact path="/my/budgets/add/event">
@@ -187,15 +180,10 @@ const AddBudget: React.FC = () => {
                   />
                 </IonItem>
                 {/* WALLET ITEM */}
-                <IonItem routerLink="/my/budgets/add/wallets" lines="inset">
-                  <IonRippleEffect />
-                  <IonIcon slot="start" icon={walletIcon} />
-                  <IonInput
-                    placeholder="Wallet"
-                    value={wallet?.name}
-                    readonly={true}
-                  />
-                </IonItem>
+                <SelectWalletPopover
+                  wallet={wallet}
+                  setWallet={(data: Wallet) => setWallet(data)}
+                />
                 {/* REPEATABLE CHECKBOX */}
                 <IonList>
                   <IonItem lines="none">

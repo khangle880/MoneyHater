@@ -1,10 +1,12 @@
 import { firestore } from "../firebase";
+import { Wallet } from "./Wallets";
 
 export interface Category {
   id: string;
   type: string;
   name: string;
   icon: string;
+  parent?: string;
   children?: Category[];
 }
 
@@ -16,6 +18,22 @@ export function toCategory(
     ...doc.data(),
   };
   return category as Category;
+}
+
+export function addCustomCategories(data: any, userId: string, wallet: Wallet) {
+  firestore
+    .collection("users")
+    .doc(userId)
+    .collection("wallets")
+    .doc(wallet.id)
+    .collection("custom_categories")
+    .add(data)
+    .then((docRef) => {
+      const id = docRef.id;
+      wallet.categories
+        .find((category) => category.id === data.parent)
+        ?.children?.push({ id, ...data } as Category);
+    });
 }
 
 export var categories: Category[] = [];

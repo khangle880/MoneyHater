@@ -1,6 +1,4 @@
 import {
-  IonButton,
-  IonButtons,
   IonContent,
   IonFab,
   IonFabButton,
@@ -11,25 +9,19 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { add as addIcon } from "ionicons/icons";
-import walletIcon from "../../icons/icons8-coin-wallet.svg";
 import React from "react";
 
-const Transactions: React.FC = () => {
+const Events: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonButtons slot="start">
-            <IonButton routerLink="/my/manage-wallets">
-              <IonIcon icon={walletIcon} />
-            </IonButton>
-          </IonButtons>
-          <IonTitle>Transactions</IonTitle>
+          <IonTitle>Events</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
         <IonFab vertical="bottom" horizontal="end">
-          <IonFabButton routerLink="/my/transactions/add">
+          <IonFabButton routerLink="/my/events/add">
             <IonIcon icon={addIcon} />
           </IonFabButton>
         </IonFab>
@@ -38,4 +30,4 @@ const Transactions: React.FC = () => {
   );
 };
 
-export default Transactions;
+export default Events;

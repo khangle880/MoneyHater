@@ -9,7 +9,7 @@ import { AuthContext, LoadDataContext } from "./auth";
 import NotFoundPage from "./pages/NotFoundPage";
 import { useAuthInit } from "./auth";
 import RegisterPage from "./pages/RegisterPage";
-import AlertExample from "./test";
+
 const App: React.FC = () => {
   const { loading, auth, loadedData } = useAuthInit();
 
@@ -26,9 +26,6 @@ const App: React.FC = () => {
             </Route>
             <Route exact path="/register">
               <RegisterPage />
-            </Route>
-            <Route exact path="/test">
-              <AlertExample />
             </Route>
             <Route path="/my">
               <LoadDataContext.Provider value={loadedData!}>
