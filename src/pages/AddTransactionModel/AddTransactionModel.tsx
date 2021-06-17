@@ -41,7 +41,7 @@ import { Partner } from "../../Models/Recent_Partners";
 import { WalletEvent } from "../../Models/Events";
 import SelectWalletEvent from "../SelectWalletEvent/SelectWalletEvent";
 import { useAuth } from "../../auth";
-import { currentWallet, walletCurrency } from "../../Models/LoadData";
+import { currentWallet } from "../../Models/LoadData";
 import { addTransactionModel } from "../../Models/Ready_Executed_Transactions";
 import SelectWalletPopover from "../SelectWallet/SelectWalletPopover";
 
@@ -49,7 +49,7 @@ const AddTransactionModels: React.FC = () => {
   const [isMore, setIsMore] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [amount, setAmount] = useState(0);
-  const [currencyUnit, setCurrencyUnit] = useState<Currency>(walletCurrency);
+  const [currencyUnit, setCurrencyUnit] = useState<Currency>();
   const [category, setCategory] = useState<Category>();
   const [note, setNote] = useState("");
   const [wallet, setWallet] = useState<Wallet>(currentWallet);
@@ -62,17 +62,23 @@ const AddTransactionModels: React.FC = () => {
   const { userId } = useAuth();
   const alertMessage = "You must fill amount and category field";
 
+  useEffect(() => {
+    setCurrencyUnit(wallet.currency_object);
+  }, [wallet.currency_object]);
   useEffect(() => () => {}, []);
 
   const handleSave = () => {
     if (amount && category) {
       const newRawTransactionModel = {
         amount: amount,
-        currency: currencyUnit.id,
+        currency: currencyUnit!.id,
         amount_by_wallet: parseFloat(
-          ((amount / currencyUnit.rate_us) * walletCurrency!.rate_us).toFixed(2)
+          (
+            (amount / currencyUnit!.rate_us) *
+            wallet.currency_object!.rate_us
+          ).toFixed(2)
         ),
-        category: category.id,
+        category: category,
         note: note,
         with: partner ? partner.name : "",
         event: walletEvent ? walletEvent.name : "",
@@ -81,7 +87,7 @@ const AddTransactionModels: React.FC = () => {
         state: true,
       };
       addTransactionModel(newRawTransactionModel, userId!, wallet);
-      history.goBack();
+      history.replace("/my/transaction-models");
     } else setShowAlert(true);
   };
 
@@ -145,12 +151,12 @@ const AddTransactionModels: React.FC = () => {
                     type="number"
                     value={amount}
                     onIonChange={(event) =>
-                      setAmount(parseInt(event.detail.value!))
+                      setAmount(parseFloat(event.detail.value!))
                     }
                   />
                   {/* CURRENCY UNIT */}
                   <IonRouterLink routerLink="/my/transaction-models/add/currencies">
-                    {currencyUnit.iso}
+                    {currencyUnit?.iso}
                   </IonRouterLink>
                 </IonItem>
                 {/* CATEGORY ITEM */}

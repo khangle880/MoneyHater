@@ -67,7 +67,7 @@ const SelectPartner: React.FC<props> = ({ currentValue, handlePartner }) => {
               size="large"
               onClick={() => handleSelectPartner(partner)}
             >
-              Save
+              Ok
             </IonButton>
           </IonButtons>
         </IonToolbar>

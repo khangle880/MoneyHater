@@ -98,22 +98,24 @@ const AddCustomCategory: React.FC<{ type: string; beforePath: string }> = ({
           </IonItem>
           {/* TYPE ITEM */}
           <IonItem lines="inset">
-            <IonCheckbox
-              checked={type === "Expense"}
-              onIonChange={(event) =>
-                event.detail.checked ? setType("Expense") : setType("Income")
-              }
-            >
-              Income
-            </IonCheckbox>
-            <IonCheckbox
-              checked={type === "Income"}
-              onIonChange={(event) =>
-                event.detail.checked ? setType("Income") : setType("Expense")
-              }
-            >
-              Expense
-            </IonCheckbox>
+            <IonItem>
+              <IonLabel>Expense</IonLabel>
+              <IonCheckbox
+                checked={type === "Expense"}
+                onIonChange={(event) =>
+                  event.detail.checked ? setType("Expense") : setType("Income")
+                }
+              />
+            </IonItem>
+            <IonItem>
+              <IonLabel>Income</IonLabel>
+              <IonCheckbox
+                checked={type === "Income"}
+                onIonChange={(event) =>
+                  event.detail.checked ? setType("Income") : setType("Expense")
+                }
+              />
+            </IonItem>
           </IonItem>
           {/* CATEGORY ITEM */}
           <IonItem
@@ -152,25 +154,29 @@ const AddCustomCategory: React.FC<{ type: string; beforePath: string }> = ({
           setShowPopoverRootCategory({ showPopover: false, event: undefined })
         }
       >
+        {console.log(type)}
+        {console.log(categories?.filter((child) => child.type === type))}
         <IonList>
-          {categories?.map((category) => (
-            <IonItem
-              button
-              key={category.id}
-              onClick={() => {
-                setParentCategory(category);
-                setShowPopoverRootCategory({
-                  showPopover: false,
-                  event: undefined,
-                });
-              }}
-            >
-              <IonThumbnail slot="start">
-                <IonImg src={category.icon} />
-              </IonThumbnail>
-              <IonLabel>{category.name}</IonLabel>
-            </IonItem>
-          ))}
+          {categories
+            ?.filter((child) => child.type === type)
+            .map((category) => (
+              <IonItem
+                button
+                key={category.id}
+                onClick={() => {
+                  setParentCategory(category);
+                  setShowPopoverRootCategory({
+                    showPopover: false,
+                    event: undefined,
+                  });
+                }}
+              >
+                <IonThumbnail slot="start">
+                  <IonImg src={category.icon} />
+                </IonThumbnail>
+                <IonLabel>{category.name}</IonLabel>
+              </IonItem>
+            ))}
         </IonList>
       </IonPopover>
     </IonModal>

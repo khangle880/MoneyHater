@@ -42,7 +42,7 @@ import { Partner } from "../../Models/Recent_Partners";
 import { WalletEvent } from "../../Models/Events";
 import SelectWalletEvent from "../SelectWalletEvent/SelectWalletEvent";
 import { useAuth } from "../../auth";
-import { currentWallet, walletCurrency } from "../../Models/LoadData";
+import { currentWallet } from "../../Models/LoadData";
 import {
   availableTimeRange,
   TimeRange,
@@ -56,7 +56,7 @@ const AddEvent: React.FC = () => {
   const [isMore, setIsMore] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [amount, setAmount] = useState(0);
-  const [currencyUnit, setCurrencyUnit] = useState<Currency>(walletCurrency);
+  const [currencyUnit, setCurrencyUnit] = useState<Currency>();
   const [category, setCategory] = useState<Category>();
   const [note, setNote] = useState("");
   const [wallet, setWallet] = useState<Wallet>(currentWallet);
@@ -70,6 +70,9 @@ const AddEvent: React.FC = () => {
   const { userId } = useAuth();
   const alertMessage = "You must fill amount, category and time range field";
 
+  useEffect(() => {
+    setCurrencyUnit(wallet.currency_object);
+  }, [wallet.currency_object]);
   useEffect(() => () => {}, []);
 
   const formatTimeRange = (timeRange: TimeRange) => {
@@ -90,11 +93,14 @@ const AddEvent: React.FC = () => {
     if (amount && category && timeRange) {
       const newRawTransaction = {
         amount: amount,
-        currency: currencyUnit.id,
+        currency: currencyUnit!.id,
         amount_by_wallet: parseFloat(
-          ((amount / currencyUnit.rate_us) * walletCurrency!.rate_us).toFixed(2)
+          (
+            (amount / currencyUnit!.rate_us) *
+            wallet.currency_object!.rate_us
+          ).toFixed(2)
         ),
-        category: category.id,
+        category: category,
         note: note,
         with: partner ? partner.name : "",
         event: walletEvent ? walletEvent.name : "",
@@ -174,12 +180,12 @@ const AddEvent: React.FC = () => {
                     type="number"
                     value={amount}
                     onIonChange={(event) =>
-                      setAmount(parseInt(event.detail.value!))
+                      setAmount(parseFloat(event.detail.value!))
                     }
                   />
                   {/* CURRENCY UNIT */}
                   <IonRouterLink routerLink="/my/recurring-transactions/add/currencies">
-                    {currencyUnit.iso}
+                    {currencyUnit?.iso}
                   </IonRouterLink>
                 </IonItem>
                 {/* CATEGORY ITEM */}

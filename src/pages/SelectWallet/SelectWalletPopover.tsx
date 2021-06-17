@@ -47,6 +47,7 @@ const SelectWalletPopover: React.FC<props> = ({ wallet, setWallet }) => {
         <IonList>
           {wallets.map((child) => (
             <IonItem
+              disabled={child.state ? false : true}
               button
               key={child.id}
               onClick={() => {
@@ -58,7 +59,7 @@ const SelectWalletPopover: React.FC<props> = ({ wallet, setWallet }) => {
               }}
             >
               <IonThumbnail slot="start">
-                <IonImg src={walletIcon} />
+                <IonImg src={child.icon} />
               </IonThumbnail>
               <IonLabel>
                 <h2>{child.name}</h2>

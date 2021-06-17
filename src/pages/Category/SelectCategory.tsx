@@ -4,40 +4,48 @@ import {
   IonButtons,
   IonContent,
   IonHeader,
+  IonLabel,
   IonPage,
+  IonRouterOutlet,
+  IonTabBar,
+  IonTabButton,
+  IonTabs,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
 import React from "react";
-import { Route, useHistory, useRouteMatch } from "react-router";
-import { categories, Category } from "../../Models/Categories";
+import { Redirect, Route, useLocation, useRouteMatch } from "react-router";
+import { Category } from "../../Models/Categories";
 import AddCustomCategory from "../AddCustomCategory/AddCustomCategory";
-import CategoryItem from "./CategoryItem";
+import DebtLoanGroup from "./DebtLoanGroup";
+import ExpenseGroup from "./ExpenseGroup";
+import IncomeGroup from "./IncomeGroup";
 
 interface props {
   handleSelect: (data: Category) => void;
 }
 
 const SelectCategory: React.FC<props> = ({ handleSelect }) => {
-  const history = useHistory();
+  const rootPath = useRouteMatch().url;
+  const location = useLocation();
 
-  const rootPath = useRouteMatch().path;
-
-  const handleSelectItem = (data: Category) => {
-    handleSelect(data);
-    history.goBack();
-  };
+  if (location.pathname === rootPath) {
+    return <Redirect to={`${rootPath}/expense`} />;
+  }
 
   return (
     <IonPage>
-      <Route exact path={`${rootPath}/add-custom`}>
+      <Route path={`${rootPath}/add-custom`}>
         <AddCustomCategory type="Expense" beforePath={rootPath} />
       </Route>
-      <Route path={`${rootPath}`}>
+      <Route>
         <IonHeader>
           <IonToolbar>
             <IonButtons slot="start">
-              <IonBackButton className="icon-padding" />
+              <IonBackButton
+                className="icon-padding"
+                defaultHref={rootPath.substring(0, rootPath.length - 11)}
+              />
             </IonButtons>
             <IonTitle>Select Category</IonTitle>
             <IonButtons slot="end">
@@ -46,19 +54,36 @@ const SelectCategory: React.FC<props> = ({ handleSelect }) => {
           </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">
-          <ul>
-            {categories?.map((category) => (
-              <CategoryItem
-                key={category.id}
-                handleClick={handleSelectItem}
-                data={category}
-              />
-            ))}
-
-            <IonButton routerLink={`${rootPath}/add-custom`}>
-              New Category
-            </IonButton>
-          </ul>
+          <IonTabs>
+            <IonRouterOutlet>
+              <Route path={`${rootPath}/debt&loan`}>
+                <IonContent>
+                  <DebtLoanGroup handleSelect={handleSelect} />
+                </IonContent>
+              </Route>
+              <Route path={`${rootPath}/expense`}>
+                <IonContent>
+                  <ExpenseGroup handleSelect={handleSelect} />
+                </IonContent>
+              </Route>
+              <Route path={`${rootPath}/income`}>
+                <IonContent>
+                  <IncomeGroup handleSelect={handleSelect} />
+                </IonContent>
+              </Route>
+            </IonRouterOutlet>
+            <IonTabBar slot="top">
+              <IonTabButton tab="expense" href={`${rootPath}/debt&loan`}>
+                <IonLabel>Debt&Loan</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="events" href={`${rootPath}/expense`}>
+                <IonLabel>Expense</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="settings" href={`${rootPath}/income`}>
+                <IonLabel>Income</IonLabel>
+              </IonTabButton>
+            </IonTabBar>
+          </IonTabs>
         </IonContent>
       </Route>
     </IonPage>

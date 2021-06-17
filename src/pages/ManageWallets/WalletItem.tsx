@@ -29,7 +29,7 @@ const WalletItem: React.FC<props> = ({
   handleSelect,
   handleDeleteWallet,
 }) => {
-  const [popoverWallet, setShowPopoverWallet] = useState({
+  const [popoverOption, setShowPopoverOption] = useState({
     showPopover: false,
     event: undefined,
   });
@@ -38,11 +38,11 @@ const WalletItem: React.FC<props> = ({
 
   const onLongPress = (e: any) => {
     e.persist();
-    setShowPopoverWallet({ showPopover: true, event: e });
+    setShowPopoverOption({ showPopover: true, event: e });
   };
 
   const onClick = () => {
-    handleSelect();
+    if (currentWallet.state) handleSelect();
   };
 
   const defaultOptions = {
@@ -78,18 +78,18 @@ const WalletItem: React.FC<props> = ({
 
   return (
     <React.Fragment>
-      <IonItem {...longPressEvent}>
-        <IonThumbnail slot="start">
+      <IonItem>
+        <IonThumbnail slot="start" {...longPressEvent}>
           <IonImg src={currentWallet.state ? walletIcon : walletBlockedIcon} />
         </IonThumbnail>
-        <IonLabel>
+        <IonLabel {...longPressEvent}>
           <h2>{currentWallet.name}</h2>
           <h3>{`${currentWallet.balance} ${currentWallet.currency_object.symbol}`}</h3>
         </IonLabel>
         <IonButton
           onClick={(e: any) => {
             e.persist();
-            setShowPopoverWallet({ showPopover: true, event: e });
+            setShowPopoverOption({ showPopover: true, event: e });
           }}
           fill="clear"
         >
@@ -97,10 +97,10 @@ const WalletItem: React.FC<props> = ({
         </IonButton>
       </IonItem>
       <IonPopover
-        event={popoverWallet.event}
-        isOpen={popoverWallet.showPopover}
+        event={popoverOption.event}
+        isOpen={popoverOption.showPopover}
         onDidDismiss={() =>
-          setShowPopoverWallet({ showPopover: false, event: undefined })
+          setShowPopoverOption({ showPopover: false, event: undefined })
         }
       >
         <IonList>
@@ -112,9 +112,6 @@ const WalletItem: React.FC<props> = ({
           {currentWallet.state && (
             <IonButton
               routerLink={`/my/manage-wallets/${currentWallet.id}/transfer-money`}
-              onClick={() => {
-                console.log("hello");
-              }}
             >
               Transfer money
             </IonButton>
@@ -132,7 +129,7 @@ const WalletItem: React.FC<props> = ({
             onClick={(e: any) => {
               switchWalletState();
               e.persist();
-              setShowPopoverWallet({ showPopover: false, event: undefined });
+              setShowPopoverOption({ showPopover: false, event: undefined });
             }}
           >
             {currentWallet.state ? "Block" : "Unblock"}
@@ -140,7 +137,7 @@ const WalletItem: React.FC<props> = ({
           <IonButton
             onClick={(e: any) => {
               e.persist();
-              setShowPopoverWallet({ showPopover: false, event: undefined });
+              setShowPopoverOption({ showPopover: false, event: undefined });
               if (currentWallet.state) {
                 setShowAlert(true);
               } else handleDelete();

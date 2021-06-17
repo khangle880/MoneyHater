@@ -1,17 +1,11 @@
 import { clearCategories, initCategories } from "./Categories";
-import {
-  clearCurrencies,
-  Currency,
-  findCurrency,
-  initCurrencies,
-} from "./Currencies";
+import { clearCurrencies, initCurrencies } from "./Currencies";
 import { clearIcons, initIcons } from "./Icons";
 import { initTimeRange } from "./LocalModels/TimeRange";
 import { clearRecentPartners, initRecentPartners } from "./Recent_Partners";
 import { clearWallets, initWallets, Wallet, wallets } from "./Wallets";
 
 export var currentWallet: Wallet;
-export var walletCurrency: Currency;
 
 export function loadData(user_id: string) {
   return Promise.all([initCurrencies(), initCategories()])
@@ -24,15 +18,17 @@ export function loadData(user_id: string) {
       ])
     )
     .then(() => {
-      console.log(wallets);
-      currentWallet = wallets[0];
-      walletCurrency = findCurrency(currentWallet.currency);
+      wallets.forEach((wallet) => {
+        if (wallet.state) {
+          currentWallet = wallet;
+          return;
+        }
+      });
     });
 }
 
 export function setCurrentWallet(data: Wallet) {
   currentWallet = data;
-  walletCurrency = findCurrency(currentWallet.currency);
 }
 
 export function clearData() {

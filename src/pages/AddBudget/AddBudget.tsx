@@ -67,7 +67,7 @@ const AddBudget: React.FC = () => {
       const newRawBudget = {
         goal_value: goalValue,
         consume: 0,
-        category: category.id,
+        category: category,
         from: timeRange.from,
         to: timeRange.to,
         repeatable: repeatable,
@@ -75,7 +75,7 @@ const AddBudget: React.FC = () => {
         event: walletEvent ? walletEvent.id : "",
       };
       addBudget(newRawBudget, userId!, wallet);
-      history.goBack();
+      history.replace("/my/budgets");
     } else setShowAlert(true);
   };
 
@@ -141,7 +141,7 @@ const AddBudget: React.FC = () => {
                     type="number"
                     value={goalValue}
                     onIonChange={(event) =>
-                      setGoalValue(parseInt(event.detail.value!))
+                      setGoalValue(parseFloat(event.detail.value!))
                     }
                   />
                 </IonItem>

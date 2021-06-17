@@ -7,28 +7,29 @@ import {
   IonContent,
   IonHeader,
   IonIcon,
-  IonImg,
   IonInput,
   IonItem,
   IonLabel,
   IonList,
   IonModal,
-  IonPopover,
-  IonThumbnail,
+  IonPage,
+  IonRouterOutlet,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
 import { closeOutline as closeIcon } from "ionicons/icons";
 import React, { useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { Route, useHistory, useParams, useRouteMatch } from "react-router-dom";
 import connectIcon from "../../icons/icons8-connect.svg";
 
 import { categories, Category } from "../../Models/Categories";
 import { Wallet, wallets } from "../../Models/Wallets";
 import { useAuth } from "../../auth";
 import noteIcon from "../../icons/icons8-note.svg";
-import { firestore } from "../../firebase";
 import SelectWalletPopover from "../SelectWallet/SelectWalletPopover";
+import { currentWallet } from "../../Models/LoadData";
+import { addTransaction } from "../../Models/Transactions";
+import ExpenseGroup from "../Category/ExpenseGroup";
 
 interface RouteParams {
   id: string;
@@ -37,7 +38,8 @@ interface RouteParams {
 const TransferMoney: React.FC = () => {
   const { id } = useParams<RouteParams>();
 
-  const [showAlert, setShowAlert] = useState(false);
+  const [showAlert1, setShowAlert1] = useState(false);
+  const [showAlert2, setShowAlert2] = useState(false);
   const [amount, setAmount] = useState(0);
   const [category, setCategory] = useState<Category>(
     categories.find(
@@ -51,159 +53,189 @@ const TransferMoney: React.FC = () => {
   const [note, setNote] = useState("");
   const [excludeFromReport, setExcludeFromReport] = useState(false);
 
-  const [popoverCategory, setShowPopoverCategory] = useState({
-    showPopover: false,
-    event: undefined,
-  });
-
   const history = useHistory();
   const { userId } = useAuth();
-  const alertMessage = "You must fill amount and to-wallet fields";
+  const rootPath = useRouteMatch().url;
+  var alertMessage1 = "You must fill amount and to-wallet fields";
+  var alertMessage2 = "From wallet and to wallet cannot be the same";
 
   const handleSave = () => {
-    if (amount && fromWallet && category && toWallet) {
-      fromWallet.balance -= amount;
-      toWallet.balance += amount;
-      console.log();
-      firestore
-        .collection("users")
-        .doc(userId)
-        .collection("wallets")
-        .doc(id)
-        .update({ balance: fromWallet.balance });
+    if (fromWallet === toWallet) {
+      setShowAlert2(true);
+      return;
+    }
+    if (amount > 0 && fromWallet && category && toWallet) {
+      const newRawFromTransaction = {
+        amount: amount,
+        currency: fromWallet.currency,
+        amount_by_wallet: amount,
+        category: category,
+        note: note,
+        with: "",
+        event: "",
+        remind: "",
+        exclude_from_report: excludeFromReport,
+        executed_time: new Date().toISOString(),
+      };
 
-      firestore
-        .collection("users")
-        .doc(userId)
-        .collection("wallets")
-        .doc(toWallet.id)
-        .update({ balance: toWallet.balance });
+      const newRawToTransaction = {
+        amount: amount,
+        currency: currentWallet.currency,
+        amount_by_wallet: parseFloat(
+          (
+            (amount / fromWallet.currency_object.rate_us) *
+            toWallet.currency_object!.rate_us
+          ).toFixed(2)
+        ),
+        category: categories.find(
+          (category) => category.id === "yMIhLrgMAO3rEMFdzDhD"
+        ) as Category,
+        with: "",
+        event: "",
+        remind: "",
+        exclude_from_report: excludeFromReport,
+        executed_time: new Date().toISOString(),
+      };
+
+      addTransaction(newRawFromTransaction, userId!, fromWallet);
+      addTransaction(newRawToTransaction, userId!, toWallet);
 
       history.goBack();
-    } else setShowAlert(true);
+    } else {
+      setShowAlert1(true);
+    }
   };
 
   return (
     <IonModal isOpen={true}>
-      <IonHeader>
-        <IonToolbar className="toolbar-medium">
-          <IonButtons slot="start">
-            <IonBackButton
-              icon={closeIcon}
-              text=""
-              defaultHref="/my/manage-wallets"
-            />
-          </IonButtons>
-          <IonTitle>Transfer Money</IonTitle>
-          <IonButtons slot="end">
-            <IonButton size="large" onClick={() => handleSave()}>
-              SAVE
-            </IonButton>
-          </IonButtons>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className="ion-padding">
-        <IonLabel>From</IonLabel>
-        <IonList className="block">
-          {/* ICON ITEM */}
-          <IonItem lines="inset" button>
-            <IonInput
-              type="number"
-              value={amount}
-              onIonChange={(event) => setAmount(parseInt(event.detail.value!))}
-            />
-          </IonItem>
-          {/* WALLET ITEM */}
-          <SelectWalletPopover
-            wallet={fromWallet}
-            setWallet={(data: Wallet) => setFromWallet(data)}
-          />
-          {/* CATEGORY ITEM */}
-          <IonItem
-            lines="inset"
-            button
-            onClick={(e: any) => {
-              e.persist();
-              setShowPopoverCategory({ showPopover: true, event: e });
-            }}
-          >
-            <IonIcon icon={connectIcon} />
-            <IonInput
-              placeholder="Select Category"
-              value={category.name}
-              readonly={true}
-            />
-          </IonItem>
-          <IonItem>
-            <IonIcon slot="start" icon={noteIcon} />
-            <IonInput
-              type="text"
-              placeholder="Note"
-              value={note}
-              onIonChange={(event) => setNote(event.detail.value!)}
-            />
-          </IonItem>
-        </IonList>
-        <IonList>
-          <IonLabel>To</IonLabel>
-          {/* WALLET ITEM */}
-          <SelectWalletPopover
-            wallet={toWallet!}
-            setWallet={(data: Wallet) => setToWallet(data)}
-          />
-        </IonList>
-        <IonList>
-          <IonLabel>Options</IonLabel>
-          <IonItem lines="none">
-            <IonCheckbox
-              slot="start"
-              checked={excludeFromReport}
-              onIonChange={(e) => setExcludeFromReport(e.detail.checked)}
-            />
-            <IonLabel>
-              <h2>Exclude from report</h2>
-              <h3>
-                There transaction will be excluded from report in both wallets
-              </h3>
-            </IonLabel>
-          </IonItem>
-        </IonList>
-      </IonContent>
+      <IonRouterOutlet>
+        <Route path={`${rootPath}/categories/expense`}>
+          <IonPage>
+            <IonHeader>
+              <IonToolbar>
+                <IonButtons slot="start">
+                  <IonBackButton
+                    className="icon-padding"
+                    defaultHref={rootPath.substring(0, rootPath.length - 11)}
+                  />
+                </IonButtons>
+                <IonTitle>Select Category</IonTitle>
+                <IonButtons slot="end">
+                  <IonButton size="large" />
+                </IonButtons>
+              </IonToolbar>
+            </IonHeader>
+            <IonContent>
+              <ExpenseGroup
+                handleSelect={(data: Category) => setCategory(data)}
+              />
+            </IonContent>
+          </IonPage>
+        </Route>
+        <Route exact path={rootPath}>
+          <IonPage>
+            <IonHeader>
+              <IonToolbar className="toolbar-medium">
+                <IonButtons slot="start">
+                  <IonBackButton
+                    icon={closeIcon}
+                    text=""
+                    defaultHref="/my/manage-wallets"
+                  />
+                </IonButtons>
+                <IonTitle>Transfer Money</IonTitle>
+                <IonButtons slot="end">
+                  <IonButton size="large" onClick={() => handleSave()}>
+                    SAVE
+                  </IonButton>
+                </IonButtons>
+              </IonToolbar>
+            </IonHeader>
+            <IonContent className="ion-padding">
+              <IonLabel>From</IonLabel>
+              <IonList className="block">
+                {/* AMOUNT ITEM */}
+                <IonItem lines="inset" button>
+                  <IonInput
+                    type="number"
+                    value={amount}
+                    onIonChange={(event) => {
+                      console.log(event.detail.value);
+                      console.log(parseFloat(event.detail.value!));
+                      setAmount(parseFloat(event.detail.value!));
+                    }}
+                  />
+                </IonItem>
+                {/* WALLET ITEM */}
+                <SelectWalletPopover
+                  wallet={fromWallet}
+                  setWallet={(data: Wallet) => setFromWallet(data)}
+                />
+                {/* CATEGORY ITEM */}
+                <IonItem
+                  lines="inset"
+                  routerLink={`${rootPath}/categories/expense`}
+                >
+                  <IonIcon icon={connectIcon} />
+                  <IonInput
+                    placeholder="Select Category"
+                    value={category.name}
+                    readonly={true}
+                  />
+                </IonItem>
+                <IonItem>
+                  <IonIcon slot="start" icon={noteIcon} />
+                  <IonInput
+                    type="text"
+                    placeholder="Note"
+                    value={note}
+                    onIonChange={(event) => setNote(event.detail.value!)}
+                  />
+                </IonItem>
+              </IonList>
+              <IonList>
+                <IonLabel>To</IonLabel>
+                {/* WALLET ITEM */}
+                <SelectWalletPopover
+                  wallet={toWallet!}
+                  setWallet={(data: Wallet) => setToWallet(data)}
+                />
+              </IonList>
+              <IonList>
+                <IonLabel>Options</IonLabel>
+                <IonItem lines="none">
+                  <IonCheckbox
+                    slot="start"
+                    checked={excludeFromReport}
+                    onIonChange={(e) => setExcludeFromReport(e.detail.checked)}
+                  />
+                  <IonLabel>
+                    <h2>Exclude from report</h2>
+                    <h3>
+                      There transaction will be excluded from report in both
+                      wallets
+                    </h3>
+                  </IonLabel>
+                </IonItem>
+              </IonList>
+            </IonContent>
+          </IonPage>
+        </Route>
+      </IonRouterOutlet>
       <IonAlert
-        isOpen={showAlert}
-        onDidDismiss={() => setShowAlert(false)}
+        isOpen={showAlert1}
+        onDidDismiss={() => setShowAlert1(false)}
         header={"Alert"}
-        message={alertMessage}
+        message={alertMessage1}
         buttons={["OK"]}
       />
-      <IonPopover
-        event={popoverCategory.event}
-        isOpen={popoverCategory.showPopover}
-        onDidDismiss={() =>
-          setShowPopoverCategory({ showPopover: false, event: undefined })
-        }
-      >
-        <IonList>
-          {categories?.map((category) => (
-            <IonItem
-              button
-              key={category.id}
-              onClick={() => {
-                setCategory(category);
-                setShowPopoverCategory({
-                  showPopover: false,
-                  event: undefined,
-                });
-              }}
-            >
-              <IonThumbnail slot="start">
-                <IonImg src={category.icon} />
-              </IonThumbnail>
-              <IonLabel>{category.name}</IonLabel>
-            </IonItem>
-          ))}
-        </IonList>
-      </IonPopover>
+      <IonAlert
+        isOpen={showAlert2}
+        onDidDismiss={() => setShowAlert2(false)}
+        header={"Alert"}
+        message={alertMessage2}
+        buttons={["OK"]}
+      />
     </IonModal>
   );
 };

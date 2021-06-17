@@ -1,36 +1,53 @@
-// import { firestore } from "../firebase";
+
+import _ from "underscore";
+import { categories } from "./Categories";
+import { Transaction } from "./Transactions";
+import { Wallet } from "./Wallets";
+
+export interface Debts {
+  debtsByPartner: Debt[];
+  loansByPartner: Debt[];
+}
 
 export interface Debt {
-  id: string;
   with: string;
-  type: string;
-  debt_list: string[];
-  refund_list: string[];
+  transactions: Transaction[];
 }
 
-export function toDebt(doc: any): Debt {
-  const debt: any = {
-    id: doc.id,
-    ...doc.data(),
-  };
-  return debt as Debt;
+export function initDebts(wallet: Wallet) {
+  const grouped1 = _.chain(
+    wallet.transactions.filter((child) => {
+      const category = categories.find(
+        (category) => category.id === child.category
+      );
+      return category?.type === "Debt & Loan" && category.name === "Debt";
+    })
+  )
+    .groupBy("with")
+    .map(function (value, key) {
+      return {
+        with: key,
+        transactions: value,
+      };
+    })
+    .value();
+
+  const grouped2 = _.chain(
+    wallet.transactions.filter((child) => {
+      const category = categories.find(
+        (category) => category.id === child.category
+      );
+      return category?.type === "Debt & Loan" && category.name === "Loan";
+    })
+  )
+    .groupBy("with")
+    .map(function (value, key) {
+      return {
+        with: key,
+        transactions: value,
+      };
+    })
+    .value();
+
+  wallet.debts = { debtsByPartner: grouped1, loansByPartner: grouped2 };
 }
-
-// export var debts: Debt[] = [];
-
-// export function clearDebts() {
-//   debts = [];
-// }
-
-// export function initDebts(user_id: string, wallet_id: string) {
-//   const debtsRef = firestore
-//     .collection("users")
-//     .doc(user_id)
-//     .collection("wallets")
-//     .doc(wallet_id)
-//     .collection("debts");
-
-//   return debtsRef.get().then(({ docs }) => {
-//     debts = docs.map(toDebt);
-//   });
-// }

@@ -1,6 +1,6 @@
 import { Budget, toBudget } from "./Budgets";
 import { categories, Category, toCategory } from "./Categories";
-import { Debt, toDebt } from "./Debts";
+import { Debts, initDebts } from "./Debts";
 import {
   ReadyExecutedTransaction,
   toReadyExecutedTransaction,
@@ -18,6 +18,7 @@ import { Currency, findCurrency } from "./Currencies";
 export interface Wallet {
   id: string;
   name: string;
+  icon: string;
   balance: number;
   currency: string;
   enable_notification: boolean;
@@ -26,7 +27,7 @@ export interface Wallet {
   currency_object: Currency;
   members: string[];
   recent_partner: Partner[];
-  debts: Debt[];
+  debts: Debts;
   categories: Category[];
   transactions: Transaction[];
   budgets: Budget[];
@@ -66,13 +67,6 @@ export function initWallets(user_id: string) {
         newWallet.currency_object = findCurrency(newWallet.currency);
 
         var promiseList = [];
-
-        const debtsRef = doc.ref.collection("debts");
-        promiseList.push(
-          debtsRef.get().then(({ docs: subDocs }) => {
-            newWallet.debts = subDocs.map(toDebt);
-          })
-        );
 
         const customCategoriesRef = doc.ref.collection("custom_categories");
         promiseList.push(
@@ -130,6 +124,18 @@ export function initWallets(user_id: string) {
         );
 
         return Promise.all(promiseList).then(() => {
+          // Add sub list to transaction
+          newWallet.transactions.forEach((transaction) => {
+            transactionsRef
+              .doc(transaction.id)
+              .collection("transactions")
+              .get()
+              .then(({ docs }) => {
+                transaction.transactions_list = docs.map(toTransaction);
+              });
+          });
+
+          initDebts(newWallet);
           data.push(newWallet);
         });
       })

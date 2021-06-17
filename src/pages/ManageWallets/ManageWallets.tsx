@@ -11,21 +11,23 @@ import {
 } from "@ionic/react";
 import { Wallet, wallets } from "../../Models/Wallets";
 import React, { useEffect, useState } from "react";
-import { Route, useHistory } from "react-router";
+import { useHistory } from "react-router";
 import { setCurrentWallet } from "../../Models/LoadData";
 import WalletItem from "./WalletItem";
-import ShareWallet from "./ShareWallet";
-import TransferMoney from "./TransferMoney";
 
-const ManageWallets: React.FC = () => {
+const ManageWallets: React.FC<{ initNeedRender: boolean }> = ({
+  initNeedRender,
+}) => {
   const history = useHistory();
-  const [shouldRender, setShouldRender] = useState(false);
+  const [needRender, setNeedRender] = useState(initNeedRender);
+  const forceRender = () => setNeedRender(!needRender);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setNeedRender(!needRender);
+    }, 2000);
+  }, [needRender]);
   useEffect(() => () => {});
-
-  const handleDeleteWallet = (wallet: Wallet) => {
-    setShouldRender(!shouldRender);
-  };
 
   const handleSelectWallet = (data: Wallet) => {
     setCurrentWallet(data);
@@ -34,37 +36,32 @@ const ManageWallets: React.FC = () => {
 
   return (
     <IonPage>
-      <Route exact path="/my/manage-wallets/:id/share">
-        <ShareWallet />
-      </Route>
-      <Route exact path="/my/manage-wallets/:id/transfer-money">
-        <TransferMoney />
-      </Route>
-      <Route exact path="/my/manage-wallets">
-        <IonHeader>
-          <IonToolbar>
-            <IonButtons slot="start">
-              <IonBackButton className="icon-padding"></IonBackButton>
-            </IonButtons>
-            <IonTitle>Select Wallet</IonTitle>
-            <IonButtons slot="end">
-              <IonButton size="large" />
-            </IonButtons>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent className="ion-padding">
-          <IonList>
-            {wallets.map((child) => (
-              <WalletItem
-                currentWallet={child}
-                handleDeleteWallet={() => handleDeleteWallet(child)}
-                handleSelect={() => handleSelectWallet(child)}
-                key={child.id}
-              />
-            ))}
-          </IonList>
-        </IonContent>
-      </Route>
+      <IonHeader>
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonBackButton
+              className="icon-padding"
+              defaultHref="/my"
+            ></IonBackButton>
+          </IonButtons>
+          <IonTitle>Select Wallet</IonTitle>
+          <IonButtons slot="end">
+            <IonButton size="large" />
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent className="ion-padding">
+        <IonList>
+          {wallets.map((child) => (
+            <WalletItem
+              currentWallet={child}
+              handleDeleteWallet={() => forceRender()}
+              handleSelect={() => handleSelectWallet(child)}
+              key={child.id}
+            />
+          ))}
+        </IonList>
+      </IonContent>
     </IonPage>
   );
 };

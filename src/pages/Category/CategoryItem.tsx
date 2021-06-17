@@ -40,7 +40,9 @@ const CategoryItem: React.FC<props> = ({ data: root, handleClick }) => {
           ))}
         {isLimit && (
           <li>
-            <IonButton onClick={() => SetIsLimit(false)}>See More</IonButton>
+            <IonButton onClick={() => SetIsLimit(false)} fill="clear">
+              See More
+            </IonButton>
           </li>
         )}
       </ul>
