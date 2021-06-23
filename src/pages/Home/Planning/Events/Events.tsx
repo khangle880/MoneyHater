@@ -46,7 +46,7 @@ const Events: React.FC = () => {
     });
 
     return (
-      <IonCard className="event-card">
+      <IonCard className="event-card" key={event.id}>
         <div className="event-detail-container">
           <div>
             <IonImg src={event.icon} />

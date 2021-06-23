@@ -1,4 +1,5 @@
 import {
+  IonBadge,
   IonIcon,
   IonLabel,
   IonLoading,
@@ -12,6 +13,10 @@ import {
   home as homeIcon,
   personCircleOutline as personIcon,
   albumsOutline as budgetsIcon,
+  newspaperOutline,
+  addCircleOutline,
+  barChartOutline,
+  calculatorOutline,
 } from "ionicons/icons";
 import React, { useEffect } from "react";
 import {
@@ -24,8 +29,11 @@ import {
   currentWallet,
   Events,
   ManageWallets,
+  MyProfilePage,
   Planning,
+  ProfilePage,
   RecurringTransactions,
+  ReportPage,
   SettingsPage,
   ShareWallet,
   Test,
@@ -36,6 +44,8 @@ import {
   useLoadedData,
 } from "./Necessary/components";
 import Account from "./pages/Home/Account";
+
+import "./AppTabs.scss";
 
 const AppTabs: React.FC = () => {
   useEffect(() => {}, []);
@@ -82,9 +92,19 @@ const AppTabs: React.FC = () => {
       <Route path="/my/events/add">
         <AddEvent />
       </Route>
+
       <Route>
         <IonTabs>
           <IonRouterOutlet>
+            <Route exact path="/my/report">
+              <ReportPage />
+            </Route>
+            <Route exact path="/my/profile">
+              <ProfilePage />
+            </Route>
+            <Route exact path="/my/my-profile">
+              <MyProfilePage />
+            </Route>
             <Route exact path="/my/account">
               <Account />
             </Route>
@@ -105,7 +125,7 @@ const AppTabs: React.FC = () => {
             </Route>
           </IonRouterOutlet>
           <IonTabBar slot="bottom">
-            <IonTabButton tab="transactions" href="/my/transactions">
+            {/* <IonTabButton tab="transactions" href="/my/transactions">
               <IonLabel>Transactions</IonLabel>
               <IonIcon icon={homeIcon} />
             </IonTabButton>
@@ -116,6 +136,35 @@ const AppTabs: React.FC = () => {
             <IonTabButton tab="account" href="/my/account">
               <IonLabel>Account</IonLabel>
               <IonIcon icon={personIcon} />
+            </IonTabButton> */}
+
+            <IonTabButton tab="home" href="/my/transactions">
+              <IonIcon icon={homeIcon} />
+              <IonLabel>Home</IonLabel>
+              <IonBadge>2</IonBadge>
+            </IonTabButton>
+
+            <IonTabButton tab="history">
+              <IonIcon icon={newspaperOutline} />
+              <IonLabel>History</IonLabel>
+            </IonTabButton>
+
+            <IonTabButton
+              className="add-button"
+              tab="add"
+              href="/my/transactions/add"
+            >
+              <IonIcon icon={addCircleOutline} />
+            </IonTabButton>
+
+            <IonTabButton tab="report" href="/my/report">
+              <IonIcon icon={barChartOutline} />
+              <IonLabel>Report</IonLabel>
+            </IonTabButton>
+
+            <IonTabButton tab="planning" href="/my/planning">
+              <IonIcon icon={calculatorOutline} />
+              <IonLabel>Planning</IonLabel>
             </IonTabButton>
           </IonTabBar>
         </IonTabs>

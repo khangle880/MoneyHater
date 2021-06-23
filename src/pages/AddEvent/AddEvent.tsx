@@ -36,6 +36,7 @@ import {
 //? components
 import {
   addRecurringTransaction,
+  addWalletEvent,
   availableTimeRange,
   Category,
   Currency,
@@ -43,6 +44,7 @@ import {
   Partner,
   SelectCategory,
   SelectCurrencyUnit,
+  SelectIconPopover,
   SelectPartner,
   SelectTimeRange,
   SelectWalletEvent,
@@ -60,17 +62,15 @@ import { Route, useHistory } from "react-router-dom";
 import dayjs from "dayjs";
 
 const AddEvent: React.FC = () => {
-  const [isMore, setIsMore] = useState(false);
+  const [icon, setIcon] = useState("");
+  const [name, setName] = useState("");
   const [showAlert, setShowAlert] = useState(false);
   const [amount, setAmount] = useState(0);
-  const [currencyUnit, setCurrencyUnit] = useState<Currency>();
-  const [category, setCategory] = useState<Category>();
-  const [note, setNote] = useState("");
+  const [currencyUnit, setCurrencyUnit] = useState<Currency>(
+    currentWallet.currency_object
+  );
   const [wallet, setWallet] = useState<Wallet>(currentWallet);
-  const [partner, setPartner] = useState<Partner>();
-  const [walletEvent, setWalletEvent] = useState<WalletEvent>();
-  const [remind, setRemind] = useState("");
-  const [excludeFromReport, setExcludeFromReport] = useState(false);
+
   const [timeRange, setTimeRange] = useState<TimeRange>(availableTimeRange[0]);
 
   const history = useHistory();
@@ -97,27 +97,16 @@ const AddEvent: React.FC = () => {
   };
 
   const handleSave = () => {
-    if (amount && category && timeRange) {
+    if (name && icon && currencyUnit && timeRange) {
       const newRawTransaction = {
-        amount: amount,
-        currency: currencyUnit!.id,
-        amount_by_wallet: parseFloat(
-          (
-            (amount / currencyUnit!.rate_us) *
-            wallet.currency_object!.rate_us
-          ).toFixed(2)
-        ),
-        category: category,
-        note: note,
-        with: partner ? partner.name : "",
-        event: walletEvent ? walletEvent.name : "",
-        remind: remind,
-        exclude_from_report: excludeFromReport,
+        name: name,
+        icon: icon,
+        currency: currencyUnit.id,
         from: timeRange.from,
         to: timeRange.to,
         state: true,
       };
-      addRecurringTransaction(newRawTransaction, userId!, wallet);
+      addWalletEvent(newRawTransaction, userId!, wallet);
       history.goBack();
     } else setShowAlert(true);
   };
@@ -125,53 +114,29 @@ const AddEvent: React.FC = () => {
   return (
     <IonModal isOpen={true}>
       <IonRouterOutlet>
-        <Route path="/my/recurring-transactions/add/categories">
-          <SelectCategory
-            permission={7}
-            handleSelect={(data: Category) => setCategory(data)}
-          />
-        </Route>
-        <Route exact path="/my/recurring-transactions/add/currencies">
+        <Route exact path="/my/events/add/currencies">
           <SelectCurrencyUnit
             handleSelect={(data: Currency) => setCurrencyUnit(data)}
           />
         </Route>
-        <Route exact path="/my/recurring-transactions/add/note">
-          <TakeNote
-            currentValue={note}
-            handleNote={(data: string) => setNote(data)}
-          />
-        </Route>
-        <Route exact path="/my/recurring-transactions/add/partner">
-          <SelectPartner
-            currentValue={partner!}
-            handlePartner={(data: Partner) => setPartner(data)}
-          />
-        </Route>
-        <Route exact path="/my/recurring-transactions/add/time-range">
+        <Route exact path="/my/events/add/time-range">
           <SelectTimeRange
             handleSelect={(data: TimeRange) => setTimeRange(data)}
           />
         </Route>
-        <Route exact path="/my/recurring-transactions/add/event">
-          <SelectWalletEvent
-            listEvent={wallet.events}
-            handleSelect={(data: WalletEvent) => setWalletEvent(data)}
-          />
-        </Route>
         {/* ----Home Route---- */}
-        <Route exact path="/my/recurring-transactions/add">
+        <Route>
           <IonPage>
             <IonHeader>
               <IonToolbar className="toolbar-medium">
                 <IonButtons slot="start">
                   <IonBackButton
                     icon={closeIcon}
-                    defaultHref="/my/recurring-transactions"
+                    defaultHref="/my/event"
                     text=""
                   />
                 </IonButtons>
-                <IonTitle>Add Recurring Transaction</IonTitle>
+                <IonTitle>Add Event</IonTitle>
                 <IonButtons slot="end">
                   <IonButton size="large" onClick={() => handleSave()}>
                     SAVE
@@ -181,56 +146,23 @@ const AddEvent: React.FC = () => {
             </IonHeader>
             <IonContent className="ion-padding">
               <IonList className="block">
-                {/* AMOUNT ITEM */}
-                <IonItem lines="inset">
-                  <IonIcon slot="start" icon={dollarIcon} />
+                {/* ICON ITEM */}
+                <IonItem lines="inset" detail={false}>
+                  <SelectIconPopover
+                    icon={icon}
+                    setIcon={(data: string) => setIcon(data)}
+                  />
                   <IonInput
-                    type="number"
-                    value={amount}
-                    onIonChange={(event) =>
-                      setAmount(parseFloat(event.detail.value!))
-                    }
+                    value={name}
+                    onIonChange={(event) => setName(event.detail.value!)}
                   />
                   {/* CURRENCY UNIT */}
-                  <IonRouterLink routerLink="/my/recurring-transactions/add/currencies">
+                  <IonRouterLink routerLink="/my/events/add/currencies">
                     {currencyUnit?.iso}
                   </IonRouterLink>
                 </IonItem>
-                {/* CATEGORY ITEM */}
-                <IonItem
-                  routerLink="/my/recurring-transactions/add/categories"
-                  lines="inset"
-                >
-                  <IonRippleEffect />
-                  <IonImg
-                    slot="start"
-                    src={category?.icon || questionIcon}
-                    className="icon"
-                  />
-                  <IonInput
-                    placeholder="Select Category"
-                    value={category?.name}
-                    readonly={true}
-                  />
-                </IonItem>
-                {/* NOTE ITEM */}
-                <IonItem
-                  routerLink="/my/recurring-transactions/add/note"
-                  lines="inset"
-                >
-                  <IonRippleEffect />
-                  <IonIcon slot="start" icon={noteIcon} />
-                  <IonInput
-                    placeholder="Write note"
-                    readonly={true}
-                    value={note}
-                  />
-                </IonItem>
                 {/* TIME RANGE */}
-                <IonItem
-                  routerLink="/my/recurring-transactions/add/time-range"
-                  lines="inset"
-                >
+                <IonItem routerLink="/my/budgets/add/time-range" lines="inset">
                   <IonRippleEffect />
                   <IonIcon slot="start" icon={calendarIcon} />
                   <IonInput
@@ -244,76 +176,6 @@ const AddEvent: React.FC = () => {
                   wallet={wallet}
                   setWallet={(data: Wallet) => setWallet(data)}
                 />
-                {/* ADD MORE DETAILS */}
-                {!isMore && (
-                  <IonButton onClick={() => setIsMore(true)}>
-                    Add More Details
-                  </IonButton>
-                )}
-                {isMore && (
-                  <IonList>
-                    <IonList>
-                      {/* PARTNER ITEM */}
-                      <IonItem
-                        routerLink="/my/recurring-transactions/add/partner"
-                        lines="inset"
-                      >
-                        <IonRippleEffect />
-                        <IonIcon slot="start" icon={partnerIcon} />
-                        <IonInput
-                          placeholder="With"
-                          readonly={true}
-                          value={partner?.name}
-                        />
-                      </IonItem>
-                    </IonList>
-                    <IonList>
-                      {/* EVENT ITEM */}
-                      <IonItem
-                        routerLink="/my/recurring-transactions/add/event"
-                        lines="inset"
-                      >
-                        <IonRippleEffect />
-                        <IonIcon slot="start" icon={eventIcon} />
-                        <IonInput
-                          placeholder="Select Event"
-                          readonly={true}
-                          value={walletEvent?.name}
-                        />
-                      </IonItem>
-                      {/* REMIND ITEM */}
-                      <IonItem lines="inset">
-                        <IonIcon slot="start" icon={remindIcon} />
-                        <IonDatetime
-                          value={remind}
-                          placeholder="No Remind"
-                          displayFormat="DDD, DD/MM/YYYY"
-                          onIonChange={(event) =>
-                            setRemind(event.detail.value!)
-                          }
-                        />
-                      </IonItem>
-                      <IonList>
-                        <IonItem lines="none">
-                          <IonCheckbox
-                            slot="start"
-                            checked={excludeFromReport}
-                            onIonChange={(e) =>
-                              setExcludeFromReport(e.detail.checked)
-                            }
-                          />
-                          <IonLabel>
-                            <h2>Exclude from report</h2>
-                            <h3>
-                              Don't include this transaction in reports such as
-                              Overview
-                            </h3>
-                          </IonLabel>
-                        </IonItem>
-                      </IonList>
-                    </IonList>
-                  </IonList>
-                )}
               </IonList>
             </IonContent>
           </IonPage>

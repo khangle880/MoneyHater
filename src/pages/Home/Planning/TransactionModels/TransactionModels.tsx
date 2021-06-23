@@ -34,9 +34,9 @@ const TransactionModels: React.FC = () => {
 
     if (category_object && currency_object)
       return (
-        <IonItemSliding id={model.id}>
+        <IonItemSliding id={model.id} key={model.id}>
           <IonItem lines="none">
-            <IonImg src={model.category} />
+            <IonImg src={category_object.icon} />
             <div className="top-details">
               <p className="detail-category-name">{category_object.name}</p>
               <p

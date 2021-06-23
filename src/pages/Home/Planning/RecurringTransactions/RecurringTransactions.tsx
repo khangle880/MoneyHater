@@ -20,7 +20,11 @@ import dayjs from "dayjs";
 import { add as addIcon } from "ionicons/icons";
 import React from "react";
 import { RecurringTransaction } from "../../../../Models/Recurring_Transactions";
-import { currentWallet, findCategory, findCurrency } from "../../../../Necessary/components";
+import {
+  currentWallet,
+  findCategory,
+  findCurrency,
+} from "../../../../Necessary/components";
 
 const RecurringTransactions: React.FC = () => {
   const recurringToView = (recurringTransaction: RecurringTransaction) => {
@@ -38,12 +42,15 @@ const RecurringTransactions: React.FC = () => {
 
     if (category_object && currency_object)
       return (
-        <IonCard className="recurring-transactions-card">
+        <IonCard
+          className="recurring-transactions-card"
+          key={recurringTransaction.id}
+        >
           <div className="detail-container">
             <div>
-              <IonImg src={recurringTransaction.category} />
+              <IonImg src={category_object.icon} />
               <div className="top-details">
-                <p className="detail-category-name">Restaurants</p>
+                <p className="detail-category-name">{category_object.name}</p>
                 <p
                   className={`detail-currency ${
                     category_object.type === "Expense"
@@ -64,7 +71,6 @@ const RecurringTransactions: React.FC = () => {
           </div>
         </IonCard>
       );
-    else return <IonLabel>Element Not Exist</IonLabel>;
   };
 
   return (

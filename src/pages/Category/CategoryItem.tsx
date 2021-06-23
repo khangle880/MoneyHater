@@ -6,7 +6,7 @@ import {
   IonThumbnail,
 } from "@ionic/react";
 import React, { useState } from "react";
-import { Category } from "../../Models/Categories";
+import { Category } from "../../Necessary/components";
 interface props {
   handleClick: (data: Category) => void;
   data: Category;
@@ -19,7 +19,12 @@ const CategoryItem: React.FC<props> = ({ data: root, handleClick }) => {
 
   return (
     <li>
-      <IonItem button onClick={() => handleClick(root)}>
+      <IonItem
+        button
+        onClick={() => handleClick(root)}
+        lines="none"
+        detail={false}
+      >
         <IonThumbnail slot="start">
           <IonImg src={root.icon} />
         </IonThumbnail>
@@ -30,7 +35,12 @@ const CategoryItem: React.FC<props> = ({ data: root, handleClick }) => {
           ?.slice(0, isLimit ? 2 : root.children?.length)
           .map((child) => (
             <li key={child.id}>
-              <IonItem button onClick={() => handleClick(child)}>
+              <IonItem
+                button
+                onClick={() => handleClick(root)}
+                lines="none"
+                detail={false}
+              >
                 <IonThumbnail slot="start">
                   <IonImg src={child.icon} />
                 </IonThumbnail>

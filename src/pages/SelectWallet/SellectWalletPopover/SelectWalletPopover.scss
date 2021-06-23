@@ -1,0 +1,41 @@
+ion-popover.wallets-popover {
+  --max-height: 250px !important;
+  --min-height: 250px !important;
+  --max-width: 300px !important;
+  --min-width: 300px !important;
+
+  ion-list {
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    ion-item {
+      ion-thumbnail {
+        margin: 0;
+
+        ion-img {
+          width: 40px;
+          height: 40px;
+          padding: 5px;
+          margin-top: 3px;
+          margin-right: 10px;
+          border-radius: 10px;
+          border: 1px smooth #bfbfbf;
+          box-shadow: -2px 2px 5px 1px rgba(0, 0, 255, 0.2);
+        }
+      }
+
+      ion-label{
+        p:first-child {
+          font-size: 1rem;
+          font-weight: 800;
+          color: #3f4881;
+        }
+        p:last-child {
+          font-size: 1rem;
+          font-weight: 700;
+        }
+      }
+    }
+
+  }
+}

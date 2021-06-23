@@ -1,6 +1,6 @@
 //? Components
 export { default as SelectWalletEvent } from "../pages/SelectWalletEvent/SelectWalletEvent";
-export { default as SelectWalletPopover } from "../pages/SelectWallet/SelectWalletPopover";
+export { default as SelectWalletPopover } from "../pages/SelectWallet/SellectWalletPopover/SelectWalletPopover";
 export { default as SelectIconPopover } from "../pages/SelectIcon/SelectIconPopover";
 export { default as SelectCategory } from "../pages/Category/SelectCategory";
 export { default as SelectCurrencyUnit } from "../pages/Currency/SelectCurrencyUnit";
@@ -36,8 +36,11 @@ export { default as TransferMoney } from "../pages/ManageWallets/TransferMoney";
 //---- account
 export { default as SettingsPage } from "../pages/SettingsPage";
 export { default as Debts } from "../pages/Home/Debts";
+export { default as ProfilePage } from "../pages/ProfilePage/ProfilePage";
+export { default as MyProfilePage } from "../pages/MyProfilePage/MyProfilePage";
 
 //---- other
+export { default as ReportPage } from "../pages/ReportPage/ReportPage";
 export { default as Test } from "../test";
 export { default as Planning } from "../pages/Home/Planning/Planning";
 
@@ -56,6 +59,7 @@ export { wallets } from "../Models/Wallets";
 export { availableTimeRange } from "../Models/LocalModels/TimeRange";
 export { currentWallet } from "../Models/LoadData";
 export { addTransaction } from "../Models/Transactions";
+export { addWalletEvent } from "../Models/Events";
 export { addRecurringTransaction } from "../Models/Recurring_Transactions";
 export { addCustomCategories, categories } from "../Models/Categories";
 export { addBudget } from "../Models/Budgets";

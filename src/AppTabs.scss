@@ -1,0 +1,54 @@
+ion-tabs {
+  ion-tab-bar {
+    --background: #ffffff;
+    height: 80px;
+    border: 0;
+    margin-top: -1px;
+
+    ion-tab-button {
+      --color: #c7d2e7;
+      --color-selected: #4065a8;
+    }
+
+    ion-tab-button:active {
+      -webkit-animation-name: bounce;
+      animation-name: bounce;
+      -webkit-animation-duration: 0.2s;
+      animation-duration: 0.2s;
+      -webkit-animation-fill-mode: both;
+      animation-fill-mode: both;
+      -webkit-animation-timing-function: linear;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      -webkit-animation-iteration-count: infinite;
+    }
+
+    #tab-button-add {
+      background: #184999;
+      max-width: 50px;
+      height: 50px;
+      border-radius: 15px;
+      margin: 0 13px 15px;
+      box-shadow: 0 0px 5px 0px rgba(0, 0, 0, 0.6);
+    }
+  }
+}
+
+@-webkit-keyframes bounce {
+  0%,
+  100% {
+    -webkit-transform: translateY(0);
+  }
+  50% {
+    -webkit-transform: translateY(-9px);
+  }
+}
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-9px);
+  }
+}

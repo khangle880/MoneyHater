@@ -1,0 +1,110 @@
+.categories-tree,
+.categories-tree ul {
+  margin: 0 0 0 1em; /* indentation */
+  padding: 0;
+  list-style: none;
+  color: #369;
+  position: relative;
+}
+
+.categories-tree ul {
+  margin-left: 0.5em;
+} /* (indentation/2) */
+
+.categories-tree:before,
+.categories-tree ul:before {
+  content: "";
+  display: block;
+  width: 0;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  border-left: 0px solid;
+}
+
+.categories-tree li {
+  margin: 0;
+  padding: 0 1.5em; /* indentation + .5em */
+  line-height: 2em; /* default list item's `line-height` */
+  font-weight: bold;
+  position: relative;
+}
+
+.categories-tree li:before {
+  content: "";
+  display: block;
+  width: 10px; /* same with indentation */
+  height: 0;
+  border-top: 0px solid;
+  margin-top: -1px; /* border top width */
+  position: absolute;
+  top: 1em; /* (line-height/2) */
+  left: 0;
+}
+
+.categories-tree li:last-child:before {
+  background: white; /* same with body background */
+  height: auto;
+  top: 1em; /* (line-height/2) */
+  bottom: 0;
+}
+
+.categories-tree {
+  li {
+    ion-item {
+      ion-thumbnail {
+        margin: 0;
+
+        ion-img {
+          width: 40px;
+          height: 40px;
+          padding: 5px;
+          margin-right: 10px;
+          border-radius: 10px;
+          border: 1px smooth #bfbfbf;
+          box-shadow: -2px 2px 5px 1px rgba(0, 0, 255, 0.2);
+        }
+      }
+    }
+
+    ion-button {
+      margin-left: 60px;
+    }
+  }
+
+  .add-new-category {
+    margin-left: 15px;
+
+    ion-icon {
+      border: 1px solid;
+      border-radius: 50%;
+      background-color: rgb(29, 204, 29);
+      color: white !important;
+      width: 20px;
+      height: 20px;
+      padding: 5px;
+      margin: 0;
+      margin-right: 10px;
+      margin-left: 4px;
+    }
+
+    ion-button {
+      font-size: 1rem;
+      font-weight: 700;
+      margin: 0;
+      color: rgb(29, 204, 29);
+    }
+  }
+}
+
+ul.categories-tree {
+  margin-left: 0px;
+  margin-top: 20px;
+  li {
+    padding-left: 15px;
+    li {
+      padding-left: 15px;
+    }
+  }
+}

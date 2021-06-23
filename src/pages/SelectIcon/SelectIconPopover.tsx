@@ -9,6 +9,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
+import "./SelectIconPopover.scss";
 
 import React, { useState } from "react";
 import { icons } from "../../Necessary/components";
@@ -28,6 +29,7 @@ const SelectIconPopover: React.FC<props> = ({ icon, setIcon }) => {
   return (
     <React.Fragment>
       <IonImg
+        className="img-icon"
         slot="start"
         src={icon === "" ? questionIcon : icon}
         onClick={(e: any) => {
@@ -36,6 +38,7 @@ const SelectIconPopover: React.FC<props> = ({ icon, setIcon }) => {
         }}
       />
       <IonPopover
+        cssClass="icons-popover"
         event={popoverIcon.event}
         isOpen={popoverIcon.showPopover}
         onDidDismiss={() =>

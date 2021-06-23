@@ -41,7 +41,7 @@ const ManageWallets: React.FC<{ initNeedRender: boolean }> = ({
           <IonButtons slot="start">
             <IonBackButton
               className="icon-padding"
-              defaultHref="/my"
+              defaultHref="/my/transactions"
             ></IonBackButton>
           </IonButtons>
           <IonTitle>Select Wallet</IonTitle>

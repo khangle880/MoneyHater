@@ -1,4 +1,5 @@
-import { IonButton } from "@ionic/react";
+import { IonButton, IonIcon, IonItem } from "@ionic/react";
+import { add } from "ionicons/icons";
 import React from "react";
 import { useHistory, useRouteMatch } from "react-router";
 import { categories, Category } from "../../Models/Categories";
@@ -18,7 +19,7 @@ const ExpenseGroup: React.FC<props> = ({ handleSelect }) => {
   };
 
   return (
-    <ul>
+    <ul className="categories-tree">
       {categories
         ?.filter((child) => child.type === "Expense")
         .map((category) => (
@@ -28,7 +29,13 @@ const ExpenseGroup: React.FC<props> = ({ handleSelect }) => {
             data={category}
           />
         ))}
-      <IonButton routerLink={`${rootPath}/add-custom`}>New Category</IonButton>
+      <IonItem
+        className="add-new-category"
+        routerLink={`${rootPath}/add-custom`}
+      >
+        <IonIcon icon={add} />
+        <IonButton fill="clear">New Category</IonButton>
+      </IonItem>
     </ul>
   );
 };

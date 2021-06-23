@@ -17,7 +17,7 @@ const DebtLoanGroup: React.FC<props> = ({ handleSelect }) => {
   };
 
   return (
-    <ul>
+    <ul className="categories-tree">
       {categories
         ?.filter((child) => child.type === "Debt & Loan")
         .map((category) => (

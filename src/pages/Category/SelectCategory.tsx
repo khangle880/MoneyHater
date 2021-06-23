@@ -13,6 +13,8 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
+import "./SelectCategory.scss"
+
 import React, { useEffect, useState } from "react";
 import { Redirect, Route, useLocation, useRouteMatch } from "react-router";
 import { Category } from "../../Models/Categories";
@@ -98,7 +100,7 @@ const SelectCategory: React.FC<props> = ({ handleSelect, permission }) => {
             <IonTabBar slot="top">
               {debtLoan && (
                 <IonTabButton tab="debt&loan" href={`${rootPath}/debt&loan`}>
-                  <IonLabel>Debt&Loan</IonLabel>
+                  <IonLabel>Debt & Loan</IonLabel>
                 </IonTabButton>
               )}
               {expense && (

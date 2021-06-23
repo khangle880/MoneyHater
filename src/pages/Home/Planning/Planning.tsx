@@ -28,11 +28,6 @@ const Planning: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonButtons slot="start">
-            <IonButton routerLink="/my/planning">
-              <IonIcon icon={walletIcon} />
-            </IonButton>
-          </IonButtons>
           <IonTitle>Planning</IonTitle>
         </IonToolbar>
       </IonHeader>

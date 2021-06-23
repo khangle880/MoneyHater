@@ -1,0 +1,113 @@
+p {
+  margin: 0;
+}
+
+ion-content {
+  ion-card.report-card {
+    margin-top: 10%;
+    margin-left: 0px;
+    margin-right: 0px;
+    border-radius: 20px 20px 0 0;
+    height: 95%;
+    overflow-y: scroll;
+    --background: #f4f6f9 !important;
+  }
+}
+
+.progress-card {
+  margin: 13px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 10px;
+  height: 100px;
+
+  .progress-detail-top {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 10px;
+
+    .progress-card-header {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: black;
+      margin-left: 12px;
+    }
+
+    .progress-card-subheader {
+      font-size: 1.1rem;
+      margin-left: 5px;
+      color: #285099;
+      margin-right: 21px;
+    }
+  }
+
+  .progress-detail-bottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .progress-date {
+    margin-left: 15px;
+  }
+
+  .progress-detail {
+    margin-right: 22px;
+  }
+
+  .progress-bar-holder {
+    margin-left: 15px;
+    margin-right: 22px;
+    height: 0.5rem;
+  }
+
+  .progress-bar {
+    // this is for the bar itself
+    background-color: #285099;
+  }
+}
+
+.chart-card {
+  margin: 13px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 10px;
+  height: 370px;
+
+  .chart-card-title {
+    .card-title-container {
+      display: flex;
+      flex-direction: row;
+      align-items: baseline;
+      border-bottom: 1px solid #b2b7b7;
+      p {
+        margin-top: 10px;
+        margin-left: 10px;
+        margin-bottom: 10px;
+      }
+    }
+  }
+
+  .chart-card-chart {
+    margin-left: -16px;
+  }
+}
+
+.custom-tooltip {
+  border-radius: 0.25rem;
+  background: #26313c;
+  color: #fff;
+  padding: 0.5rem;
+  box-shadow: 15px 30px 40px 5px rgba(0, 0, 0, 0.5);
+  text-align: center;
+
+  .custom-tooltip-date {
+    font-size: 1rem;
+    font-weight: 700;
+  }
+}

@@ -38,7 +38,6 @@ import {
   Category,
   Currency,
   currentWallet,
-  findCurrency,
   Partner,
   SelectCategory,
   SelectCurrencyUnit,
@@ -61,6 +60,21 @@ import { addTransaction } from "../../Models/Transactions";
 
 const AddTransaction: React.FC = () => {
   //? real
+  const [isMore, setIsMore] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [amount, setAmount] = useState(0);
+  const [currencyUnit, setCurrencyUnit] = useState<Currency>(
+    currentWallet.currency_object
+  );
+  const [category, setCategory] = useState<Category>();
+  const [note, setNote] = useState("");
+  const [date, setDate] = useState(new Date().toISOString());
+  const [wallet, setWallet] = useState<Wallet>(currentWallet);
+  const [partner, setPartner] = useState<Partner>();
+  const [walletEvent, setWalletEvent] = useState<WalletEvent>();
+  const [remind, setRemind] = useState("");
+  const [excludeFromReport, setExcludeFromReport] = useState(false);
+
   // const [isMore, setIsMore] = useState(false);
   // const [showAlert, setShowAlert] = useState(false);
   // const [amount, setAmount] = useState(0);
@@ -68,52 +82,11 @@ const AddTransaction: React.FC = () => {
   // const [category, setCategory] = useState<Category>();
   // const [note, setNote] = useState("");
   // const [date, setDate] = useState(new Date().toISOString());
-  // const [wallet, setWallet] = useState<Wallet>(currentWallet);
+  // const [wallet, setWallet] = useState<Wallet>(fake_fake);
   // const [partner, setPartner] = useState<Partner>();
   // const [walletEvent, setWalletEvent] = useState<WalletEvent>();
   // const [remind, setRemind] = useState("");
   // const [excludeFromReport, setExcludeFromReport] = useState(false);
-
-  //? fake
-  const fake_currency = findCurrency(
-    "00d18157-8cdc-49f5-bae8-7aa239159cc1"
-  ) as Currency;
-
-  const fake_fake = {
-    id: "111111",
-    name: "fake",
-    icon: "https://firebasestorage.googleapis.com/v0/b/moneyhater-e3629.appspot.com/o/icon%2Ficons8-account-64.svg?alt=media&token=6c4b5580-6108-426c-90c0-ed85b1deea15",
-    balance: 50,
-    currency: "00d18157-8cdc-49f5-bae8-7aa239159cc1",
-    enable_notification: true,
-    excluded_from_total: true,
-    state: true,
-    currency_object: fake_currency,
-    members: [],
-    recent_partner: [],
-    debts: {
-      debtsByPartner: [],
-      loansByPartner: [],
-    },
-    categories: [],
-    transactions: [],
-    budgets: [],
-    ready_executed_transaction: [],
-    recurring_transactions: [],
-    events: [],
-  } as Wallet;
-  const [isMore, setIsMore] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
-  const [amount, setAmount] = useState(0);
-  const [currencyUnit, setCurrencyUnit] = useState<Currency>();
-  const [category, setCategory] = useState<Category>();
-  const [note, setNote] = useState("");
-  const [date, setDate] = useState(new Date().toISOString());
-  const [wallet, setWallet] = useState<Wallet>(fake_fake);
-  const [partner, setPartner] = useState<Partner>();
-  const [walletEvent, setWalletEvent] = useState<WalletEvent>();
-  const [remind, setRemind] = useState("");
-  const [excludeFromReport, setExcludeFromReport] = useState(false);
 
   const history = useHistory();
   const { userId } = useAuth();

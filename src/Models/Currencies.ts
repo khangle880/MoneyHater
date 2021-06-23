@@ -38,3 +38,29 @@ export function initCurrencies() {
     currencies = data;
   });
 }
+
+export const fakeCurrencies = () => {
+  const data = [
+    {
+      id: "8c58ec65-4ea3-4b7e-a2ee-065b2ddf3343",
+      name: "Zambian kwacha",
+      country: "Zambia",
+      icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Flag_of_Zambia.svg/23px-Flag_of_Zambia.svg.png",
+      symbol: "ZK",
+      iso: "ZMW",
+      rate_us: 2000.0,
+      times_used: 0,
+    },
+    {
+      id: "00d18157-8cdc-49f5-bae8-7aa239159cc1",
+      name: "Israeli new shekel",
+      country: "Palestine",
+      icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Flag_of_Palestine.svg/23px-Flag_of_Palestine.svg.png",
+      symbol: "$",
+      iso: "ILS",
+      rate_us: 2000.0,
+      times_used: 0,
+    },
+  ];
+  currencies = data;
+};

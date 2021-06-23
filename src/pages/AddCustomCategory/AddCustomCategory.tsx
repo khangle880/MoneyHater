@@ -18,6 +18,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
+import "./AddCustomCategory.scss";
 
 //? components
 import {
@@ -77,7 +78,7 @@ const AddCustomCategory: React.FC<{ type: string; beforePath: string }> = ({
     <IonModal isOpen={true}>
       <IonHeader>
         <IonToolbar className="toolbar-medium">
-          <IonButtons slot="start">
+          <IonButtons>
             <IonBackButton icon={closeIcon} text="" defaultHref={backToPath} />
           </IonButtons>
           <IonTitle>Add Category</IonTitle>
@@ -88,10 +89,10 @@ const AddCustomCategory: React.FC<{ type: string; beforePath: string }> = ({
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding">
+      <IonContent className="ion-padding add-category-content">
         <IonList className="block">
           {/* ICON ITEM */}
-          <IonItem lines="inset" button>
+          <IonItem lines="inset" detail={false}>
             <SelectIconPopover
               icon={icon}
               setIcon={(data: string) => setIcon(data)}
@@ -102,8 +103,8 @@ const AddCustomCategory: React.FC<{ type: string; beforePath: string }> = ({
             />
           </IonItem>
           {/* TYPE ITEM */}
-          <IonItem lines="inset">
-            <IonItem>
+          <div className="type-box-item">
+            <div>
               <IonLabel>Expense</IonLabel>
               <IonCheckbox
                 checked={type === "Expense"}
@@ -112,8 +113,8 @@ const AddCustomCategory: React.FC<{ type: string; beforePath: string }> = ({
                   setParentCategory(undefined);
                 }}
               />
-            </IonItem>
-            <IonItem>
+            </div>
+            <div>
               <IonLabel>Income</IonLabel>
               <IonCheckbox
                 checked={type === "Income"}
@@ -122,18 +123,18 @@ const AddCustomCategory: React.FC<{ type: string; beforePath: string }> = ({
                   setParentCategory(undefined);
                 }}
               />
-            </IonItem>
-          </IonItem>
+            </div>
+          </div>
           {/* CATEGORY ITEM */}
           <IonItem
             lines="inset"
-            button
+            detail={false}
             onClick={(e: any) => {
               e.persist();
               setShowPopoverRootCategory({ showPopover: true, event: e });
             }}
           >
-            <IonIcon icon={connectIcon} />
+            <IonIcon slot="start" icon={connectIcon} />
             <IonInput
               placeholder="Select Category"
               value={parentCategory?.name}

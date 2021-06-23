@@ -1,5 +1,8 @@
 // import { firestore } from "../firebase";
 
+import { firestore } from "../firebase";
+import { Wallet } from "./Wallets";
+
 export interface WalletEvent {
   id: string;
   name: string;
@@ -18,6 +21,22 @@ export function toWalletEvent(doc: any): WalletEvent {
   return event as WalletEvent;
 }
 
+export function addWalletEvent(data: any, userId: string, wallet: Wallet) {
+  firestore
+    .collection("users")
+    .doc(userId)
+    .collection("wallets")
+    .doc(wallet.id)
+    .collection("recurring_transactions")
+    .add(data)
+    .then((docRef) => {
+      const id = docRef.id;
+      wallet.events.push({
+        id,
+        ...data,
+      } as WalletEvent);
+    });
+}
 // export var events: Event[] = [];
 
 // export function clearEvents() {

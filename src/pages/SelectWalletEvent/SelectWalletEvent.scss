@@ -1,0 +1,34 @@
+ion-item.event-item {
+  margin-top: 10px;
+
+  ion-img {
+    width: 40px;
+    height: 40px;
+    padding: 5px;
+    margin-top: 3px;
+    margin-right: 10px;
+    border-radius: 10px;
+    border: 1px solid #bfbfbf;
+  }
+
+  ion-label {
+    div {
+      display: flex !important;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+
+      p:first-child {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #3f4881;
+      }
+
+      p:last-child {
+        font-size: 1rem;
+        font-weight: 500;
+        color: #3C8DAD;
+      }
+    }
+  }
+}

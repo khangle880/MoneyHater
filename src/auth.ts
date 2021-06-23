@@ -1,6 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { auth as firebaseAuth } from "./firebase";
-import { clearData, loadData } from "./Models/LoadData";
+import { fakeCategories, initCategories } from "./Models/Categories";
+import { fakeCurrencies, initCurrencies } from "./Models/Currencies";
+import { fakeIcons } from "./Models/Icons";
+import { clearData, loadData, setCurrentWallet } from "./Models/LoadData";
+import { initTimeRange } from "./Models/LocalModels/TimeRange";
+import { fakeWallets, wallets } from "./Models/Wallets";
 
 interface Auth {
   loggedIn: boolean;
@@ -40,8 +45,14 @@ export function useAuthInit(): AuthInit {
   useEffect(() => {
     if (authInit.auth && authInit.auth.userId) {
       // loadData(authInit.auth.userId).then(() => {
-        const auth = authInit.auth;
-        setAuthInit({ loading: false, auth, loadedData: true });
+      initTimeRange();
+      fakeCurrencies();
+      fakeCategories();
+      fakeIcons();
+      fakeWallets();
+      setCurrentWallet(wallets[0]);
+      const auth = authInit.auth;
+      setAuthInit({ loading: false, auth, loadedData: true });
       // });
     }
 
