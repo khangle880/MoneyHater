@@ -20,16 +20,22 @@ import {
 import { closeOutline as closeIcon } from "ionicons/icons";
 import React, { useState } from "react";
 import { Route, useHistory, useParams, useRouteMatch } from "react-router-dom";
-import connectIcon from "../../icons/icons8-connect.svg";
 
-import { categories, Category } from "../../Models/Categories";
-import { Wallet, wallets } from "../../Models/Wallets";
-import { useAuth } from "../../auth";
-import noteIcon from "../../icons/icons8-note.svg";
-import SelectWalletPopover from "../SelectWallet/SelectWalletPopover";
-import { currentWallet } from "../../Models/LoadData";
-import { addTransaction } from "../../Models/Transactions";
-import ExpenseGroup from "../Category/ExpenseGroup";
+//? component
+import {
+  addTransaction,
+  categories,
+  Category,
+  currentWallet,
+  SelectCategory,
+  SelectWalletPopover,
+  useAuth,
+  Wallet,
+  wallets,
+} from "../../Necessary/components";
+
+//? icon
+import { connectIcon, noteIcon } from "../../Necessary/icons";
 
 interface RouteParams {
   id: string;
@@ -110,27 +116,10 @@ const TransferMoney: React.FC = () => {
     <IonModal isOpen={true}>
       <IonRouterOutlet>
         <Route path={`${rootPath}/categories/expense`}>
-          <IonPage>
-            <IonHeader>
-              <IonToolbar>
-                <IonButtons slot="start">
-                  <IonBackButton
-                    className="icon-padding"
-                    defaultHref={rootPath.substring(0, rootPath.length - 11)}
-                  />
-                </IonButtons>
-                <IonTitle>Select Category</IonTitle>
-                <IonButtons slot="end">
-                  <IonButton size="large" />
-                </IonButtons>
-              </IonToolbar>
-            </IonHeader>
-            <IonContent>
-              <ExpenseGroup
-                handleSelect={(data: Category) => setCategory(data)}
-              />
-            </IonContent>
-          </IonPage>
+          <SelectCategory
+            permission={2}
+            handleSelect={(data: Category) => setCategory(data)}
+          />
         </Route>
         <Route exact path={rootPath}>
           <IonPage>

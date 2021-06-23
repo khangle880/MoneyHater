@@ -15,11 +15,8 @@ import {
 } from "@ionic/react";
 import React, { useState } from "react";
 import { useHistory } from "react-router";
-import {
-  availableTimeRange,
-  TimeRange,
-} from "../../Models/LocalModels/TimeRange";
 import dayjs from "dayjs";
+import { availableTimeRange, TimeRange } from "../../Necessary/components";
 
 interface props {
   handleSelect: (data: TimeRange) => void;

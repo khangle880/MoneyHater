@@ -19,26 +19,34 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
+
+//? Icon
+import {
+  calendarIcon,
+  dollarIcon,
+  eventIcon,
+  questionIcon,
+} from "../../Necessary/icons";
+
+//? components
+import {
+  addBudget,
+  Category,
+  currentWallet,
+  SelectCategory,
+  SelectTimeRange,
+  SelectWalletEvent,
+  SelectWalletPopover,
+  TimeRange,
+  useAuth,
+  Wallet,
+  WalletEvent,
+} from "../../Necessary/components";
+
 import { closeOutline as closeIcon } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
 import { Route, useHistory } from "react-router-dom";
-import SelectCategory from "../Category/SelectCategory";
-import questionSvg from "../../icons/icons8-question.svg";
-import dollarIcon from "../../icons/icons8-us-dollar.svg";
-import calendarIcon from "../../icons/icons8-calendar.svg";
-import eventIcon from "../../icons/icons8-event.svg";
-import { Category } from "../../Models/Categories";
-import { Wallet } from "../../Models/Wallets";
-import { WalletEvent } from "../../Models/Events";
-import SelectWalletEvent from "../SelectWalletEvent/SelectWalletEvent";
-import { useAuth } from "../../auth";
-import { currentWallet } from "../../Models/LoadData";
-
 import dayjs from "dayjs";
-import { TimeRange } from "../../Models/LocalModels/TimeRange";
-import SelectTimeRange from "../TimeRange/SelectTimeRange";
-import { addBudget } from "../../Models/Budgets";
-import SelectWalletPopover from "../SelectWallet/SelectWalletPopover";
 
 const AddBudget: React.FC = () => {
   var currentDate = new Date();
@@ -96,8 +104,9 @@ const AddBudget: React.FC = () => {
   return (
     <IonModal isOpen={true}>
       <IonRouterOutlet>
-        <Route exact path="/my/budgets/add/categories">
+        <Route path="/my/budgets/add/categories">
           <SelectCategory
+            permission={2}
             handleSelect={(data: Category) => setCategory(data)}
           />
         </Route>
@@ -150,7 +159,7 @@ const AddBudget: React.FC = () => {
                   <IonRippleEffect />
                   <IonImg
                     slot="start"
-                    src={category?.icon || questionSvg}
+                    src={category?.icon || questionIcon}
                     className="icon"
                   />
                   <IonInput

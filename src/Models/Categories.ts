@@ -42,6 +42,19 @@ export function clearCategories() {
   categories = [];
 }
 
+export function findCategory(id: string): Category | undefined {
+  categories.forEach((category) => {
+    if (id === category.id) return category;
+    else {
+      const match = category.children?.find(
+        (subCategory) => subCategory.id === id
+      );
+      if (match) return match;
+    }
+  });
+  return undefined;
+}
+
 export function initCategories() {
   const categoriesRef = firestore.collection("categories");
   return categoriesRef.get().then(({ docs }) => {

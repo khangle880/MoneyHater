@@ -15,12 +15,8 @@ import {
 // import alarmIcon from "../../icons/icons8-alarm-clock.svg";
 import React, { useState } from "react";
 import { useHistory } from "react-router";
-import { useAuth } from "../../auth";
-import {
-  addPartner,
-  Partner,
-  recentPartners,
-} from "../../Models/Recent_Partners";
+import { addPartner, recentPartners } from "../../Models/Recent_Partners";
+import { Partner, useAuth } from "../../Necessary/components";
 
 interface props {
   currentValue: Partner;

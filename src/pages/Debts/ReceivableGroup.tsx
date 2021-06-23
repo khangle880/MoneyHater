@@ -7,8 +7,7 @@ import {
 } from "@ionic/react";
 import React from "react";
 import { personCircleOutline as personIcon } from "ionicons/icons";
-import { currentWallet } from "../../Models/LoadData";
-import { Debt } from "../../Models/Debts";
+import { currentWallet, Debt } from "../../Necessary/components";
 
 const ReceivableGroup: React.FC = () => {
 

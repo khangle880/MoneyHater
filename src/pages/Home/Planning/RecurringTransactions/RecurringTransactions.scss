@@ -1,0 +1,69 @@
+ion-content.recurring-transactions-content {
+  --background: #f4f6f9 !important;
+
+  .recurring-transactions-card {
+    margin-top: 0px;
+    margin-bottom: 15px;
+    margin-inline-start: 5px;
+    margin-inline-end: 5px;
+    box-shadow: none !important;
+
+    .detail-container {
+      margin: 5%;
+      display: flex;
+      flex-direction: column;
+
+      div {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        ion-img {
+          width: 40px;
+          height: 40px;
+          padding: 5px;
+          margin-right: 10px;
+          border-radius: 10px;
+          border: 1px smooth #bfbfbf;
+          box-shadow: -2px 2px 5px 1px rgba(0, 0, 255, 0.2);
+        }
+
+        .top-details {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          flex-direction: row;
+          justify-content: space-between;
+
+          .detail-category-name {
+            margin-bottom: 0px;
+            color: black;
+            font-size: 1.35rem;
+            font-weight: 700;
+          }
+
+          .detail-currency {
+            margin-bottom: 0px;
+            color: black;
+            font-size: 1rem;
+            font-weight: 500;
+          }
+        }
+      }
+
+      .bottom-details {
+        margin-left: 45px;
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        justify-content: space-between;
+
+        p {
+          font-size: 0.8rem;
+          font-weight: 400px;
+          margin: 0;
+        }
+      }
+    }
+  }
+}

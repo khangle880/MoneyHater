@@ -1,0 +1,15 @@
+.expend-color {
+  color: #bf1363 !important;
+}
+
+.income-color {
+  color: #267ae4 !important;
+}
+
+.centered {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+}

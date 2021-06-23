@@ -14,9 +14,9 @@ import {
   IonImg,
 } from "@ionic/react";
 import { Wallet, wallets } from "../../Models/Wallets";
-import walletIcon from "../../icons/icons8-coin-wallet.svg";
 import React from "react";
 import { useHistory } from "react-router";
+import { walletIcon } from "../../Necessary/icons";
 
 interface props {
   currentWallet: Wallet;

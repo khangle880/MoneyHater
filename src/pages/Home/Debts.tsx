@@ -5,7 +5,7 @@ import {
   IonContent,
   IonHeader,
   IonLabel,
-  IonPage,
+  IonModal,
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
@@ -27,48 +27,48 @@ const Debts: React.FC = () => {
   }
 
   return (
-    <IonPage>
-      <Route path={`${rootPath}/payable/:id`}>
-        
-      </Route>
-      <Route path={`${rootPath}/receivable/:id`}></Route>
-      <Route>
-        <IonHeader>
-          <IonToolbar>
-            <IonButtons slot="start">
-              <IonBackButton
-                className="icon-padding"
-                defaultHref="/my/account"
-              />
-            </IonButtons>
-            <IonTitle>Debts</IonTitle>
-            <IonButtons slot="end">
-              <IonButton size="large" />
-            </IonButtons>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent className="ion-padding">
-          <IonTabs>
-            <IonRouterOutlet>
-              <Route path={`${rootPath}/payable`}>
-                <PayableGroup />
-              </Route>
-              <Route path={`${rootPath}/receivable`}>
-                <ReceivableGroup />
-              </Route>
-            </IonRouterOutlet>
-            <IonTabBar slot="top">
-              <IonTabButton tab="payable" href={`${rootPath}/payable`}>
-                <IonLabel>Payable</IonLabel>
-              </IonTabButton>
-              <IonTabButton tab="receivable" href={`${rootPath}/receivable`}>
-                <IonLabel>ReceiVable</IonLabel>
-              </IonTabButton>
-            </IonTabBar>
-          </IonTabs>
-        </IonContent>
-      </Route>
-    </IonPage>
+    <IonModal isOpen>
+      <IonRouterOutlet>
+        <Route path={`${rootPath}/payable/:id`}></Route>
+        <Route path={`${rootPath}/receivable/:id`}></Route>
+        <Route>
+          <IonHeader>
+            <IonToolbar>
+              <IonButtons slot="start">
+                <IonBackButton
+                  className="icon-padding"
+                  defaultHref="/my/account"
+                />
+              </IonButtons>
+              <IonTitle>Debts</IonTitle>
+              <IonButtons slot="end">
+                <IonButton size="large" />
+              </IonButtons>
+            </IonToolbar>
+          </IonHeader>
+          <IonContent className="ion-padding">
+            <IonTabs>
+              <IonRouterOutlet>
+                <Route exact path={`${rootPath}/payable`}>
+                  <PayableGroup />
+                </Route>
+                <Route exact path={`${rootPath}/receivable`}>
+                  <ReceivableGroup />
+                </Route>
+              </IonRouterOutlet>
+              <IonTabBar slot="top">
+                <IonTabButton tab="payable" href={`${rootPath}/payable`}>
+                  <IonLabel>Payable</IonLabel>
+                </IonTabButton>
+                <IonTabButton tab="receivable" href={`${rootPath}/receivable`}>
+                  <IonLabel>ReceiVable</IonLabel>
+                </IonTabButton>
+              </IonTabBar>
+            </IonTabs>
+          </IonContent>
+        </Route>
+      </IonRouterOutlet>
+    </IonModal>
   );
 };
 

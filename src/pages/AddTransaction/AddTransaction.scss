@@ -1,0 +1,73 @@
+.toolbar-medium ion-title {
+  font-weight: bold;
+  font-size: larger;
+}
+
+.toolbar-medium ion-button {
+  font-weight: 700;
+  font-size: medium;
+}
+
+.block ion-item {
+  --padding-start: 0px;
+}
+
+.block ion-item ion-icon {
+  width: 24px;
+  height: 24px;
+  padding: 3px;
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+  /* padding: 3px; */
+}
+
+.icon-circle-outline {
+  width: 24px;
+  height: 24px;
+  padding: 3px;
+  background-color: rgb(204, 204, 204);
+  border-radius: 50%;
+}
+
+ion-modal.add-transaction-modal {
+  top: 25%;
+  --max-height: 700px;
+  --border-radius: 15px 15px 0 0;
+
+  ion-backdrop {
+    display: none !important;
+  }
+
+  ion-list.list-container {
+    --padding-bottom: 50%;
+  }
+
+  ion-content.add-transaction-content {
+    --padding-bottom: 16%;
+    ion-button {
+      --background: transparent !important;
+      width: 100px;
+      --color: #3f4881;
+      margin-left: 50%;
+      margin-right: 50%;
+      transform: translate(-50%, 0);
+    }
+  }
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+} 
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+

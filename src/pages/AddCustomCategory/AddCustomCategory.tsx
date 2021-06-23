@@ -18,21 +18,25 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { closeOutline as closeIcon } from "ionicons/icons";
-import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
-import connectIcon from "../../icons/icons8-connect.svg";
 
+//? components
 import {
   addCustomCategories,
   categories,
   Category,
-} from "../../Models/Categories";
-import { Wallet } from "../../Models/Wallets";
-import { useAuth } from "../../auth";
-import { currentWallet } from "../../Models/LoadData";
-import SelectWalletPopover from "../SelectWallet/SelectWalletPopover";
-import SelectIconPopover from "../SelectIcon/SelectIconPopover";
+  currentWallet,
+  SelectIconPopover,
+  SelectWalletPopover,
+  useAuth,
+  Wallet,
+} from "../../Necessary/components";
+
+//? Icon
+import { connectIcon } from "../../Necessary/icons";
+
+import { closeOutline as closeIcon } from "ionicons/icons";
+import React, { useEffect, useState } from "react";
+import { useHistory, useRouteMatch } from "react-router-dom";
 
 const AddCustomCategory: React.FC<{ type: string; beforePath: string }> = ({
   type: newCategoryType,
@@ -50,6 +54,7 @@ const AddCustomCategory: React.FC<{ type: string; beforePath: string }> = ({
   });
 
   const history = useHistory();
+  const rootPath = useRouteMatch().url;
   const { userId } = useAuth();
   const alertMessage = "You must fill all fields";
 
@@ -64,7 +69,7 @@ const AddCustomCategory: React.FC<{ type: string; beforePath: string }> = ({
         parent: parentCategory.id,
       };
       addCustomCategories(newRawTransaction, userId!, wallet);
-      history.goBack();
+      history.replace(rootPath.substring(0, rootPath.length - 11));
     } else setShowAlert(true);
   };
 
@@ -102,18 +107,20 @@ const AddCustomCategory: React.FC<{ type: string; beforePath: string }> = ({
               <IonLabel>Expense</IonLabel>
               <IonCheckbox
                 checked={type === "Expense"}
-                onIonChange={(event) =>
-                  event.detail.checked ? setType("Expense") : setType("Income")
-                }
+                onIonChange={(event) => {
+                  event.detail.checked ? setType("Expense") : setType("Income");
+                  setParentCategory(undefined);
+                }}
               />
             </IonItem>
             <IonItem>
               <IonLabel>Income</IonLabel>
               <IonCheckbox
                 checked={type === "Income"}
-                onIonChange={(event) =>
-                  event.detail.checked ? setType("Income") : setType("Expense")
-                }
+                onIonChange={(event) => {
+                  event.detail.checked ? setType("Income") : setType("Expense");
+                  setParentCategory(undefined);
+                }}
               />
             </IonItem>
           </IonItem>
@@ -154,8 +161,6 @@ const AddCustomCategory: React.FC<{ type: string; beforePath: string }> = ({
           setShowPopoverRootCategory({ showPopover: false, event: undefined })
         }
       >
-        {console.log(type)}
-        {console.log(categories?.filter((child) => child.type === type))}
         <IonList>
           {categories
             ?.filter((child) => child.type === type)

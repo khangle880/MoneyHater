@@ -21,36 +21,44 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
+
+//? Icon
+import {
+  calendarIcon,
+  dollarIcon,
+  eventIcon,
+  noteIcon,
+  partnerIcon,
+  questionIcon,
+  recurringIcon,
+  remindIcon,
+} from "../../Necessary/icons";
+
+//? components
+import {
+  addRecurringTransaction,
+  availableTimeRange,
+  Category,
+  Currency,
+  currentWallet,
+  Partner,
+  SelectCategory,
+  SelectCurrencyUnit,
+  SelectPartner,
+  SelectTimeRange,
+  SelectWalletEvent,
+  SelectWalletPopover,
+  TakeNote,
+  TimeRange,
+  useAuth,
+  Wallet,
+  WalletEvent,
+} from "../../Necessary/components";
+
 import { closeOutline as closeIcon } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
 import { Route, useHistory } from "react-router-dom";
-import SelectCurrencyUnit from "../Currency/SelectCurrencyUnit";
-import SelectCategory from "../Category/SelectCategory";
-import questionSvg from "../../icons/icons8-question.svg";
-import noteIcon from "../../icons/icons8-note.svg";
-import dollarIcon from "../../icons/icons8-us-dollar.svg";
-import calendarIcon from "../../icons/icons8-calendar.svg";
-import partnerIcon from "../../icons/icons8-user-account.svg";
-import eventIcon from "../../icons/icons8-event.svg";
-import remindIcon from "../../icons/icons8-alarm-clock.svg";
-import { Currency } from "../../Models/Currencies";
-import TakeNote from "../Note/TakeNote";
-import { Category } from "../../Models/Categories";
-import { Wallet } from "../../Models/Wallets";
-import SelectPartner from "../Partner/SelectPartner";
-import { Partner } from "../../Models/Recent_Partners";
-import { WalletEvent } from "../../Models/Events";
-import SelectWalletEvent from "../SelectWalletEvent/SelectWalletEvent";
-import { useAuth } from "../../auth";
-import { currentWallet } from "../../Models/LoadData";
-import {
-  availableTimeRange,
-  TimeRange,
-} from "../../Models/LocalModels/TimeRange";
 import dayjs from "dayjs";
-import SelectTimeRange from "../TimeRange/SelectTimeRange";
-import { addRecurringTransaction } from "../../Models/Recurring_Transactions";
-import SelectWalletPopover from "../SelectWallet/SelectWalletPopover";
 
 const AddRecurringTransaction: React.FC = () => {
   const [isMore, setIsMore] = useState(false);
@@ -65,6 +73,7 @@ const AddRecurringTransaction: React.FC = () => {
   const [remind, setRemind] = useState("");
   const [excludeFromReport, setExcludeFromReport] = useState(false);
   const [timeRange, setTimeRange] = useState<TimeRange>(availableTimeRange[0]);
+  const [frequency, setFrequency] = useState(0);
 
   const history = useHistory();
   const { userId } = useAuth();
@@ -90,7 +99,7 @@ const AddRecurringTransaction: React.FC = () => {
   };
 
   const handleSave = () => {
-    if (amount && category && timeRange) {
+    if (amount && category && timeRange && frequency) {
       const newRawTransaction = {
         amount: amount,
         currency: currencyUnit!.id,
@@ -108,6 +117,7 @@ const AddRecurringTransaction: React.FC = () => {
         exclude_from_report: excludeFromReport,
         from: timeRange.from,
         to: timeRange.to,
+        frequency: frequency,
         state: true,
       };
       addRecurringTransaction(newRawTransaction, userId!, wallet);
@@ -118,8 +128,9 @@ const AddRecurringTransaction: React.FC = () => {
   return (
     <IonModal isOpen={true}>
       <IonRouterOutlet>
-        <Route exact path="/my/recurring-transactions/add/categories">
+        <Route path="/my/recurring-transactions/add/categories">
           <SelectCategory
+            permission={7}
             handleSelect={(data: Category) => setCategory(data)}
           />
         </Route>
@@ -196,7 +207,7 @@ const AddRecurringTransaction: React.FC = () => {
                   <IonRippleEffect />
                   <IonImg
                     slot="start"
-                    src={category?.icon || questionSvg}
+                    src={category?.icon || questionIcon}
                     className="icon"
                   />
                   <IonInput
@@ -230,6 +241,18 @@ const AddRecurringTransaction: React.FC = () => {
                     readonly={true}
                     value={formatTimeRange(timeRange)}
                   />
+                </IonItem>
+                {/* FREQUENCY */}
+                <IonItem lines="inset">
+                  <IonIcon slot="start" icon={recurringIcon} />
+                  <IonInput
+                    type="number"
+                    value={frequency}
+                    onIonChange={(event) =>
+                      setFrequency(parseFloat(event.detail.value!))
+                    }
+                  />
+                  <IonLabel>days</IonLabel>
                 </IonItem>
                 {/* WALLET ITEM */}
                 <SelectWalletPopover

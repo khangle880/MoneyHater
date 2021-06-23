@@ -12,8 +12,8 @@ import {
 import { Wallet, wallets } from "../../Models/Wallets";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
-import { setCurrentWallet } from "../../Models/LoadData";
 import WalletItem from "./WalletItem";
+import { setCurrentWallet } from "../../Necessary/components";
 
 const ManageWallets: React.FC<{ initNeedRender: boolean }> = ({
   initNeedRender,

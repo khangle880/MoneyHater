@@ -8,10 +8,11 @@ import {
   IonPopover,
   IonThumbnail,
 } from "@ionic/react";
-import walletIcon from "../../icons/icons8-coin-wallet.svg";
 
 import React, { useState } from "react";
 import { Wallet, wallets } from "../../Models/Wallets";
+import { formatMoney } from "../../Necessary/components";
+import { walletIcon } from "../../Necessary/icons";
 
 interface props {
   wallet: Wallet;
@@ -63,7 +64,9 @@ const SelectWalletPopover: React.FC<props> = ({ wallet, setWallet }) => {
               </IonThumbnail>
               <IonLabel>
                 <h2>{child.name}</h2>
-                <h3>{`${child.balance} ${child.currency_object.symbol}`}</h3>
+                <h3>{` ${formatMoney(child.balance)} ${
+                  child.currency_object.symbol
+                }`}</h3>
               </IonLabel>
             </IonItem>
           ))}

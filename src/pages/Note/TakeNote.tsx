@@ -14,6 +14,8 @@ import React, { useState } from "react";
 import { useHistory } from "react-router";
 import { checkmarkOutline as checkIcon } from "ionicons/icons";
 
+import "./TakeNote.scss";
+
 interface props {
   handleNote: (data: string) => void;
   currentValue: string;
@@ -29,7 +31,7 @@ const TakeNote: React.FC<props> = ({ currentValue, handleNote }) => {
   };
 
   return (
-    <IonPage>
+    <IonPage className="take-note-page">
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">

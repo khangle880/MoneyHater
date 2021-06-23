@@ -16,6 +16,7 @@ export interface RecurringTransaction {
   exclude_from_report: boolean;
   from: string;
   to: string;
+  frequency: number;
   state: boolean;
 }
 

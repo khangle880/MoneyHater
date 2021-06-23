@@ -21,29 +21,38 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
+
+//? Icon
+import {
+  dollarIcon,
+  eventIcon,
+  noteIcon,
+  partnerIcon,
+  questionIcon,
+  remindIcon,
+} from "../../Necessary/icons";
+
+//? components
+import {
+  Category,
+  Currency,
+  currentWallet,
+  Partner,
+  SelectCategory,
+  SelectCurrencyUnit,
+  SelectPartner,
+  SelectWalletEvent,
+  SelectWalletPopover,
+  TakeNote,
+  useAuth,
+  Wallet,
+  WalletEvent,
+} from "../../Necessary/components";
+
 import { closeOutline as closeIcon } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
 import { Route, useHistory } from "react-router-dom";
-import SelectCurrencyUnit from "../Currency/SelectCurrencyUnit";
-import SelectCategory from "../Category/SelectCategory";
-import questionSvg from "../../icons/icons8-question.svg";
-import noteIcon from "../../icons/icons8-note.svg";
-import dollarIcon from "../../icons/icons8-us-dollar.svg";
-import partnerIcon from "../../icons/icons8-user-account.svg";
-import eventIcon from "../../icons/icons8-event.svg";
-import remindIcon from "../../icons/icons8-alarm-clock.svg";
-import { Currency } from "../../Models/Currencies";
-import TakeNote from "../Note/TakeNote";
-import { Category } from "../../Models/Categories";
-import { Wallet } from "../../Models/Wallets";
-import SelectPartner from "../Partner/SelectPartner";
-import { Partner } from "../../Models/Recent_Partners";
-import { WalletEvent } from "../../Models/Events";
-import SelectWalletEvent from "../SelectWalletEvent/SelectWalletEvent";
-import { useAuth } from "../../auth";
-import { currentWallet } from "../../Models/LoadData";
 import { addTransactionModel } from "../../Models/Ready_Executed_Transactions";
-import SelectWalletPopover from "../SelectWallet/SelectWalletPopover";
 
 const AddTransactionModels: React.FC = () => {
   const [isMore, setIsMore] = useState(false);
@@ -94,8 +103,9 @@ const AddTransactionModels: React.FC = () => {
   return (
     <IonModal isOpen={true}>
       <IonRouterOutlet>
-        <Route exact path="/my/transaction-models/add/categories">
+        <Route path="/my/transaction-models/add/categories">
           <SelectCategory
+            permission={7}
             handleSelect={(data: Category) => setCategory(data)}
           />
         </Route>
@@ -167,7 +177,7 @@ const AddTransactionModels: React.FC = () => {
                   <IonRippleEffect />
                   <IonImg
                     slot="start"
-                    src={category?.icon || questionSvg}
+                    src={category?.icon || questionIcon}
                     className="icon"
                   />
                   <IonInput

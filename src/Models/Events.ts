@@ -7,7 +7,6 @@ export interface WalletEvent {
   to: string;
   icon: string;
   currency: string;
-  consume: number;
   state: boolean;
 }
 

@@ -11,8 +11,8 @@ import {
 } from "@ionic/react";
 
 import React, { useState } from "react";
-import questionSvg from "../../icons/icons8-question.svg";
-import { icons } from "../../Models/Icons";
+import { icons } from "../../Necessary/components";
+import { questionIcon } from "../../Necessary/icons";
 
 interface props {
   icon: string;
@@ -29,7 +29,7 @@ const SelectIconPopover: React.FC<props> = ({ icon, setIcon }) => {
     <React.Fragment>
       <IonImg
         slot="start"
-        src={icon === "" ? questionSvg : icon}
+        src={icon === "" ? questionIcon : icon}
         onClick={(e: any) => {
           e.persist();
           setShowPopoverIcon({ showPopover: true, event: e });

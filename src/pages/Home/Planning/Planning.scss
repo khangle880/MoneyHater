@@ -1,0 +1,49 @@
+ion-content.planning-content {
+  --background: #f4f6f9 !important;
+
+  ion-card {
+    margin-top: 0px;
+    margin-bottom: 15px;
+    margin-inline-start: 5px;
+    margin-inline-end: 5px;
+    padding: 10px;
+    box-shadow: none !important;
+
+    div {
+      display: flex;
+      flex-direction: column;
+
+      div {
+        display: flex;
+        flex-direction: row;
+      }
+
+      div:first-child {
+        p {
+          margin: 0px;
+          margin-left: 5px;
+          display: flex;
+          align-items: center;
+          color: rgb(29, 187, 29) !important;
+          font-size: 1rem;
+          font-weight: 700;
+        }
+
+        ion-icon {
+          width: 35px;
+          height: 35px;
+        }
+      }
+
+      p {
+        color: black;
+        margin-left: 40px;
+        margin-top: -5px;
+        font-size: 0.8rem;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+

@@ -123,21 +123,25 @@ export function initWallets(user_id: string) {
           })
         );
 
-        return Promise.all(promiseList).then(() => {
-          // Add sub list to transaction
-          newWallet.transactions.forEach((transaction) => {
-            transactionsRef
-              .doc(transaction.id)
-              .collection("transactions")
-              .get()
-              .then(({ docs }) => {
-                transaction.transactions_list = docs.map(toTransaction);
-              });
+        return Promise.all(promiseList)
+          .then(() => {
+            // Add sub list to transaction
+            return Promise.all(
+              newWallet.transactions.map((transaction) => {
+                return transactionsRef
+                  .doc(transaction.id)
+                  .collection("transactions")
+                  .get()
+                  .then(({ docs }) => {
+                    transaction.transactions_list = docs.map(toTransaction);
+                  });
+              })
+            );
+          })
+          .then(() => {
+            initDebts(newWallet);
+            data.push(newWallet);
           });
-
-          initDebts(newWallet);
-          data.push(newWallet);
-        });
       })
     );
 

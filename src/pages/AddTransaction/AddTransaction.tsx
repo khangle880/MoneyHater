@@ -21,34 +21,87 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import "./AddTransaction.css";
+
+//? Icon
+import {
+  calendarIcon,
+  dollarIcon,
+  eventIcon,
+  noteIcon,
+  partnerIcon,
+  questionIcon,
+  remindIcon,
+} from "../../Necessary/icons";
+
+//? components
+import {
+  Category,
+  Currency,
+  currentWallet,
+  findCurrency,
+  Partner,
+  SelectCategory,
+  SelectCurrencyUnit,
+  SelectPartner,
+  SelectWalletEvent,
+  SelectWalletPopover,
+  TakeNote,
+  useAuth,
+  Wallet,
+  WalletEvent,
+} from "../../Necessary/components";
+
+import "./AddTransaction.scss";
 import { closeOutline as closeIcon } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
 import { Route, useHistory } from "react-router-dom";
-import SelectCurrencyUnit from "../Currency/SelectCurrencyUnit";
-import SelectCategory from "../Category/SelectCategory";
-import questionSvg from "../../icons/icons8-question.svg";
-import noteIcon from "../../icons/icons8-note.svg";
-import dollarIcon from "../../icons/icons8-us-dollar.svg";
-import calendarIcon from "../../icons/icons8-calendar.svg";
-import partnerIcon from "../../icons/icons8-user-account.svg";
-import eventIcon from "../../icons/icons8-event.svg";
-import remindIcon from "../../icons/icons8-alarm-clock.svg";
-import { Currency } from "../../Models/Currencies";
-import TakeNote from "../Note/TakeNote";
-import { Category } from "../../Models/Categories";
-import { Wallet } from "../../Models/Wallets";
-import SelectPartner from "../Partner/SelectPartner";
-import { Partner } from "../../Models/Recent_Partners";
-import { WalletEvent } from "../../Models/Events";
-import SelectWalletEvent from "../SelectWalletEvent/SelectWalletEvent";
-import { useAuth } from "../../auth";
-import { addTransaction } from "../../Models/Transactions";
-import { currentWallet } from "../../Models/LoadData";
-import SelectWalletPopover from "../SelectWallet/SelectWalletPopover";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import _ from "underscore";
+import { addTransaction } from "../../Models/Transactions";
 
 const AddTransaction: React.FC = () => {
+  //? real
+  // const [isMore, setIsMore] = useState(false);
+  // const [showAlert, setShowAlert] = useState(false);
+  // const [amount, setAmount] = useState(0);
+  // const [currencyUnit, setCurrencyUnit] = useState<Currency>();
+  // const [category, setCategory] = useState<Category>();
+  // const [note, setNote] = useState("");
+  // const [date, setDate] = useState(new Date().toISOString());
+  // const [wallet, setWallet] = useState<Wallet>(currentWallet);
+  // const [partner, setPartner] = useState<Partner>();
+  // const [walletEvent, setWalletEvent] = useState<WalletEvent>();
+  // const [remind, setRemind] = useState("");
+  // const [excludeFromReport, setExcludeFromReport] = useState(false);
+
+  //? fake
+  const fake_currency = findCurrency(
+    "00d18157-8cdc-49f5-bae8-7aa239159cc1"
+  ) as Currency;
+
+  const fake_fake = {
+    id: "111111",
+    name: "fake",
+    icon: "https://firebasestorage.googleapis.com/v0/b/moneyhater-e3629.appspot.com/o/icon%2Ficons8-account-64.svg?alt=media&token=6c4b5580-6108-426c-90c0-ed85b1deea15",
+    balance: 50,
+    currency: "00d18157-8cdc-49f5-bae8-7aa239159cc1",
+    enable_notification: true,
+    excluded_from_total: true,
+    state: true,
+    currency_object: fake_currency,
+    members: [],
+    recent_partner: [],
+    debts: {
+      debtsByPartner: [],
+      loansByPartner: [],
+    },
+    categories: [],
+    transactions: [],
+    budgets: [],
+    ready_executed_transaction: [],
+    recurring_transactions: [],
+    events: [],
+  } as Wallet;
   const [isMore, setIsMore] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [amount, setAmount] = useState(0);
@@ -56,7 +109,7 @@ const AddTransaction: React.FC = () => {
   const [category, setCategory] = useState<Category>();
   const [note, setNote] = useState("");
   const [date, setDate] = useState(new Date().toISOString());
-  const [wallet, setWallet] = useState<Wallet>(currentWallet);
+  const [wallet, setWallet] = useState<Wallet>(fake_fake);
   const [partner, setPartner] = useState<Partner>();
   const [walletEvent, setWalletEvent] = useState<WalletEvent>();
   const [remind, setRemind] = useState("");
@@ -95,24 +148,16 @@ const AddTransaction: React.FC = () => {
     } else setShowAlert(true);
   };
 
-  const test = () => {
-    const grouped = _.chain(currentWallet.transactions)
-      .groupBy("with")
-      .map(function (value, key) {
-        return {
-          type: key,
-          transactions: value,
-        };
-      })
-      .value();
-  };
-
-
   return (
-    <IonModal isOpen={true}>
+    <IonModal
+      cssClass="add-transaction-modal"
+      isOpen={true}
+      showBackdrop={false}
+    >
       <IonRouterOutlet>
         <Route path="/my/transactions/add/categories">
           <SelectCategory
+            permission={7}
             handleSelect={(data: Category) => setCategory(data)}
           />
         </Route>
@@ -141,26 +186,26 @@ const AddTransaction: React.FC = () => {
         </Route>
         {/* ----Home Route---- */}
         <Route exact path="/my/transactions/add">
-          <IonPage>
-            <IonHeader>
-              <IonToolbar className="toolbar-medium">
-                <IonButtons slot="start">
-                  <IonBackButton
-                    icon={closeIcon}
-                    defaultHref="/my/transactions"
-                    text=""
-                  />
-                </IonButtons>
-                <IonTitle>Add Transaction</IonTitle>
-                <IonButtons slot="end">
-                  <IonButton size="large" onClick={() => handleSave()}>
-                    SAVE
-                  </IonButton>
-                </IonButtons>
-              </IonToolbar>
-            </IonHeader>
-            <IonContent className="ion-padding">
-              <IonList className="block">
+          <IonHeader>
+            <IonToolbar className="toolbar-medium">
+              <IonButtons slot="start">
+                <IonBackButton
+                  icon={closeIcon}
+                  defaultHref="/my/transactions"
+                  text=""
+                />
+              </IonButtons>
+              <IonTitle>Add Transaction</IonTitle>
+              <IonButtons slot="end">
+                <IonButton size="large" onClick={() => handleSave()}>
+                  SAVE
+                </IonButton>
+              </IonButtons>
+            </IonToolbar>
+          </IonHeader>
+          <IonContent className="ion-padding add-transaction-content ">
+            <IonPage>
+              <IonList className="block list-container">
                 {/* AMOUNT ITEM */}
                 <IonItem lines="inset">
                   <IonIcon slot="start" icon={dollarIcon} />
@@ -180,11 +225,12 @@ const AddTransaction: React.FC = () => {
                 <IonItem
                   routerLink="/my/transactions/add/categories"
                   lines="inset"
+                  detail={false}
                 >
                   <IonRippleEffect />
                   <IonImg
                     slot="start"
-                    src={category?.icon || questionSvg}
+                    src={category?.icon || questionIcon}
                     className="icon"
                   />
                   <IonInput
@@ -217,10 +263,10 @@ const AddTransaction: React.FC = () => {
                   wallet={wallet}
                   setWallet={(data: Wallet) => setWallet(data)}
                 />
-                {/* ADD MORE DETAILS */}
+                {/* MORE DETAILS */}
                 {!isMore && (
                   <IonButton onClick={() => setIsMore(true)}>
-                    Add More Details
+                    More Details
                   </IonButton>
                 )}
                 {isMore && (
@@ -288,8 +334,8 @@ const AddTransaction: React.FC = () => {
                   </IonList>
                 )}
               </IonList>
-            </IonContent>
-          </IonPage>
+            </IonPage>
+          </IonContent>
         </Route>
         {/* ----Home Route---- */}
       </IonRouterOutlet>

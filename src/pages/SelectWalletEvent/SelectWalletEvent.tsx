@@ -14,7 +14,7 @@ import {
   IonImg,
 } from "@ionic/react";
 import { useHistory } from "react-router";
-import { WalletEvent } from "../../Models/Events";
+import { WalletEvent } from "../../Necessary/components";
 
 interface props {
   listEvent: WalletEvent[];

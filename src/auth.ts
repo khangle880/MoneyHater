@@ -39,10 +39,10 @@ export function useAuthInit(): AuthInit {
 
   useEffect(() => {
     if (authInit.auth && authInit.auth.userId) {
-      loadData(authInit.auth.userId).then(() => {
+      // loadData(authInit.auth.userId).then(() => {
         const auth = authInit.auth;
         setAuthInit({ loading: false, auth, loadedData: true });
-      });
+      // });
     }
 
     if (!authInit.auth?.loggedIn) {

@@ -11,12 +11,10 @@ import {
 } from "@ionic/react";
 import React, { useState } from "react";
 import { ellipsisHorizontalSharp as selectsIcon } from "ionicons/icons";
-import { Wallet, wallets } from "../../Models/Wallets";
-import walletIcon from "../../icons/icons8-coin-wallet.svg";
-import walletBlockedIcon from "../../icons/icons8-block-wallet.svg";
 import { firestore } from "../../firebase";
-import { useAuth } from "../../auth";
-import useLongPress from "../../customHook/useLongPress";
+import useLongPress from "../../CustomFunction/useLongPress";
+import { formatMoney, useAuth, Wallet, wallets } from "../../Necessary/components";
+import { walletBlockedIcon, walletIcon } from "../../Necessary/icons";
 
 interface props {
   currentWallet: Wallet;
@@ -84,7 +82,9 @@ const WalletItem: React.FC<props> = ({
         </IonThumbnail>
         <IonLabel {...longPressEvent}>
           <h2>{currentWallet.name}</h2>
-          <h3>{`${currentWallet.balance} ${currentWallet.currency_object.symbol}`}</h3>
+          <h3>{` ${formatMoney(currentWallet.balance)} ${
+            currentWallet.currency_object.symbol
+          }`}</h3>
         </IonLabel>
         <IonButton
           onClick={(e: any) => {

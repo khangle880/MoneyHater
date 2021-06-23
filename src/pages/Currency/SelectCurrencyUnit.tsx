@@ -15,7 +15,8 @@ import {
 } from "@ionic/react";
 import React from "react";
 import { useHistory } from "react-router";
-import { currencies, Currency } from "../../Models/Currencies";
+import { currencies } from "../../Models/Currencies";
+import { Currency } from "../../Necessary/components";
 
 interface props {
   handleSelect: (data: Currency) => void;

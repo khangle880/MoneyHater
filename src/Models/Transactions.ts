@@ -26,7 +26,12 @@ export function toTransaction(doc: any): Transaction {
   return transaction as Transaction;
 }
 
-export function addTransaction(data: any, userId: string, wallet: Wallet) {
+export function addTransaction(
+  data: any,
+  userId: string,
+  wallet: Wallet,
+  rootTransaction?: Transaction
+) {
   const category = { ...data.category } as Category;
   data.category = data.category.id;
 
@@ -39,13 +44,58 @@ export function addTransaction(data: any, userId: string, wallet: Wallet) {
     .add(data)
     .then((docRef) => {
       const id = docRef.id;
-      wallet.transactions.push({ id, ...data } as Transaction);
+      const newTransaction = { id, ...data } as Transaction;
+      wallet.transactions.push(newTransaction);
       wallet.balance +=
-        category?.type === "Expense"
+        category?.type === "Expense" ||
+        category.name === "Loan" ||
+        category.name === "Repayment"
           ? -data.amount_by_wallet
-          : category?.type === "Income"
+          : category?.type === "Income" ||
+            category.name === "Debt" ||
+            category.name === "Debt Collection"
           ? data.amount_by_wallet
           : 0;
+
+      if (category.name === "Loan") {
+        const ref = wallet.debts.loansByPartner.find(
+          (child) => child.with === data.with
+        );
+        if (ref) ref.transactions.push(newTransaction);
+        else
+          wallet.debts.loansByPartner.push({
+            with: data.with,
+            transactions: [newTransaction],
+          });
+      }
+
+      if (category.name === "Debt") {
+        const ref = wallet.debts.debtsByPartner.find(
+          (child) => child.with === data.with
+        );
+        if (ref) ref.transactions.push(newTransaction);
+        else
+          wallet.debts.debtsByPartner.push({
+            with: data.with,
+            transactions: [newTransaction],
+          });
+      }
+
+      if (
+        category.name === "Debt Collection" ||
+        category.name === "Repayment"
+      ) {
+        rootTransaction?.transactions_list?.push(newTransaction);
+        firestore
+          .collection("users")
+          .doc(userId)
+          .collection("wallets")
+          .doc(wallet.id)
+          .collection("transactions")
+          .doc(rootTransaction?.id)
+          .collection("transactions")
+          .add(data);
+      }
     });
 
   firestore
@@ -55,26 +105,17 @@ export function addTransaction(data: any, userId: string, wallet: Wallet) {
     .doc(wallet.id)
     .update({
       balance: firebase.firestore.FieldValue.increment(
-        category?.type === "Expense"
+        category?.type === "Expense" ||
+          category.name === "Loan" ||
+          category.name === "Repayment"
           ? -data.amount_by_wallet
-          : category?.type === "Income"
+          : category?.type === "Income" ||
+            category.name === "Debt" ||
+            category.name === "Debt Collection"
           ? data.amount_by_wallet
           : 0
       ),
     });
-
-  // if (category.type === "debt&loan") {
-  //   if (category.name === "Loan") {
-
-  //   }
-  //   if (category.name === "Debt Collection") {
-  //   }
-
-  //   if (category.name === "Debt") {
-  //   }
-  //   if (category.name === "Repayment") {
-  //   }
-  // }
 }
 
 // export var transactions: Transaction[] = [];

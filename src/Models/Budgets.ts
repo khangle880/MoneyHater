@@ -6,7 +6,6 @@ import { Wallet } from "./Wallets";
 export interface Budget {
   id: string;
   goal_value: number;
-  consume: number;
   category: string;
   from: string;
   to: string;
