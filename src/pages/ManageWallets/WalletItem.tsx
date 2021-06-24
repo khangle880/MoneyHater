@@ -11,19 +11,24 @@ import {
 } from "@ionic/react";
 import React, { useState } from "react";
 import { ellipsisHorizontalSharp as selectsIcon } from "ionicons/icons";
-import { firestore } from "../../firebase";
 import useLongPress from "../../CustomFunction/useLongPress";
-import { formatMoney, useAuth, Wallet, wallets } from "../../Necessary/components";
+import {
+  deleteWallet,
+  formatMoney,
+  switchWalletState,
+  useAuth,
+  Wallet,
+} from "../../Necessary/components";
 import { walletBlockedIcon, walletIcon } from "../../Necessary/icons";
 
 interface props {
-  currentWallet: Wallet;
+  wallet: Wallet;
   handleSelect: () => void;
   handleDeleteWallet: () => void;
 }
 
 const WalletItem: React.FC<props> = ({
-  currentWallet,
+  wallet,
   handleSelect,
   handleDeleteWallet,
 }) => {
@@ -40,7 +45,7 @@ const WalletItem: React.FC<props> = ({
   };
 
   const onClick = () => {
-    if (currentWallet.state) handleSelect();
+    if (wallet.state) handleSelect();
   };
 
   const defaultOptions = {
@@ -49,28 +54,12 @@ const WalletItem: React.FC<props> = ({
   };
   const longPressEvent = useLongPress(onLongPress, onClick, defaultOptions);
 
-  const switchWalletState = () => {
-    currentWallet.state = !currentWallet.state;
-    return firestore
-      .collection("users")
-      .doc(userId)
-      .collection("wallets")
-      .doc(currentWallet.id)
-      .update({ state: currentWallet.state });
+  const switchState = () => {
+    switchWalletState(userId!, wallet);
   };
 
   const handleDelete = () => {
-    const index = wallets.indexOf(currentWallet);
-    if (index > -1) {
-      wallets.splice(index, 1);
-    }
-    firestore
-      .collection("users")
-      .doc(userId)
-      .collection("wallets")
-      .doc(currentWallet.id)
-      .delete();
-
+    deleteWallet(userId!, wallet);
     handleDeleteWallet();
   };
 
@@ -78,12 +67,12 @@ const WalletItem: React.FC<props> = ({
     <React.Fragment>
       <IonItem>
         <IonThumbnail slot="start" {...longPressEvent}>
-          <IonImg src={currentWallet.state ? walletIcon : walletBlockedIcon} />
+          <IonImg src={wallet.state ? walletIcon : walletBlockedIcon} />
         </IonThumbnail>
         <IonLabel {...longPressEvent}>
-          <h2>{currentWallet.name}</h2>
-          <h3>{` ${formatMoney(currentWallet.balance)} ${
-            currentWallet.currency_object.symbol
+          <h2>{wallet.name}</h2>
+          <h3>{` ${formatMoney(wallet.balance)} ${
+            wallet.currency_object.symbol
           }`}</h3>
         </IonLabel>
         <IonButton
@@ -97,6 +86,7 @@ const WalletItem: React.FC<props> = ({
         </IonButton>
       </IonItem>
       <IonPopover
+        cssClass="wallet-item-popover"
         event={popoverOption.event}
         isOpen={popoverOption.showPopover}
         onDidDismiss={() =>
@@ -105,40 +95,45 @@ const WalletItem: React.FC<props> = ({
       >
         <IonList>
           <IonButton
-            routerLink={`/my/manage-wallets/${currentWallet.id}/share`}
+            routerLink={`/my/manage-wallets/${wallet.id}/share`}
+            expand="full"
           >
             Share
           </IonButton>
-          {currentWallet.state && (
+          {wallet.state && (
             <IonButton
-              routerLink={`/my/manage-wallets/${currentWallet.id}/transfer-money`}
+              routerLink={`/my/manage-wallets/${wallet.id}/transfer-money`}
+              expand="full"
             >
               Transfer money
             </IonButton>
           )}
-          {currentWallet.state && (
+          {wallet.state && (
             <IonButton
               onClick={() => {
                 console.log("hello");
               }}
+              expand="full"
             >
               Edit
             </IonButton>
           )}
           <IonButton
+            expand="full"
             onClick={(e: any) => {
-              switchWalletState();
+              switchState();
               e.persist();
               setShowPopoverOption({ showPopover: false, event: undefined });
             }}
           >
-            {currentWallet.state ? "Block" : "Unblock"}
+            {wallet.state ? "Block" : "Unblock"}
           </IonButton>
           <IonButton
+            expand="full"
             onClick={(e: any) => {
               e.persist();
               setShowPopoverOption({ showPopover: false, event: undefined });
-              if (currentWallet.state) {
+              if (wallet.state) {
                 setShowAlert(true);
               } else handleDelete();
             }}

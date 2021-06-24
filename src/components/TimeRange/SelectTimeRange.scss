@@ -1,0 +1,57 @@
+ion-content.time-range-content {
+  ion-list {
+    ion-item {
+      div.time-label-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+
+        p:first-child {
+          font-size: 1rem;
+          font-weight: 700;
+        }
+
+        p:last-child {
+          font-weight: 500;
+          color: #267ae4;
+        }
+      }
+    }
+  }
+}
+
+ion-popover.time-range-popover {
+  div.time-label-popover {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 10px;
+    margin-right: 10px;
+
+    ion-datetime {
+      color: #267ae4 !important;
+      --padding-start: 0;
+      --padding-end: 0;
+    }
+  }
+  div.time-buttons-popover {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+
+    ion-button {
+      width: 50%;
+    }
+
+    ion-button.time-popover-select {
+      --background: #39A2DB !important;
+      --border-radius: 0 0 10px 0;
+      margin-right: 0;
+      --color: #E8F0F2 !important;
+    }
+  }
+ 
+}

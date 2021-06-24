@@ -9,7 +9,6 @@ import {
   IonAvatar,
   IonItem,
   IonLabel,
-  IonBackButton,
 } from "@ionic/react";
 
 import {
@@ -19,6 +18,8 @@ import {
   appsSharp,
   keySharp,
   settingsSharp,
+  bookmarks,
+  remove
 } from "ionicons/icons";
 
 import { auth } from "../../firebase";
@@ -30,6 +31,7 @@ import {
   premiumIcon,
   storeIcon,
 } from "../../Necessary/icons";
+import { currentWallet } from "../../Necessary/components";
 
 const ProfilePage: React.FC = () => {
   return (
@@ -58,25 +60,9 @@ const ProfilePage: React.FC = () => {
           </div>
 
           <div className="profile-details">
-            <div className="profile-detail profile-income">
-              <p
-                style={{
-                  fontSize: 20,
-                  color: "#293B5F",
-                }}
-              >
-                $8900
-              </p>
-              <p style={{ fontSize: 12 }}>Income</p>
-            </div>
-            <div className="profile-detail expenses">
-              <p style={{ fontSize: 20, color: "#293B5F" }}>$890</p>
-              <p style={{ fontSize: 12 }}>Expenses</p>
-            </div>
-            <div className="profile-detail profile-loan">
-              <p style={{ fontSize: 20, color: "#293B5F" }}>$89</p>
-              <p style={{ fontSize: 12 }}>Loan</p>
-            </div>
+            <IonIcon icon={remove}/>
+            <p>{currentWallet.name}</p>
+            <IonIcon icon={remove}/>
           </div>
         </div>
 
@@ -111,17 +97,22 @@ const ProfilePage: React.FC = () => {
           <IonCard className="card-items">
             <IonItem routerLink="/my/my-profile" detail={false}>
               <IonIcon icon={personSharp} />
-              <IonLabel>My Profile</IonLabel>
+              <IonLabel>Profile</IonLabel>
               <IonIcon icon={chevronForwardOutline} />
             </IonItem>
             <IonItem routerLink="/my/manage-wallets" detail={false}>
               <IonIcon icon={walletSharp} />
-              <IonLabel>My Wallets</IonLabel>
+              <IonLabel>Wallets</IonLabel>
+              <IonIcon icon={chevronForwardOutline} />
+            </IonItem>
+            <IonItem routerLink="/my/profile/debts" detail={false}>
+              <IonIcon icon={bookmarks} />
+              <IonLabel>Debts</IonLabel>
               <IonIcon icon={chevronForwardOutline} />
             </IonItem>
             <IonItem>
               <IonIcon icon={appsSharp} />
-              <IonLabel>My Categories</IonLabel>
+              <IonLabel>Categories</IonLabel>
               <IonIcon icon={chevronForwardOutline} />
             </IonItem>
           </IonCard>

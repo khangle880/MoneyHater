@@ -14,6 +14,17 @@ export function toPartner(doc: any): Partner {
   return partner as Partner;
 }
 
+export function generatePartner(name: string | undefined): Partner {
+  const partner: any = {
+    id:
+      Math.random().toString(36).substring(2, 15) +
+      Math.random().toString(36).substring(2, 15),
+    name: name ? name : "",
+    time: new Date().toISOString(),
+  };
+  return partner as Partner;
+}
+
 export var recentPartners: Partner[] = [];
 
 export function clearRecentPartners() {

@@ -83,7 +83,7 @@ export const fakeCategories = () => {
   const data = [
     {
       id: "11249",
-      type: "Expense",
+      type: "Income",
       name: "back-end",
       icon: "https://firebasestorage.googleapis.com/v0/b/moneyhater-e3629.appspot.com/o/icon%2Ficons8-bank-64.svg?alt=media&token=6c5a66f1-2600-49bb-a1a5-484c32371809",
       children: [
@@ -474,6 +474,12 @@ export const fakeCategories = () => {
           type: "Expense",
           name: "JBOD",
           icon: "https://firebasestorage.googleapis.com/v0/b/moneyhater-e3629.appspot.com/o/icon%2Ficons8-bank-64.svg?alt=media&token=6c5a66f1-2600-49bb-a1a5-484c32371809",
+        },
+        {
+          id: "dGux8eIeZ9GWjPxLpps4",
+          type: "Expense",
+          name: "Other Expense",
+          icon: "https://firebasestorage.googleapis.com/v0/b/moneyhater-e3629.appspot.com/o/icon%2Ficons8-used-product-64.svg?alt=media&token=045e8568-6cdc-4151-97dc-b7295cabc0a8",
         },
       ],
     },

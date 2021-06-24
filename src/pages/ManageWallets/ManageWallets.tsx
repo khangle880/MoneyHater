@@ -54,8 +54,8 @@ const ManageWallets: React.FC<{ initNeedRender: boolean }> = ({
         <IonList>
           {wallets.map((child) => (
             <WalletItem
-              currentWallet={child}
-              handleDeleteWallet={() => forceRender()}
+              wallet={child}
+              handleDeleteWallet={forceRender}
               handleSelect={() => handleSelectWallet(child)}
               key={child.id}
             />

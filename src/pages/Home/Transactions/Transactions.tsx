@@ -1,6 +1,4 @@
 import {
-  IonFab,
-  IonFabButton,
   IonLabel,
   IonContent,
   IonPage,
@@ -12,12 +10,7 @@ import {
 } from "@ionic/react";
 //? ICON
 import React, { useEffect, useState } from "react";
-import {
-  currentWallet,
-  findCategory,
-  Transaction,
-  wallets,
-} from "../../../Necessary/components";
+import { currentWallet, Transaction } from "../../../Necessary/components";
 import TransactionsItem from "./TransactionItem";
 
 //? STYLED
@@ -42,21 +35,16 @@ import dayjs from "dayjs";
 
 const Transactions: React.FC = () => {
   const history = useHistory();
-  const [transactions, setTransactions] =
-    useState<{ date: string; transactions: Transaction[] }[]>();
+  const [transactions, setTransactions] = useState<Transaction[]>(
+    currentWallet.transactions
+  );
+  const [needRender, setNeedRender] = useState(false);
 
   useEffect(() => {
-    const grouped = _.chain(currentWallet.transactions)
-      .groupBy("executed_time")
-      .map(function (value, key) {
-        return {
-          date: key,
-          transactions: value,
-        };
-      })
-      .value();
-    setTransactions(grouped);
-  }, []);
+    setTimeout(() => {
+      setNeedRender(!needRender);
+    }, 2000);
+  }, [needRender]);
 
   const RedirectToProfile = () => {
     history.push("/my/profile");
@@ -109,11 +97,29 @@ const Transactions: React.FC = () => {
     setIsIconLoanActive(true);
   };
 
-  const transactionsToView = (
-    data: { date: string; transactions: Transaction[] }[] | undefined
-  ) => {
-    if (transactions) {
-      return transactions.map((byDate) => {
+  const transactionsToView = (data: Transaction[] | undefined) => {
+    if (data) {
+      const newData = [...data];
+      newData.forEach(
+        (child) =>
+          (child.executed_time = dayjs(child.executed_time)
+            .startOf("d")
+            .toISOString())
+      );
+
+      const grouped = _.chain(newData)
+        .sortBy("executed_time")
+        .reverse()
+        .groupBy("executed_time")
+        .map(function (value, key) {
+          return {
+            date: key,
+            transactions: value,
+          };
+        })
+        .value();
+
+      return grouped.map((byDate) => {
         const dateTransactions = dayjs(byDate.date);
         const diff = dayjs().diff(dateTransactions);
         var date =
@@ -133,7 +139,13 @@ const Transactions: React.FC = () => {
             <div className="recent-container">
               <div className="recent-items">
                 {byDate.transactions.map((child) => (
-                  <TransactionsItem key={child.id} data={child} />
+                  <TransactionsItem
+                    key={child.id}
+                    updateTransactions={(newData: Transaction[]) => {
+                      setTransactions({ ...newData });
+                    }}
+                    data={child}
+                  />
                 ))}
               </div>
             </div>
@@ -191,14 +203,14 @@ const Transactions: React.FC = () => {
               onClick={IconSendClick}
             >
               <IonIcon icon={walletOutline} />
-              <p>Send</p>
+              <p>Transfer</p>
             </span>
             <span
               className={`${isIconDebtActive ? "active" : ""}`}
               onClick={IconRequestClick}
             >
               <IonIcon icon={gitPullRequestOutline} />
-              <p>Request</p>
+              <p>Debt</p>
             </span>
             <span
               className={`${isIconLoanActive ? "active" : ""}`}
@@ -212,7 +224,7 @@ const Transactions: React.FC = () => {
               onClick={IconDepositClick}
             >
               <IonIcon icon={cashOutline} />
-              <p>Topup</p>
+              <p>Deposit</p>
             </span>
           </div>
         </div>

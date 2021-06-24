@@ -218,6 +218,14 @@ ion-content.transaction-content {
                 height: 20px;
               }
             }
+            
+            ion-item-option.item-option-create {
+              --background: #267ae4 !important;
+            }
+
+            ion-item-option.item-option-delete {
+              --background: #bf1363 !important;
+            }
 
             ion-img {
               // font-size: 30px;

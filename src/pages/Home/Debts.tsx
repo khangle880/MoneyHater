@@ -15,8 +15,8 @@ import {
 } from "@ionic/react";
 import React from "react";
 import { Redirect, Route, useLocation, useRouteMatch } from "react-router";
-import PayableGroup from "../Debts/PayableGroup";
-import ReceivableGroup from "../Debts/ReceivableGroup";
+import PayableGroup from "../../components/Debts/PayableGroup";
+import ReceivableGroup from "../../components/Debts/ReceivableGroup";
 
 const Debts: React.FC = () => {
   const rootPath = useRouteMatch().url;

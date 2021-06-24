@@ -1,37 +1,40 @@
 //? Components
-export { default as SelectWalletEvent } from "../pages/SelectWalletEvent/SelectWalletEvent";
-export { default as SelectWalletPopover } from "../pages/SelectWallet/SellectWalletPopover/SelectWalletPopover";
-export { default as SelectIconPopover } from "../pages/SelectIcon/SelectIconPopover";
-export { default as SelectCategory } from "../pages/Category/SelectCategory";
-export { default as SelectCurrencyUnit } from "../pages/Currency/SelectCurrencyUnit";
-export { default as SelectPartner } from "../pages/Partner/SelectPartner";
-export { default as SelectTimeRange } from "../pages/TimeRange/SelectTimeRange";
-export { default as TakeNote } from "../pages/Note/TakeNote";
+export { default as SelectWalletEvent } from "../components/SelectWalletEvent/SelectWalletEvent";
+export { default as SelectWalletPopover } from "../components/SelectWallet/SellectWalletPopover/SelectWalletPopover";
+export { default as SelectIconPopover } from "../components/SelectIcon/SelectIconPopover";
+export { default as SelectCategory } from "../components/Category/SelectCategory";
+export { default as SelectCurrencyUnit } from "../components/Currency/SelectCurrencyUnit";
+export { default as SelectPartner } from "../components/Partner/SelectPartner";
+export { default as SelectTimeRange } from "../components/TimeRange/SelectTimeRange";
+export { default as TakeNote } from "../components/Note/TakeNote";
+export { default as AddCustomCategory } from "../pages/Add/AddCustomCategory/AddCustomCategory";
 
 //---- transactions
 export { default as Transactions } from "../pages/Home/Transactions/Transactions";
-export { default as AddTransaction } from "../pages/AddTransaction/AddTransaction";
+export { default as AddTransaction } from "../pages/Add/AddTransaction/AddTransaction";
+export { default as ViewTransaction } from "../pages/Add/AddTransaction/ViewTransaction";
+export { default as EditTransaction } from "../pages/Add/AddTransaction/EditTransaction";
 
 //---- budgets
 export { default as Budgets } from "../pages/Home/Planning/Budgets/Budgets";
-export { default as AddBudget } from "../pages/AddBudget/AddBudget";
+export { default as AddBudget } from "../pages/Add/AddBudget/AddBudget";
 
 //---- transaction models
 export { default as TransactionModels } from "../pages/Home/Planning/TransactionModels/TransactionModels";
-export { default as AddTransactionModel } from "../pages/AddTransactionModel/AddTransactionModel";
+export { default as AddTransactionModel } from "../pages/Add/AddTransactionModel/AddTransactionModel";
 
 //---- recurring transactions
 export { default as RecurringTransactions } from "../pages/Home/Planning/RecurringTransactions/RecurringTransactions";
-export { default as AddRecurringTransaction } from "../pages/AddRecurringTransactions/AddRecurringTransaction";
+export { default as AddRecurringTransaction } from "../pages/Add/AddRecurringTransactions/AddRecurringTransaction";
 
 //---- events
 export { default as Events } from "../pages/Home/Planning/Events/Events";
-export { default as AddEvent } from "../pages/AddEvent/AddEvent";
+export { default as AddEvent } from "../pages/Add/AddEvent/AddEvent";
 
 //---- manage wallets
 export { default as ManageWallets } from "../pages/ManageWallets/ManageWallets";
-export { default as ShareWallet } from "../pages/ManageWallets/ShareWallet";
-export { default as TransferMoney } from "../pages/ManageWallets/TransferMoney";
+export { default as ShareWallet } from "../pages/ManageWallets/ShareWallet/ShareWallet";
+export { default as TransferMoney } from "../pages/ManageWallets/TransferMoney/TransferMoney";
 
 //---- account
 export { default as SettingsPage } from "../pages/SettingsPage";
@@ -41,7 +44,6 @@ export { default as MyProfilePage } from "../pages/MyProfilePage/MyProfilePage";
 
 //---- other
 export { default as ReportPage } from "../pages/ReportPage/ReportPage";
-export { default as Test } from "../test";
 export { default as Planning } from "../pages/Home/Planning/Planning";
 
 //? models
@@ -55,14 +57,15 @@ export type { TimeRange } from "../Models/LocalModels/TimeRange";
 export type { Debt } from "../Models/Debts";
 export { currencies } from "../Models/Currencies";
 export { setCurrentWallet } from "../Models/LoadData";
-export { wallets } from "../Models/Wallets";
+export { wallets, switchWalletState, deleteWallet } from "../Models/Wallets";
 export { availableTimeRange } from "../Models/LocalModels/TimeRange";
 export { currentWallet } from "../Models/LoadData";
-export { addTransaction } from "../Models/Transactions";
+export { addTransaction, deleteTransaction } from "../Models/Transactions";
 export { addWalletEvent } from "../Models/Events";
 export { addRecurringTransaction } from "../Models/Recurring_Transactions";
 export { addCustomCategories, categories } from "../Models/Categories";
 export { addBudget } from "../Models/Budgets";
+
 export { icons } from "../Models/Icons";
 
 export { findCategory } from "../Models/Categories";

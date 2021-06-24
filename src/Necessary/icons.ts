@@ -13,7 +13,7 @@ import budgetIcon from "../icons/budget.svg";
 import recurringIcon from "../icons/recurring.svg";
 import modelIcon from "../icons/model.svg";
 import avatarIcon from "../icons/avatar.svg";
-import adsIcon from "../icons/avatar.svg";
+import adsIcon from "../icons/ads.svg";
 import premiumIcon from "../icons/premium.svg";
 import storeIcon from "../icons/store.svg";
 

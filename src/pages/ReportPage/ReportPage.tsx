@@ -2,7 +2,7 @@ import { IonCard, IonContent, IonPage } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 import { ProgressBar } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { format, parseISO, subDays } from "date-fns";
+import { format, parseISO } from "date-fns";
 
 //? IONIC COMPONENTS
 import {
@@ -24,8 +24,10 @@ import {
   categories,
   currentWallet,
   findCategory,
+  formatMoney,
 } from "../../Necessary/components";
 import dayjs from "dayjs";
+import _ from "underscore";
 
 const ReportPage: React.FC = () => {
   const [totalThisMonthAmountExpense, setTotalThisMonthAmountExpense] =
@@ -36,15 +38,11 @@ const ReportPage: React.FC = () => {
     useState(0);
   const [totalLastMonthNumberExpense, setTotalLastMonthNumberExpense] =
     useState(0);
-
   const [totalThisMonthAmountIncome, setTotalThisMonthAmountIncome] =
     useState(0);
   const [totalLastMonthAmountIncome, setTotalLastMonthAmountIncome] =
     useState(0);
-  const [totalThisMonthNumberIncome, setTotalThisMonthNumberIncome] =
-    useState(0);
-  const [totalLastMonthNumberIncome, setTotalLastMonthNumberIncome] =
-    useState(0);
+  const [dataChart, setDataChart] = useState<any[] | undefined>();
 
   useEffect(() => {
     //? Expense
@@ -80,7 +78,7 @@ const ReportPage: React.FC = () => {
         (transaction) =>
           transaction.executed_time <= endOfLastMonth &&
           transaction.executed_time >= startOfLastMonth &&
-          findCategory(transaction.category)!.type === "Income"
+          findCategory(transaction.category)!.type === "Expense"
       )
       .forEach((child) => {
         lastMonthAmount += child.amount_by_wallet;
@@ -91,49 +89,114 @@ const ReportPage: React.FC = () => {
 
     //? Income
     // calculate this month
-    var thisMonthAmount = 0;
-    var thisMonthNumber = 0;
+    var thisMonthAmountIncome = 0;
 
     currentWallet.transactions
       .filter(
         (transaction) =>
           transaction.executed_time <= endOfThisMonth &&
-          transaction.executed_time >= startOfThisMonth
+          transaction.executed_time >= startOfThisMonth &&
+          findCategory(transaction.category)!.type === "Income"
       )
       .forEach((child) => {
-        thisMonthAmount += child.amount_by_wallet;
-        thisMonthNumber++;
+        thisMonthAmountIncome += child.amount_by_wallet;
       });
-    setTotalThisMonthAmountIncome(thisMonthAmount);
-    setTotalThisMonthNumberIncome(thisMonthNumber);
+    setTotalThisMonthAmountIncome(thisMonthAmountIncome);
 
     // calculate last month
-    var lastMonthAmount = 0;
-    var lastMonthNumber = 0;
+    var lastMonthAmountIncome = 0;
 
     currentWallet.transactions
       .filter(
         (transaction) =>
           transaction.executed_time <= endOfLastMonth &&
-          transaction.executed_time >= startOfLastMonth
+          transaction.executed_time >= startOfLastMonth &&
+          findCategory(transaction.category)!.type === "Income"
       )
       .forEach((child) => {
-        lastMonthAmount += child.amount_by_wallet;
-        lastMonthNumber++;
+        lastMonthAmountIncome += child.amount_by_wallet;
       });
-    setTotalLastMonthAmountIncome(lastMonthAmount);
-    setTotalLastMonthNumberIncome(lastMonthNumber);
-  }, []);
+    setTotalLastMonthAmountIncome(lastMonthAmountIncome);
 
-  const data = [];
-  for (let index = 15; index >= 0; index--) {
-    data.push({
-      date: subDays(new Date(), index).toISOString().substring(0, 10),
-      value: 10 + Math.random(),
-      value2: 1 + Math.random(),
-      //@param value: expend, value2: income
-    });
-  }
+    // data in 15 date
+    const data = [];
+
+    const previous15Date = today.add(-15, "d");
+
+    const dataIn15Date = currentWallet.transactions.filter(
+      (transaction) =>
+        transaction.executed_time <= today.toISOString() &&
+        transaction.executed_time >= previous15Date.toISOString()
+    );
+
+    const groupedExpense = _.chain(
+      dataIn15Date.filter((child) => {
+        const category = categories.find(
+          (category) => category.id === child.category
+        );
+        return category?.type === "Expense";
+      })
+    )
+      .sortBy("executed_time")
+      .groupBy("executed_time")
+      .map(function (value, key) {
+        return {
+          date: key,
+          transactions: value,
+        };
+      })
+      .value();
+
+    const groupedIncome = _.chain(
+      dataIn15Date.filter((child) => {
+        const category = categories.find(
+          (category) => category.id === child.category
+        );
+        return category?.type === "Income";
+      })
+    )
+      .sortBy("executed_time")
+      .groupBy("executed_time")
+      .map(function (value, key) {
+        return {
+          date: key,
+          transactions: value,
+        };
+      })
+      .value();
+
+    console.log(groupedExpense);
+    console.log(groupedIncome);
+
+    for (let index = 15; index >= 0; index--) {
+      const date = today.add(-index, "d").startOf("d").toISOString();
+      let expense = 0;
+      let income = 0;
+      groupedExpense
+        .find(
+          (element) => dayjs(element.date).startOf("d").toISOString() === date
+        )
+        ?.transactions.forEach((child) => {
+          expense += child.amount_by_wallet;
+        });
+
+      groupedIncome
+        .find(
+          (element) => dayjs(element.date).startOf("d").toISOString() === date
+        )
+        ?.transactions.forEach((child) => {
+          income += child.amount_by_wallet;
+        });
+
+      data.push({
+        date: date,
+        value: expense,
+        value2: income,
+        //@param value: expend, value2: income
+      });
+    }
+    setDataChart(data);
+  }, []);
 
   return (
     <IonPage>
@@ -144,7 +207,7 @@ const ReportPage: React.FC = () => {
             <div className="progress-detail-top">
               <p className="progress-card-header">Total Expenses</p>
               <p className="progress-card-subheader">
-                {totalThisMonthAmountExpense}
+                {formatMoney(totalThisMonthAmountExpense)}
               </p>
             </div>
             <p className="progress-date">This month</p>
@@ -200,7 +263,7 @@ const ReportPage: React.FC = () => {
             <div className="progress-detail-top">
               <p className="progress-card-header">Total Income</p>
               <p className="progress-card-subheader">
-                {totalThisMonthAmountIncome}
+                {formatMoney(totalThisMonthAmountIncome)}
               </p>
             </div>
             <p className="progress-date">This month</p>
@@ -249,7 +312,7 @@ const ReportPage: React.FC = () => {
             <div className="chart-card-chart">
               <ResponsiveContainer width="100%" height={330}>
                 {/*//TODO INPUT JSON DATA HERE!  */}
-                <AreaChart data={data}>
+                <AreaChart data={dataChart}>
                   <defs>
                     <linearGradient
                       id="colorExpend"
@@ -336,7 +399,7 @@ const ReportPage: React.FC = () => {
             <div className="chart-card-chart">
               <ResponsiveContainer width="100%" height={330}>
                 {/*//TODO INPUT JSON DATA HERE!  */}
-                <AreaChart data={data}>
+                <AreaChart data={dataChart}>
                   <defs>
                     <linearGradient
                       id="colorIncome"
@@ -423,7 +486,7 @@ const ReportPage: React.FC = () => {
             <div className="chart-card-chart">
               <ResponsiveContainer width="100%" height={330}>
                 {/*//TODO INPUT JSON DATA HERE!  */}
-                <BarChart data={data}>
+                <BarChart data={dataChart}>
                   <defs>
                     <linearGradient id="color" x1="0" y1="0" x2="0" y2="1">
                       {" "}

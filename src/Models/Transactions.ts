@@ -1,6 +1,7 @@
 import firebase from "firebase";
 import { firestore } from "../firebase";
 import { Category } from "./Categories";
+import { currentWallet } from "./LoadData";
 import { Wallet } from "./Wallets";
 
 export interface Transaction {
@@ -34,6 +35,7 @@ export function addTransaction(
 ) {
   const category = { ...data.category } as Category;
   data.category = data.category.id;
+  data.note = data.note ? data.note : " ";
 
   firestore
     .collection("users")
@@ -116,6 +118,26 @@ export function addTransaction(
           : 0
       ),
     });
+}
+
+export function deleteTransaction(
+  userId: string,
+  wallet: Wallet,
+  transaction: Transaction
+) {
+  const index = currentWallet.transactions.indexOf(transaction);
+  if (index > -1) {
+    currentWallet.transactions.splice(index, 1);
+  }
+
+  firestore
+    .collection("users")
+    .doc(userId)
+    .collection("wallets")
+    .doc(wallet.id)
+    .collection("transactions")
+    .doc(transaction.id)
+    .delete();
 }
 
 // export var transactions: Transaction[] = [];

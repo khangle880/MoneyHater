@@ -1,16 +1,30 @@
-import { IonIcon, IonImg, IonItem, IonItemOption, IonItemOptions, IonItemSliding } from "@ionic/react";
-import { create, remove } from "ionicons/icons";
+import {
+  IonIcon,
+  IonImg,
+  IonItem,
+  IonItemOption,
+  IonItemOptions,
+  IonItemSliding,
+} from "@ionic/react";
+import { create, trashOutline } from "ionicons/icons";
 import React, { useState } from "react";
 import {
   categories,
   currencies,
   currentWallet,
+  deleteTransaction,
   findCategory,
   Transaction,
+  useAuth,
 } from "../../../Necessary/components";
 import { questionIcon } from "../../../Necessary/icons";
 
-const TransactionItem: React.FC<{ data: Transaction }> = ({ data }) => {
+interface prop {
+  data: Transaction;
+  updateTransactions: (data: Transaction[]) => void;
+}
+
+const TransactionItem: React.FC<prop> = ({ data, updateTransactions }) => {
   const [category] = useState(
     categories.find((category) => category.id === data.category)
   );
@@ -18,10 +32,21 @@ const TransactionItem: React.FC<{ data: Transaction }> = ({ data }) => {
     currencies.find((child) => child.id === data.currency)
   );
 
+  const { userId } = useAuth();
   const category_object = findCategory(data.category);
+
+  const handleDelete = () => {
+    deleteTransaction(userId!, currentWallet, data);
+    updateTransactions(currentWallet.transactions);
+  };
+
   return (
     <IonItemSliding>
-      <IonItem>
+      <IonItem
+        routerLink={`/my/transactions/view/${data.id}`}
+        lines="none"
+        detail={false}
+      >
         <IonImg src={category?.icon || questionIcon} />
         <div className="transaction-note-detail">
           <p className="transaction-category-name">{category?.name}</p>
@@ -36,12 +61,14 @@ const TransactionItem: React.FC<{ data: Transaction }> = ({ data }) => {
             className={`transaction-value ${
               !category_object
                 ? "expend-color"
-                : category_object.type === "Expense"
+                : category_object.type === "Expense" ||
+                  category_object.name === "Loan"
                 ? "expend-color"
-                : category_object.type === "Income"
+                : category_object.type === "Income" ||
+                  category_object.name === "Debt"
                 ? "income-color"
                 : ""
-            }expend-color`}
+            }`}
           >
             {data.amount}
             {currency?.symbol}
@@ -53,11 +80,14 @@ const TransactionItem: React.FC<{ data: Transaction }> = ({ data }) => {
         </div>
       </IonItem>
       <IonItemOptions className="slide-option" side="end">
-        <IonItemOption color="danger">
+        <IonItemOption
+          className="item-option-create"
+          routerLink={`/my/transactions/edit/${data.id}`}
+        >
           <IonIcon slot="icon-only" icon={create} />
         </IonItemOption>
-        <IonItemOption>
-          <IonIcon slot="icon-only" icon={remove} />
+        <IonItemOption className="item-option-delete" onClick={handleDelete}>
+          <IonIcon slot="icon-only" icon={trashOutline} />
         </IonItemOption>
       </IonItemOptions>
     </IonItemSliding>

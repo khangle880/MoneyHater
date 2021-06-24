@@ -1,7 +1,9 @@
 // import { firestore } from "../firebase";
 
+import dayjs from "dayjs";
 import { firestore } from "../firebase";
-import { Wallet } from "./Wallets";
+import { addTransaction } from "../Necessary/components";
+import { Wallet, wallets } from "./Wallets";
 
 export interface RecurringTransaction {
   id: string;
@@ -47,6 +49,40 @@ export function addRecurringTransaction(
         ...data,
       } as RecurringTransaction);
     });
+}
+
+function executeTransaction(userId: string) {
+  var now = new Date();
+  wallets.forEach((wallet) => {
+    wallet.recurring_transactions.forEach((child) => {
+      if (child.state) {
+        if (child.to < now.toISOString()) child.state = false;
+        else {
+          if (dayjs().diff(dayjs(child.from)) % child.frequency === 0) {
+            const newRawTransaction: any = { ...child };
+            delete newRawTransaction.frequency;
+            delete newRawTransaction.to;
+            delete newRawTransaction.from;
+            delete newRawTransaction.id;
+            newRawTransaction.executed_time = now.toISOString();
+            addTransaction(newRawTransaction, userId!, wallet);
+          }
+        }
+      }
+    });
+  });
+}
+
+export function initLoopExecuteTransaction(userId: string) {
+  (function loop() {
+    var now = new Date();
+    if (now.getMinutes() % 5 === 0) {
+      executeTransaction(userId);
+    }
+    now = new Date(); // allow for time passing
+    var delay = 60000 - (now.getTime() % 60000); // exact ms to next minute interval
+    setTimeout(loop, delay);
+  })();
 }
 
 // export var recurringTransactions: RecurringTransaction[] = [];
