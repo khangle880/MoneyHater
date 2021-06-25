@@ -75,7 +75,7 @@ const AddBudget: React.FC = () => {
       const newRawBudget = {
         goal_value: goalValue,
         consume: 0,
-        category: category,
+        category: category.id,
         from: timeRange.from,
         to: timeRange.to,
         repeatable: repeatable,

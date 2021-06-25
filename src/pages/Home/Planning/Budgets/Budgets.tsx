@@ -15,7 +15,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import "./Budgets.scss";
 
@@ -28,6 +28,13 @@ import dayjs from "dayjs";
 import { add as addIcon } from "ionicons/icons";
 
 const Budgets: React.FC = () => {
+  const [needRender, setNeedRender] = useState(false);
+  useEffect(() => {
+    setTimeout(() => {
+      setNeedRender(!needRender);
+    }, 2000);
+  }, [needRender]);
+
   const budgetToView = (budget: Budget) => {
     const list = currentWallet.transactions.filter(
       (child) =>

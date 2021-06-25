@@ -87,7 +87,7 @@ const AddTransactionModels: React.FC = () => {
             wallet.currency_object!.rate_us
           ).toFixed(2)
         ),
-        category: category,
+        category: category.id,
         note: note,
         with: partner ? partner.name : "",
         event: walletEvent ? walletEvent.name : "",

@@ -16,7 +16,7 @@ import {
 import "./Events.scss";
 
 import { add as addIcon } from "ionicons/icons";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   currentWallet,
   findCurrency,
@@ -25,6 +25,13 @@ import {
 import dayjs from "dayjs";
 
 const Events: React.FC = () => {
+  const [needRender, setNeedRender] = useState(false);
+  useEffect(() => {
+    setTimeout(() => {
+      setNeedRender(!needRender);
+    }, 2000);
+  }, [needRender]);
+
   const eventToView = (event: WalletEvent) => {
     const list = currentWallet.transactions.filter(
       (child) =>

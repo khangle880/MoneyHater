@@ -56,7 +56,7 @@ const AddEvent: React.FC = () => {
 
   const history = useHistory();
   const { userId } = useAuth();
-  const alertMessage = "You must fill amount, category and time range field";
+  const alertMessage = "You must fill full field";
 
   useEffect(() => {
     setCurrencyUnit(wallet.currency_object);

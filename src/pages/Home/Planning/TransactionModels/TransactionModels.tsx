@@ -19,7 +19,7 @@ import {
 import "./TransactionModels.scss";
 
 import { add as addIcon, heart, sendOutline, trash } from "ionicons/icons";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ReadyExecutedTransaction } from "../../../../Models/Ready_Executed_Transactions";
 import {
   currentWallet,
@@ -28,6 +28,13 @@ import {
 } from "../../../../Necessary/components";
 
 const TransactionModels: React.FC = () => {
+  const [needRender, setNeedRender] = useState(false);
+  useEffect(() => {
+    setTimeout(() => {
+      setNeedRender(!needRender);
+    }, 2000);
+  }, [needRender]);
+
   const transactionModelToView = (model: ReadyExecutedTransaction) => {
     const currency_object = findCurrency(model.currency);
     const category_object = findCategory(model.category);

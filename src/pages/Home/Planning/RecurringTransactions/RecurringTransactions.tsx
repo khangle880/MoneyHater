@@ -18,7 +18,7 @@ import "./RecurringTransactions.scss";
 
 import dayjs from "dayjs";
 import { add as addIcon } from "ionicons/icons";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { RecurringTransaction } from "../../../../Models/Recurring_Transactions";
 import {
   currentWallet,
@@ -27,6 +27,13 @@ import {
 } from "../../../../Necessary/components";
 
 const RecurringTransactions: React.FC = () => {
+  const [needRender, setNeedRender] = useState(false);
+  useEffect(() => {
+    setTimeout(() => {
+      setNeedRender(!needRender);
+    }, 2000);
+  }, [needRender]);
+
   const recurringToView = (recurringTransaction: RecurringTransaction) => {
     const currency_object = findCurrency(recurringTransaction.currency);
     const category_object = findCategory(recurringTransaction.category);
