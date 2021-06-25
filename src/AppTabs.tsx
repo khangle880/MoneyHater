@@ -2,17 +2,15 @@ import {
   IonBadge,
   IonIcon,
   IonLabel,
-  IonLoading,
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
   IonTabs,
 } from "@ionic/react";
 import { Redirect, Route, Switch } from "react-router-dom";
+import LoadingContainer from "./components/Loading/LoadingContainer";
 import {
   home as homeIcon,
-  personCircleOutline as personIcon,
-  albumsOutline as budgetsIcon,
   newspaperOutline,
   addCircleOutline,
   barChartOutline,
@@ -55,7 +53,7 @@ const AppTabs: React.FC = () => {
   const loadedData = useLoadedData();
 
   if (!loggedIn) return <Redirect to="/login" />;
-  if (!loadedData) return <IonLoading isOpen />;
+  if (!loadedData) return <LoadingContainer isOpen={true} />;
   if (!currentWallet.state) <Redirect to="/my/manage-wallets/add" />;
 
   return (

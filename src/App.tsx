@@ -1,4 +1,4 @@
-import { IonApp, IonLoading } from "@ionic/react";
+import { IonApp } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
@@ -10,10 +10,13 @@ import NotFoundPage from "./pages/NotFoundPage";
 import { useAuthInit } from "./auth";
 import RegisterPage from "./pages/RegisterPage";
 
+import LoadingContainer from "./components/Loading/LoadingContainer";
+
+
 const App: React.FC = () => {
   const { loading, auth, loadedData } = useAuthInit();
 
-  if (loading) return <IonLoading isOpen />;
+  if (loading) return <LoadingContainer isOpen={true} />;
   console.log(auth);
 
   return (

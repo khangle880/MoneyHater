@@ -16,6 +16,10 @@ import avatarIcon from "../icons/avatar.svg";
 import adsIcon from "../icons/ads.svg";
 import premiumIcon from "../icons/premium.svg";
 import storeIcon from "../icons/store.svg";
+import googleIcon from "../icons/google.svg";
+import facebookIcon from "../icons/facebook.svg";
+import signInIcon from "../icons/signIn.svg";
+import signUpIcon from "../icons/signUp.svg";
 
 export {
   adsIcon,
@@ -36,4 +40,8 @@ export {
   budgetIcon,
   recurringIcon,
   modelIcon,
+  googleIcon,
+  facebookIcon,
+  signInIcon,
+  signUpIcon
 };

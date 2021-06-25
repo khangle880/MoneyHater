@@ -1,0 +1,124 @@
+*,
+*:after,
+*:before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.loading-container {
+  position: relative;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999999;
+  background: #444444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.sc-GMQeP {
+  top: -40% !important;
+}
+
+.loader-text {
+  color: #d99879;
+  width: 550px;
+  height: 550px;
+  text-align: center;
+  font-size: 30px;
+  font-weight: 600;
+  perspective: 200px;
+  margin-top: 450px;
+}
+
+.loader-anim1,
+.loader-anim2 {
+  position: relative;
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  border: 5px solid;
+  border-left-color: #3f3697;
+  border-top-color: #344fa1;
+  border-right-color: #3d84b8;
+  border-bottom-color: #f0ebcc;
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  margin: -125px 0 0 -125px;
+  animation: loadAnim;
+  animation-duration: 6s;
+  animation-iteration-count: infinite;
+}
+
+.loader-anim2 {
+  animation: loadAnim2;
+  animation-duration: 6s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes loadAnim {
+  0% {
+    -webkit-transform: rotate3d(1, 1, 1, 0deg);
+  }
+  20% {
+    -webkit-transform: rotate3d(1, 1, 1, 72deg);
+  }
+  40% {
+    -webkit-transform: rotate3d(1, 1, 1, 144deg);
+  }
+  60% {
+    -webkit-transform: rotate3d(1, 1, 1, 216deg);
+  }
+  80% {
+    -webkit-transform: rotate3d(1, 1, 1, 288deg);
+  }
+  100% {
+    -webkit-transform: rotate3d(1, 1, 1, 360deg);
+  }
+}
+
+@keyframes loadAnim2 {
+  0% {
+    -webkit-transform: rotate3d(1, 1, 1, 0deg);
+  }
+  20% {
+    -webkit-transform: rotate3d(1, 1, 1, -72deg);
+  }
+  40% {
+    -webkit-transform: rotate3d(1, 1, 1, -144deg);
+  }
+  60% {
+    -webkit-transform: rotate3d(1, 1, 1, -216deg);
+  }
+  80% {
+    -webkit-transform: rotate3d(1, 1, 1, -288deg);
+  }
+  100% {
+    -webkit-transform: rotate3d(1, 1, 1, -360deg);
+  }
+}
+
+@media (max-width: 1024px) {
+  .loader-text {
+    font-size: 60px;
+    margin-top: 400px;
+  }
+}
+
+@media (max-width: 870px) {
+  .loader-text {
+    font-size: 50px;
+    margin-top: 450px;
+  }
+}
+
+@media (max-width: 570px) {
+  .loader-text {
+    font-size: 20px;
+  }
+}

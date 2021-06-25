@@ -1,0 +1,62 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;1,400&display=swap");
+
+.main-button {
+  --background: linear-gradient(
+    90deg,
+    rgba(102, 126, 234, 1) 0%,
+    rgba(100, 182, 255, 1) 100%
+  );
+  --box-shadow: none;
+  position: relative;
+  height: 50px;
+  margin-bottom: 15px;
+}
+
+.main-button::after {
+  content: " ";
+  position: absolute;
+  width: 80%;
+  right: 10%;
+  bottom: 0;
+  top: 10px;
+  height: 40px;
+  z-index: -1;
+  box-shadow: 0px 20px 20px -17px rgba(0, 111, 255, 1);
+}
+
+ion-content {
+  font-family: "Poppins", sans-serif !important;
+}
+
+ion-button:focus {
+  outline: none !important;
+}
+
+ion-buttons:focus {
+  outline: none !important;
+}
+
+img {
+  width: 100% !important;
+  height: auto !important;
+  max-height: 200px;
+}
+
+ion-item.item-has-focus {
+  --highlight-background: #3880ff !important;
+
+  ion-label {
+    color: #3880ff !important;
+  }
+}
+
+ion-text {
+  font-family: "Poppins" !important;
+}
+
+// ion-item.item-has-focus > ion-label {
+// }
+
+// ion-item.item-has-focus {
+//   --highlight-background: #3880ff !important;
+// }
