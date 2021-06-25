@@ -69,6 +69,13 @@ const AddWallet: React.FC = () => {
         excluded_from_total: false,
         state: true,
         members: [],
+        debts: { debtsByPartner: [], loansByPartner: [] },
+        categories: [],
+        transactions: [],
+        budgets: [],
+        ready_executed_transaction: [],
+        recurring_transactions: [],
+        events: [],
       };
       addWallet(newRawTransaction, userId!);
       history.replace("/my/manage-wallets");
