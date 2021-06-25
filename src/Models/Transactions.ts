@@ -125,6 +125,74 @@ export function deleteTransaction(
   wallet: Wallet,
   transaction: Transaction
 ) {
+  const index = currentWallet.transactions.indexOf(transaction);
+  if (index > -1) {
+    currentWallet.transactions.splice(index, 1);
+  }
+
+  const category = findCategory(transaction.category);
+  if (category) {
+    wallet.balance +=
+      category?.type === "Expense" ||
+      category.name === "Loan" ||
+      category.name === "Repayment"
+        ? transaction.amount_by_wallet
+        : category?.type === "Income" ||
+          category.name === "Debt" ||
+          category.name === "Debt Collection"
+        ? -transaction.amount_by_wallet
+        : 0;
+
+    // if (category.name === "Loan") {
+    //   const ref = wallet.debts.loansByPartner.find(
+    //     (child) => child.with === transaction.with
+    //   );
+    //   if (ref) ref.transactions.push(newTransaction);
+    //   else
+    //     wallet.debts.loansByPartner.push({
+    //       with: transaction.with,
+    //       transactions: [newTransaction],
+    //     });
+    // }
+
+    // if (category.name === "Debt") {
+    //   const ref = wallet.debts.debtsByPartner.find(
+    //     (child) => child.with === transaction.with
+    //   );
+    //   if (ref) ref.transactions.push(newTransaction);
+    //   else
+    //     wallet.debts.debtsByPartner.push({
+    //       with: transaction.with,
+    //       transactions: [newTransaction],
+    //     });
+    // }
+
+    // if (
+    //   category.name === "Debt Collection" ||
+    //   category.name === "Repayment"
+    // ) {
+    //   rootTransaction?.transactions_list?.push(newTransaction);
+    //   firestore
+    //     .collection("users")
+    //     .doc(userId)
+    //     .collection("wallets")
+    //     .doc(wallet.id)
+    //     .collection("transactions")
+    //     .doc(rootTransaction?.id)
+    //     .collection("transactions")
+    //     .add(transaction);
+    // }
+
+    firestore
+      .collection("users")
+      .doc(userId)
+      .collection("wallets")
+      .doc(wallet.id)
+      .update({
+        balance: wallet.balance,
+      });
+  }
+
   firestore
     .collection("users")
     .doc(userId)
@@ -132,76 +200,7 @@ export function deleteTransaction(
     .doc(wallet.id)
     .collection("transactions")
     .doc(transaction.id)
-    .delete()
-    .then(() => {
-      const index = currentWallet.transactions.indexOf(transaction);
-      if (index > -1) {
-        currentWallet.transactions.splice(index, 1);
-      }
-
-      const category = findCategory(transaction.category);
-      if (category) {
-        wallet.balance +=
-          category?.type === "Expense" ||
-          category.name === "Loan" ||
-          category.name === "Repayment"
-            ? transaction.amount_by_wallet
-            : category?.type === "Income" ||
-              category.name === "Debt" ||
-              category.name === "Debt Collection"
-            ? -transaction.amount_by_wallet
-            : 0;
-
-        // if (category.name === "Loan") {
-        //   const ref = wallet.debts.loansByPartner.find(
-        //     (child) => child.with === transaction.with
-        //   );
-        //   if (ref) ref.transactions.push(newTransaction);
-        //   else
-        //     wallet.debts.loansByPartner.push({
-        //       with: transaction.with,
-        //       transactions: [newTransaction],
-        //     });
-        // }
-
-        // if (category.name === "Debt") {
-        //   const ref = wallet.debts.debtsByPartner.find(
-        //     (child) => child.with === transaction.with
-        //   );
-        //   if (ref) ref.transactions.push(newTransaction);
-        //   else
-        //     wallet.debts.debtsByPartner.push({
-        //       with: transaction.with,
-        //       transactions: [newTransaction],
-        //     });
-        // }
-
-        // if (
-        //   category.name === "Debt Collection" ||
-        //   category.name === "Repayment"
-        // ) {
-        //   rootTransaction?.transactions_list?.push(newTransaction);
-        //   firestore
-        //     .collection("users")
-        //     .doc(userId)
-        //     .collection("wallets")
-        //     .doc(wallet.id)
-        //     .collection("transactions")
-        //     .doc(rootTransaction?.id)
-        //     .collection("transactions")
-        //     .add(transaction);
-        // }
-
-        firestore
-          .collection("users")
-          .doc(userId)
-          .collection("wallets")
-          .doc(wallet.id)
-          .update({
-            balance: wallet.balance,
-          });
-      }
-    });
+    .delete();
 }
 
 // export var transactions: Transaction[] = [];
