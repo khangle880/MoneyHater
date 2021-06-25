@@ -3,15 +3,11 @@ import {
   IonBackButton,
   IonButton,
   IonButtons,
-  IonCheckbox,
   IonContent,
-  IonDatetime,
   IonHeader,
   IonIcon,
-  IonImg,
   IonInput,
   IonItem,
-  IonLabel,
   IonList,
   IonModal,
   IonPage,
@@ -22,38 +18,24 @@ import {
   IonToolbar,
 } from "@ionic/react";
 
+import "./AddEvent.scss";
+
 //? Icon
-import {
-  calendarIcon,
-  dollarIcon,
-  eventIcon,
-  noteIcon,
-  partnerIcon,
-  questionIcon,
-  remindIcon,
-} from "../../../Necessary/icons";
+import { calendarIcon } from "../../../Necessary/icons";
 
 //? components
 import {
-  addRecurringTransaction,
   addWalletEvent,
   availableTimeRange,
-  Category,
   Currency,
   currentWallet,
-  Partner,
-  SelectCategory,
   SelectCurrencyUnit,
   SelectIconPopover,
-  SelectPartner,
   SelectTimeRange,
-  SelectWalletEvent,
   SelectWalletPopover,
-  TakeNote,
   TimeRange,
   useAuth,
   Wallet,
-  WalletEvent,
 } from "../../../Necessary/components";
 
 import { closeOutline as closeIcon } from "ionicons/icons";
@@ -65,7 +47,6 @@ const AddEvent: React.FC = () => {
   const [icon, setIcon] = useState("");
   const [name, setName] = useState("");
   const [showAlert, setShowAlert] = useState(false);
-  const [amount, setAmount] = useState(0);
   const [currencyUnit, setCurrencyUnit] = useState<Currency>(
     currentWallet.currency_object
   );
@@ -113,7 +94,7 @@ const AddEvent: React.FC = () => {
 
   return (
     <IonModal isOpen={true}>
-      <IonRouterOutlet>
+      <IonRouterOutlet animated={false}>
         <Route exact path="/my/events/add/currencies">
           <SelectCurrencyUnit
             handleSelect={(data: Currency) => setCurrencyUnit(data)}
@@ -125,7 +106,7 @@ const AddEvent: React.FC = () => {
           />
         </Route>
         {/* ----Home Route---- */}
-        <Route>
+        <Route exact path="/my/events/add">
           <IonPage>
             <IonHeader>
               <IonToolbar className="toolbar-medium">
@@ -144,7 +125,7 @@ const AddEvent: React.FC = () => {
                 </IonButtons>
               </IonToolbar>
             </IonHeader>
-            <IonContent className="ion-padding">
+            <IonContent className="ion-padding add-event-content">
               <IonList className="block">
                 {/* ICON ITEM */}
                 <IonItem lines="inset" detail={false}>
@@ -158,11 +139,11 @@ const AddEvent: React.FC = () => {
                   />
                   {/* CURRENCY UNIT */}
                   <IonRouterLink routerLink="/my/events/add/currencies">
-                    {currencyUnit?.iso}
+                    {currencyUnit ? currencyUnit.iso : "Unit"}
                   </IonRouterLink>
                 </IonItem>
                 {/* TIME RANGE */}
-                <IonItem routerLink="/my/budgets/add/time-range" lines="inset">
+                <IonItem routerLink="/my/events/add/time-range" lines="inset">
                   <IonRippleEffect />
                   <IonIcon slot="start" icon={calendarIcon} />
                   <IonInput

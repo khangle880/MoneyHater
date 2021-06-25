@@ -150,6 +150,19 @@ export function initWallets(user_id: string) {
   });
 }
 
+export function addWallet(data: any, userId: string) {
+  firestore
+    .collection("users")
+    .doc(userId)
+    .collection("wallets")
+    .add(data)
+    .then((docRef) => {
+      const id = docRef.id;
+      data.id = id;
+      wallets.push(data);
+    });
+}
+
 export function switchWalletState(user_id: string, wallet: Wallet) {
   wallet.state = !wallet.state;
 

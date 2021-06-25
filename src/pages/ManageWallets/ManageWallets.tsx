@@ -3,7 +3,10 @@ import {
   IonButton,
   IonButtons,
   IonContent,
+  IonFab,
+  IonFabButton,
   IonHeader,
+  IonIcon,
   IonList,
   IonPage,
   IonTitle,
@@ -14,6 +17,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import WalletItem from "./WalletItem";
 import { setCurrentWallet } from "../../Necessary/components";
+import { add } from "ionicons/icons";
 
 const ManageWallets: React.FC<{ initNeedRender: boolean }> = ({
   initNeedRender,
@@ -44,7 +48,7 @@ const ManageWallets: React.FC<{ initNeedRender: boolean }> = ({
               defaultHref="/my/transactions"
             ></IonBackButton>
           </IonButtons>
-          <IonTitle>Select Wallet</IonTitle>
+          <IonTitle>Manage Wallets</IonTitle>
           <IonButtons slot="end">
             <IonButton size="large" />
           </IonButtons>
@@ -61,6 +65,11 @@ const ManageWallets: React.FC<{ initNeedRender: boolean }> = ({
             />
           ))}
         </IonList>
+        <IonFab vertical="bottom" horizontal="end" slot="fixed">
+          <IonFabButton routerLink="/my/manage-wallets/add">
+            <IonIcon icon={add} />
+          </IonFabButton>
+        </IonFab>
       </IonContent>
     </IonPage>
   );

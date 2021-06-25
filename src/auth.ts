@@ -44,16 +44,16 @@ export function useAuthInit(): AuthInit {
 
   useEffect(() => {
     if (authInit.auth && authInit.auth.userId) {
-      initTimeRange();
-      fakeCurrencies();
-      fakeCategories();
-      fakeIcons();
-      fakeWallets();
-      setCurrentWallet(wallets[0]);
-      // loadData(authInit.auth.userId).then(() => {
+      // initTimeRange();
+      // fakeCurrencies();
+      // fakeCategories();
+      // fakeIcons();
+      // fakeWallets();
+      // setCurrentWallet(wallets[0]);
+      loadData(authInit.auth.userId).then(() => {
         const auth = authInit.auth;
         setAuthInit({ loading: false, auth, loadedData: true });
-      // });
+      });
     }
 
     if (!authInit.auth?.loggedIn) {

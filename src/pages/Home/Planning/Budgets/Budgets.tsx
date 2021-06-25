@@ -28,7 +28,7 @@ import dayjs from "dayjs";
 import { add as addIcon } from "ionicons/icons";
 
 const Budgets: React.FC = () => {
-    const budgetToView = (budget: Budget) => {
+  const budgetToView = (budget: Budget) => {
     const list = currentWallet.transactions.filter(
       (child) =>
         child.executed_time >= budget.from &&
@@ -108,7 +108,7 @@ const Budgets: React.FC = () => {
             style={{ fontSize: "1.5rem", color: "blue" }}
             className="centered"
           >
-            No Exist Budgets
+            Not Exist
           </IonLabel>
         )}
         <IonFab vertical="bottom" horizontal="end" slot="fixed">

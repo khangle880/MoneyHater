@@ -141,7 +141,7 @@ const Transactions: React.FC = () => {
                   <TransactionsItem
                     key={child.id}
                     updateTransactions={(newData: Transaction[]) => {
-                      setTransactions([ ...newData ]);
+                      setTransactions([...newData]);
                     }}
                     data={child}
                   />
@@ -174,7 +174,9 @@ const Transactions: React.FC = () => {
         <div className="top-container">
           <div className="sub-container">
             <p>
-              {currentWallet.balance} {currentWallet.currency_object.symbol}
+              {currentWallet.currency_object
+                ? `${currentWallet.balance} ${currentWallet.currency_object.symbol}`
+                : "Not available!"}
             </p>
             <div>
               <div className="notification-container">

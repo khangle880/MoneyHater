@@ -86,7 +86,7 @@ const Events: React.FC = () => {
             style={{ fontSize: "1.5rem", color: "blue" }}
             className="centered"
           >
-            No Exist Events
+            Not Exist
           </IonLabel>
         )}
         <IonFab vertical="bottom" horizontal="end" slot="fixed">

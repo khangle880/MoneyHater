@@ -35,6 +35,7 @@ export { default as AddEvent } from "../pages/Add/AddEvent/AddEvent";
 export { default as ManageWallets } from "../pages/ManageWallets/ManageWallets";
 export { default as ShareWallet } from "../pages/ManageWallets/ShareWallet/ShareWallet";
 export { default as TransferMoney } from "../pages/ManageWallets/TransferMoney/TransferMoney";
+export { default as AddWallet } from "../pages/Add/AddWallet/AddWallet";
 
 //---- account
 export { default as SettingsPage } from "../pages/SettingsPage";

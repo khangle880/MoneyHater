@@ -23,6 +23,7 @@ import {
   AddRecurringTransaction,
   AddTransaction,
   AddTransactionModel,
+  AddWallet,
   Budgets,
   currentWallet,
   Debts,
@@ -64,6 +65,9 @@ const AppTabs: React.FC = () => {
         </Route>
         <Route path="/my/manage-wallets/:id/transfer-money">
           <TransferMoney />
+        </Route>
+        <Route path="/my/manage-wallets/add">
+          <AddWallet />
         </Route>
         <Route path="/my/manage-wallets">
           <ManageWallets initNeedRender={false} />

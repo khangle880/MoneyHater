@@ -91,7 +91,7 @@ const RecurringTransactions: React.FC = () => {
             style={{ fontSize: "1.5rem", color: "blue" }}
             className="centered"
           >
-            No Exist Recurring Transactions
+            No Exist
           </IonLabel>
         )}
 
