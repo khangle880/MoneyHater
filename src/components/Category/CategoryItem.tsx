@@ -37,7 +37,7 @@ const CategoryItem: React.FC<props> = ({ data: root, handleClick }) => {
             <li key={child.id}>
               <IonItem
                 button
-                onClick={() => handleClick(root)}
+                onClick={() => handleClick(child)}
                 lines="none"
                 detail={false}
               >
