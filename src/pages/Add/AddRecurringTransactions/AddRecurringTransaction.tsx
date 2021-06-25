@@ -64,7 +64,9 @@ const AddRecurringTransaction: React.FC = () => {
   const [isMore, setIsMore] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [amount, setAmount] = useState(0);
-  const [currencyUnit, setCurrencyUnit] = useState<Currency>(currentWallet.currency_object);
+  const [currencyUnit, setCurrencyUnit] = useState<Currency>(
+    currentWallet.currency_object
+  );
   const [category, setCategory] = useState<Category>();
   const [note, setNote] = useState("");
   const [wallet, setWallet] = useState<Wallet>(currentWallet);

@@ -12,7 +12,7 @@ import { Redirect } from "react-router";
 
 /* ICON */
 import { personCircleOutline, lockClosedOutline } from "ionicons/icons";
-import {googleIcon, signInIcon, signUpIcon} from "../Necessary/icons";
+import { googleIcon, signInIcon, signUpIcon } from "../Necessary/icons";
 
 /* Style CSS */
 // @ts-ignore
@@ -24,7 +24,7 @@ import "./LoginPage.scss";
 import { useAuth } from "../auth";
 
 /* Firebase */
-import { auth } from "../firebase";
+import { auth, firestore } from "../firebase";
 import { Timeout } from "../common/common";
 
 const LoginPage: React.FC = () => {
@@ -93,17 +93,25 @@ const LoginPage: React.FC = () => {
     } else {
       try {
         setIsRequestError(false);
-        const credential = await auth.createUserWithEmailAndPassword(
-          email,
-          password
-        );
-        console.log("Credential", credential);
-        console.log("Hello World finished Data");
-        await auth.signInWithEmailAndPassword(email, password);
+        const credential = await auth
+          .createUserWithEmailAndPassword(email, password)
+          .then(function (userCreated) {
+            if (userCreated.user) {
+              firestore
+                .collection("users")
+                .doc(userCreated.user.uid)
+                .set({
+                  email: email,
+                  premium_status: false,
+                  name: email.split("@")[0],
+                });
+            }
+          });
+        const signIn = await auth.signInWithEmailAndPassword(email, password);
         setLoading(false);
       } catch (error) {
         setIsRequestError(true);
-        console.log(error.code);
+
         switch (error.code) {
           case "auth/weak-password":
             setRequestErrorDetail("Your password is too weak");
@@ -127,7 +135,12 @@ const LoginPage: React.FC = () => {
   }
   return (
     <IonPage>
-      <IonContent className="login-content" fullscreen forceOverscroll={true} scrollY={false}>
+      <IonContent
+        className="login-content"
+        fullscreen
+        forceOverscroll={true}
+        scrollY={false}
+      >
         <div className={`container ${switchUI ? "sign-up-mode" : ""}`}>
           <div className="form-container">
             <div className="signin-signup">
@@ -225,9 +238,7 @@ const LoginPage: React.FC = () => {
             <div className="panel left-panel">
               <div className="content">
                 <h3>New here ?</h3>
-                <p>
-                  Create new account to experience our app!
-                </p>
+                <p>Create new account to experience our app!</p>
                 <button
                   className="btn transparent"
                   id="sign-up-btn"
@@ -241,9 +252,7 @@ const LoginPage: React.FC = () => {
             <div className="panel right-panel">
               <div className="content">
                 <h3>One of us ?</h3>
-                <p>
-                  Already a member? Login now!
-                </p>
+                <p>Already a member? Login now!</p>
                 <button
                   className="btn transparent"
                   id="sign-in-btn"
