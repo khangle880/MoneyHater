@@ -2,5 +2,6 @@
 # How to Install
   + npm install
 
-# Ionic - Ionic React
-# Firebase
+# Framework + cloud db
+  + Ionic - Ionic React
+  + Firebase
