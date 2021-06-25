@@ -1,0 +1,62 @@
+ion-content.debt-content {
+  --background: #f4f6f9 !important;
+  ion-tabs {
+    ion-tab-bar {
+      ion-tab-button {
+        --background: #f4f6f9 !important;
+
+        ion-label {
+          font-size: 1.1rem;
+          font-weight: 700;
+        }
+      }
+    }
+  }
+
+  ion-content {
+    --background: #f4f6f9 !important;
+
+    div.flex-row {
+      display: flex;
+      flex-direction: row;
+      margin-left: 10px;
+    }
+
+    div {
+      margin-bottom: 20px;
+      ion-label {
+        s.strike-label {
+          color: #20406a;
+          font-weight: 600;
+        }
+
+        p.p-label {
+          color: #20406a;
+          font-weight: 600;
+        }
+      }
+
+      ion-list {
+        ion-item {
+          margin-top: 0;
+          margin-left: 20px;
+          --border-radius: 0px;
+          --padding-start: 0 !important;
+          --background: #ffffff;
+
+          ion-icon {
+            margin-right: 30px;
+            width: 40px;
+            height: 40px;
+            background: #f6f7f9;
+            padding: 5px;
+            border-radius: 10px;
+            color: #607d9d;
+            margin-top: 5px;
+            margin-left: 10px;
+          }
+        }
+      }
+    }
+  }
+}

@@ -464,15 +464,15 @@ export const fakeCategories = () => {
           icon: "https://firebasestorage.googleapis.com/v0/b/moneyhater-e3629.appspot.com/o/icon%2Ficons8-bank-64.svg?alt=media&token=6c5a66f1-2600-49bb-a1a5-484c32371809",
         },
         {
-          id: "59383",
-          type: "Expense",
-          name: "Ergonomic",
+          id: "10000",
+          type: "Debt & Loan",
+          name: "Debt",
           icon: "https://firebasestorage.googleapis.com/v0/b/moneyhater-e3629.appspot.com/o/icon%2Ficons8-bank-64.svg?alt=media&token=6c5a66f1-2600-49bb-a1a5-484c32371809",
         },
         {
-          id: "72392",
-          type: "Expense",
-          name: "JBOD",
+          id: "20000",
+          type: "Debt & Loan",
+          name: "Loan",
           icon: "https://firebasestorage.googleapis.com/v0/b/moneyhater-e3629.appspot.com/o/icon%2Ficons8-bank-64.svg?alt=media&token=6c5a66f1-2600-49bb-a1a5-484c32371809",
         },
         {

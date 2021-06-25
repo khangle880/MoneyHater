@@ -31,12 +31,12 @@ const PayableGroup: React.FC = () => {
         <IonItem key={i}>
           <IonIcon icon={personIcon} />
           <IonLabel>
-            <h2>{debt.with ? debt.with : "Someone"}</h2>
-            <h2>{debt.transactions.length} Transactions</h2>
+            <p style={{color:"#20406a", fontWeight: 600, fontSize:"1.1rem"}}>{debt.with ? debt.with : "Someone"}</p>
+            <p>{debt.transactions.length} Transactions</p>
           </IonLabel>
           <IonLabel>
-            {remain === 0 ? <s>{totalVal}</s> : <h2>{remain} left</h2>}
-            <h2>{remain === 0 ? "All paid" : `out of ${outOfVal}`}</h2>
+            {remain === 0 ? <s className="strike-label">{totalVal}</s> : <p className="p-label">{remain} left</p>}
+            <p>{remain === 0 ? "All paid" : `out of ${outOfVal}`}</p>
           </IonLabel>
         </IonItem>
       );
@@ -49,15 +49,25 @@ const PayableGroup: React.FC = () => {
       <IonContent>
         {notYetPaid.length !== 0 && (
           <React.Fragment>
-            <IonLabel>NOT YET PAID {notYetPaidValue}</IonLabel>
-            <IonList>{notYetPaid}</IonList>
+            <div>
+              <div className="flex-row">
+                <IonLabel >NOT YET PAID: </IonLabel>
+                <p style={{color:"#20406a", fontWeight:600, marginLeft:"15px"}}>{notYetPaidValue}</p>
+              </div>
+              <IonList>{notYetPaid}</IonList>
+            </div>
           </React.Fragment>
         )}
 
         {paid.length !== 0 && (
           <React.Fragment>
-            <IonLabel>PAID {paidValue}</IonLabel>
-            <IonList>{paid}</IonList>
+            <div>
+              <div className="flex-row">
+                <IonLabel>PAID: </IonLabel>
+                <p style={{color:"#20406a", fontWeight:600, marginLeft:"15px"}}>{paidValue}</p>
+              </div>
+              <IonList>{paid}</IonList>
+            </div>
           </React.Fragment>
         )}
       </IonContent>

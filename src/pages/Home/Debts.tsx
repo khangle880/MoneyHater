@@ -18,6 +18,8 @@ import { Redirect, Route, useLocation, useRouteMatch } from "react-router";
 import PayableGroup from "../../components/Debts/PayableGroup";
 import ReceivableGroup from "../../components/Debts/ReceivableGroup";
 
+import "./Debts.scss";
+
 const Debts: React.FC = () => {
   const rootPath = useRouteMatch().url;
   const location = useLocation();
@@ -37,7 +39,7 @@ const Debts: React.FC = () => {
               <IonButtons slot="start">
                 <IonBackButton
                   className="icon-padding"
-                  defaultHref="/my/account"
+                  defaultHref="/my/my-profile"
                 />
               </IonButtons>
               <IonTitle>Debts</IonTitle>
@@ -46,7 +48,7 @@ const Debts: React.FC = () => {
               </IonButtons>
             </IonToolbar>
           </IonHeader>
-          <IonContent className="ion-padding">
+          <IonContent className="debt-content ion-padding">
             <IonTabs>
               <IonRouterOutlet>
                 <Route exact path={`${rootPath}/payable`}>
@@ -56,7 +58,7 @@ const Debts: React.FC = () => {
                   <ReceivableGroup />
                 </Route>
               </IonRouterOutlet>
-              <IonTabBar slot="top">
+              <IonTabBar className="debt-tab-bar" slot="top">
                 <IonTabButton tab="payable" href={`${rootPath}/payable`}>
                   <IonLabel>Payable</IonLabel>
                 </IonTabButton>

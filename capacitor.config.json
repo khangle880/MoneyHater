@@ -1,6 +1,6 @@
 {
-  "appId": "newApp.org",
-  "appName": "New App",
+  "appId": "MoneyHater.org",
+  "appName": "Money Hater",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "build",

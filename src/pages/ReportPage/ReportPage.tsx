@@ -363,7 +363,7 @@ const ReportPage: React.FC = () => {
                     tick={{ fontSize: 10 }}
                     tickLine={false}
                     tickCount={8}
-                    tickFormatter={(number: number) => `$${number.toFixed(2)}`}
+                    tickFormatter={(number: number) => `${number}`}
                   />
                   <Tooltip content={<CustomTooltip />} />
                   <CartesianGrid opacity={0.1} vertical={false} />
@@ -450,7 +450,7 @@ const ReportPage: React.FC = () => {
                     tick={{ fontSize: 10 }}
                     tickLine={false}
                     tickCount={8}
-                    tickFormatter={(number: number) => `$${number.toFixed(2)}`}
+                    tickFormatter={(number: number) => `${number}`}
                   />
                   <Tooltip content={<CustomTooltip />} />
                   <CartesianGrid opacity={0.1} vertical={false} />
@@ -530,7 +530,7 @@ const ReportPage: React.FC = () => {
                     tick={{ fontSize: 10 }}
                     tickLine={false}
                     tickCount={8}
-                    tickFormatter={(number: number) => `$${number.toFixed(2)}`}
+                    tickFormatter={(number: number) => `${number}`}
                   />
                   <Tooltip content={<CustomToolTipBarChart />} />
                   <CartesianGrid opacity={0.1} vertical={false} />
@@ -565,7 +565,7 @@ function CustomTooltip({ active, payload, label }: any) {
         <p className="custom-tooltip-date">
           {format(parseISO(label), "eeee, d, MMM")}
         </p>
-        <p>${payload[0].value.toFixed(2)} USD</p>
+        <p> {currentWallet.currency_object.symbol} {payload[0].value.toFixed(2)}</p>
       </div>
     );
   }
@@ -579,8 +579,8 @@ function CustomToolTipBarChart({ active, payload, label }: any) {
         <p className="custom-tooltip-date">
           {format(parseISO(label), "eeee, d, MMM")}
         </p>
-        <p>Expend ${payload[0].value.toFixed(2)} USD</p>
-        <p>Income ${payload[1].value.toFixed(2)} USD</p>
+        <p>Expend {currentWallet.currency_object.symbol} {payload[0].value.toFixed(2)}</p>
+        <p>Income {currentWallet.currency_object.symbol} {payload[1].value.toFixed(2)}</p>
       </div>
     );
   }

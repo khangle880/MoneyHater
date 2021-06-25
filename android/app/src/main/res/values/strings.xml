@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">New App</string>
+    <string name="title_activity_main">New App</string>
+    <string name="package_name">newApp.org</string>
+    <string name="custom_url_scheme">newApp.org</string>
+</resources>

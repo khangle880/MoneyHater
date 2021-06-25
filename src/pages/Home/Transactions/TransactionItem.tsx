@@ -67,7 +67,7 @@ const TransactionItem: React.FC<prop> = ({ data, updateTransactions }) => {
                 : category_object.type === "Income" ||
                   category_object.name === "Debt"
                 ? "income-color"
-                : ""
+                : "expend-color"
             }`}
           >
             {data.amount}

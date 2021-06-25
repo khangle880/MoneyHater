@@ -32,12 +32,12 @@ const ReceivableGroup: React.FC = () => {
         <IonItem key={i}>
           <IonIcon icon={personIcon} />
           <IonLabel>
-            <h2>{loan.with ? loan.with : "Someone"}</h2>
-            <h2>{loan.transactions.length} Transactions</h2>
+            <p style={{color:"#20406a", fontWeight: 600, fontSize:"1.1rem"}}>{loan.with ? loan.with : "Someone"}</p>
+            <p>{loan.transactions.length} Transactions</p>
           </IonLabel>
           <IonLabel>
-            {remain === 0 ? <s>{totalVal}</s> : <h2>{remain} left</h2>}
-            <h2>{remain === 0 ? "All received" : `out of ${outOfVal}`}</h2>
+            {remain === 0 ? <s className="strike-label">{totalVal}</s> : <p className="p-label">{remain} left</p>}
+            <p>{remain === 0 ? "All received" : `out of ${outOfVal}`}</p>
           </IonLabel>
         </IonItem>
       );
@@ -52,15 +52,25 @@ const ReceivableGroup: React.FC = () => {
       <IonContent>
         {notYetReceived.length !== 0 && (
           <React.Fragment>
-            <IonLabel>NOT YET RECEIVED {notYetReceivedValue}</IonLabel>
-            <IonList>{notYetReceived}</IonList>
+            <div>
+              <div className="flex-row">
+                <IonLabel>NOT YET RECEIVED: </IonLabel>
+                <p style={{color:"#20406a", fontWeight:600, marginLeft:"15px"}}> {notYetReceivedValue}</p>
+              </div>
+              <IonList>{notYetReceived}</IonList>
+            </div>
           </React.Fragment>
         )}
 
         {received.length !== 0 && (
           <React.Fragment>
-            <IonLabel>RECEIVED {receivedValue}</IonLabel>
-            <IonList>{received}</IonList>
+            <div>
+              <div className="flex-row">
+                <IonLabel>RECEIVED: </IonLabel>
+                <p style={{color:"#20406a", fontWeight:600, marginLeft:"15px"}}> {receivedValue}</p>
+              </div>
+              <IonList>{received}</IonList>
+            </div>
           </React.Fragment>
         )}
       </IonContent>

@@ -100,16 +100,14 @@ const Transactions: React.FC = () => {
   const transactionsToView = (data: Transaction[] | undefined) => {
     if (data) {
       const newData = [...data];
-      newData.forEach(
-        (child) =>
-          (child.executed_time = dayjs(child.executed_time)
-            .startOf("d")
-            .toISOString())
-      );
+      newData.forEach((child) => {
+        child.executed_time = dayjs(child.executed_time)
+          .startOf("d")
+          .toISOString();
+      });
 
       const grouped = _.chain(newData)
         .sortBy("executed_time")
-        .reverse()
         .groupBy("executed_time")
         .map(function (value, key) {
           return {
@@ -117,7 +115,8 @@ const Transactions: React.FC = () => {
             transactions: value,
           };
         })
-        .value();
+        .value()
+        .reverse();
 
       return grouped.map((byDate) => {
         const dateTransactions = dayjs(byDate.date);
@@ -142,7 +141,7 @@ const Transactions: React.FC = () => {
                   <TransactionsItem
                     key={child.id}
                     updateTransactions={(newData: Transaction[]) => {
-                      setTransactions({ ...newData });
+                      setTransactions([ ...newData ]);
                     }}
                     data={child}
                   />
