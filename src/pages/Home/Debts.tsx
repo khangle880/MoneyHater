@@ -39,7 +39,7 @@ const Debts: React.FC = () => {
               <IonButtons slot="start">
                 <IonBackButton
                   className="icon-padding"
-                  defaultHref="/my/my-profile"
+                  defaultHref="/my/profile"
                 />
               </IonButtons>
               <IonTitle>Debts</IonTitle>

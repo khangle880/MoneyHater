@@ -25,9 +25,7 @@ interface prop {
 }
 
 const TransactionItem: React.FC<prop> = ({ data, updateTransactions }) => {
-  const [category] = useState(
-    categories.find((category) => category.id === data.category)
-  );
+  const [category] = useState(findCategory(data.category));
   const [currency] = useState(
     currencies.find((child) => child.id === data.currency)
   );
