@@ -57,12 +57,12 @@ const AddCustomCategory: React.FC<{ type: string; beforePath: string }> = ({
   const history = useHistory();
   const rootPath = useRouteMatch().url;
   const { userId } = useAuth();
-  const alertMessage = "You must fill all fields";
+  const alertMessage = "You must fill icon, name, and parent fields";
 
   useEffect(() => () => {}, []);
 
   const handleSave = () => {
-    if (icon && name && icon && parentCategory) {
+    if (icon && name && parentCategory) {
       const newRawTransaction = {
         type: type,
         name: name,

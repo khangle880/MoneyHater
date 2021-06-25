@@ -56,7 +56,6 @@ const AddEvent: React.FC = () => {
 
   const history = useHistory();
   const { userId } = useAuth();
-  const alertMessage = "You must fill full field";
 
   useEffect(() => {
     setCurrencyUnit(wallet.currency_object);
@@ -77,6 +76,7 @@ const AddEvent: React.FC = () => {
       : `${fromDate.format(fromDateFormat)} - ${toDate.format(toDateFormat)}`;
   };
 
+  const alertMessage = "You must fill name, icon, currency unit and time range field";
   const handleSave = () => {
     if (name && icon && currencyUnit && timeRange) {
       const newRawTransaction = {

@@ -79,7 +79,6 @@ const AddRecurringTransaction: React.FC = () => {
 
   const history = useHistory();
   const { userId } = useAuth();
-  const alertMessage = "You must fill amount, category and time range field";
 
   useEffect(() => {
     setCurrencyUnit(wallet.currency_object);
@@ -100,6 +99,7 @@ const AddRecurringTransaction: React.FC = () => {
       : `${fromDate.format(fromDateFormat)} - ${toDate.format(toDateFormat)}`;
   };
 
+  const alertMessage = "You must fill amount, category, frequency and time range field";
   const handleSave = () => {
     if (amount && category && timeRange && frequency) {
       const newRawTransaction = {
